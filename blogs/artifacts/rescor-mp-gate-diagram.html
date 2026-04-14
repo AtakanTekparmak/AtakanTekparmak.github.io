@@ -1,0 +1,91 @@
+<div style="font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 13px; line-height: 1.5; max-width: 740px; margin: 2em auto; color: #b8c4c8;">
+<div style="text-align: center; margin-bottom: 1.2em;">
+  <span style="font-size: 16px; font-weight: bold; color: #e6edf0;">MatchingPrincipleGateWM</span>
+  <span style="color: #6b7578;"> — 4747 trained · 12 frozen</span>
+</div>
+<!-- High-level flow diagram -->
+<div style="text-align: center; margin-bottom: 0.3em;">
+  <div style="display: inline-block; border: 2px solid #2dd4bf; border-radius: 8px; padding: 8px 24px; background: #111e21;">
+    <span style="color: #2dd4bf; font-weight: bold;">x</span>
+    <span style="color: #8a9699;"> — input grid (B, C, H, W)</span>
+  </div>
+</div>
+<div style="text-align: center; color: #6b7578; font-size: 12px; line-height: 1.2;">|<br>v</div>
+<div style="border: 2px solid rgba(255,255,255,0.5); border-radius: 10px; padding: 14px 16px; margin: 0.3em 0; background: #152427; text-align: center;">
+  <span style="color: #e6edf0; font-weight: bold; font-size: 15px;">CML Reservoir</span>
+  <span style="color: rgba(255,255,255,0.4); font-size: 11px;"> · FROZEN · 12 buffers · 0 trained</span>
+  <div style="color: #b8c4c8; font-size: 12px; margin-top: 6px;">15 steps of logistic map (r=3.90) + 3x3 coupling + drive re-injection</div>
+  <div style="color: #8a9699; font-size: 11px; margin-top: 4px;">outputs: last, mean, var, delta, drift</div>
+</div>
+<div style="display: flex; justify-content: space-between; margin: 0.4em 0; font-size: 10px; padding: 0 4px;">
+  <span style="color: #2dd4bf;">v x + 5 stats</span>
+  <span style="color: #e4ff1a;">v var, drift</span>
+  <span style="color: #60a5fa;">v x only</span>
+</div>
+<div style="display: flex; gap: 10px; margin: 0.5em 0; flex-wrap: wrap;">
+  <!-- PATH A -->
+  <div style="flex: 5; min-width: 200px; border: 2px solid #2dd4bf; border-radius: 10px; padding: 12px; background: #0d1a1d; text-align: center;">
+    <div style="font-weight: bold; color: #2dd4bf; font-size: 14px;">Path A <span style="color: #8a9699; font-weight: normal; font-size: 11px;">physics-informed</span></div>
+    <div style="font-size: 11px; color: #14b8a6;">4641 trained params</div>
+    <div style="color: #8a9699; font-size: 11px; margin-top: 6px;">CML stats + NCA correction</div>
+    <div style="font-size: 12px; color: #2dd4bf; margin-top: 8px; padding-top: 6px; border-top: 1px solid rgba(45,212,191,0.15);"><b>out_a</b> <span style="color: #8a9699;">= last + correction</span></div>
+  </div>
+  <!-- TRUST GATE -->
+  <div style="flex: 2; min-width: 120px; border: 2px solid #e4ff1a; border-radius: 10px; padding: 12px; background: #12150a; text-align: center; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 0 15px rgba(228,255,26,0.06);">
+    <div style="font-weight: bold; color: #e4ff1a; font-size: 14px;">Trust Gate</div>
+    <div style="font-size: 11px; color: #b8cc15;">17 params</div>
+    <div style="margin-top: 8px; padding: 6px; border: 1px dashed rgba(228,255,26,0.3); border-radius: 6px;">
+      <span style="font-weight: bold; font-size: 20px; color: #e4ff1a; text-shadow: 0 0 10px rgba(228,255,26,0.4);">g</span>
+      <div style="color: #8a9699; font-size: 10px; margin-top: 2px;">per-cell blend</div>
+    </div>
+  </div>
+  <!-- PATH B -->
+  <div style="flex: 3; min-width: 160px; border: 2px solid #60a5fa; border-radius: 10px; padding: 12px; background: #0c1524; text-align: center;">
+    <div style="font-weight: bold; color: #60a5fa; font-size: 14px;">Path B <span style="color: #8a9699; font-weight: normal; font-size: 11px;">learned-only</span></div>
+    <div style="font-size: 11px; color: #3b82f6;">89 trained params</div>
+    <div style="color: #8a9699; font-size: 11px; margin-top: 6px;">Pure NCA, no CML</div>
+    <div style="font-size: 12px; color: #60a5fa; margin-top: 8px; padding-top: 6px; border-top: 1px solid rgba(96,165,250,0.15);"><b>out_b</b> <span style="color: #8a9699;">= state + correction</span></div>
+  </div>
+</div>
+<div style="display: flex; justify-content: center; gap: 24px; margin: 0.6em 0 0.3em; font-size: 11px;">
+  <span><span style="color: #2dd4bf;">out_a</span> <span style="color: #e4ff1a;">x g</span></span>
+  <span style="color: #6b7578;">+</span>
+  <span><span style="color: #60a5fa;">out_b</span> <span style="color: #e4ff1a;">x (1-g)</span></span>
+</div>
+<div style="text-align: center; color: #6b7578; font-size: 12px;">v</div>
+<div style="text-align: center; margin: 0.3em 0;">
+  <div style="display: inline-block; border: 2px solid #2dd4bf; border-radius: 8px; padding: 12px 24px; background: #0a1416;">
+    <div style="font-size: 14px; font-weight: bold; color: #e6edf0; margin-bottom: 4px;">
+      y&#770; <span style="color: #8a9699; font-weight: normal; font-size: 12px;">— predicted next state</span>
+    </div>
+    <div style="font-size: 10px; color: #6b7578;">clamped to [0, 1] · shape (B, Cout, H, W)</div>
+  </div>
+</div>
+<div style="display: flex; justify-content: center; gap: 16px; margin-top: 1.2em; font-size: 10px; flex-wrap: wrap;">
+  <span><span style="display: inline-block; width: 10px; height: 10px; background: #e6edf0; border-radius: 2px; vertical-align: middle; border: 1px solid rgba(255,255,255,0.3);"></span> <span style="color: #8a9699;">frozen reservoir</span></span>
+  <span><span style="display: inline-block; width: 10px; height: 10px; background: #2dd4bf; border-radius: 2px; vertical-align: middle;"></span> <span style="color: #8a9699;">CML path (97.8%)</span></span>
+  <span><span style="display: inline-block; width: 10px; height: 10px; background: #e4ff1a; border-radius: 2px; vertical-align: middle;"></span> <span style="color: #8a9699;">trust gate (0.4%)</span></span>
+  <span><span style="display: inline-block; width: 10px; height: 10px; background: #60a5fa; border-radius: 2px; vertical-align: middle;"></span> <span style="color: #8a9699;">NCA path (1.9%)</span></span>
+</div>
+</div>
+<details style="margin: 1em 0;">
+<summary style="cursor: pointer; color: #2dd4bf; font-weight: bold;">Expand: full layer breakdown</summary>
+<div style="font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 12px; color: #b8c4c8; padding: 1em; background: #0f1b1e; border-radius: 8px; border: 1px solid rgba(45,212,191,0.12); margin-top: 0.5em;">
+<div style="margin-bottom: 12px;">
+<div style="color: #e6edf0; font-weight: bold; margin-bottom: 4px;">CML Reservoir (frozen)</div>
+<div style="color: #8a9699; padding-left: 12px;">logistic map f(x) = r*x*(1-x) at r=3.90<br>3x3 conv coupling, epsilon=0.3<br>drive re-injection, beta=0.15<br>15 iterations, 12 buffer params<br>outputs: last (final state), mean (DC), var (-> gate), delta, drift (-> gate)</div>
+</div>
+<div style="margin-bottom: 12px;">
+<div style="color: #2dd4bf; font-weight: bold; margin-bottom: 4px;">Path A — CML + NCA correction (4641 params)</div>
+<div style="color: #8a9699; padding-left: 12px;">input: concat [x, last, mean, var, delta, drift] -> 6 channels<br>perceive_d1: Conv2d 3x3, dil=1, 6->32 ch (1760 params)<br>perceive_d2: Conv2d 3x3, dil=2, 6->32 ch (1760 params) x alpha (zero-init, 32 params)<br>feat = d1 + d2 * alpha (additive residual)<br>update_a: ReLU -> Conv 1x1 32->32 -> ReLU -> Conv 1x1 32->1 (1089 params)<br>out_a = last + correction_a</div>
+</div>
+<div style="margin-bottom: 12px;">
+<div style="color: #e4ff1a; font-weight: bold; margin-bottom: 4px;">Trust Gate (17 params)</div>
+<div style="color: #8a9699; padding-left: 12px;">input: [cml_var, cml_drift] -> 2 channels<br>Conv 1x1: 2->4 ch (12 params) -> ReLU<br>Conv 1x1: 4->1 ch (5 params, zero-init) -> sigmoid<br>output: per-cell g in [0, 1]<br>g -> 1: trust physics, g -> 0: trust learning</div>
+</div>
+<div>
+<div style="color: #60a5fa; font-weight: bold; margin-bottom: 4px;">Path B — Pure NCA (89 params)</div>
+<div style="color: #8a9699; padding-left: 12px;">input: raw x only, no CML stats<br>perceive_b: Conv2d 3x3, 1->8 ch (80 params)<br>update_b: ReLU -> Conv 1x1 8->1 (9 params)<br>out_b = state + correction_b</div>
+</div>
+</div>
+</details>

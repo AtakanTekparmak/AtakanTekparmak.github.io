@@ -1,0 +1,240 @@
+<div style="font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace; font-size: 13px; line-height: 1.5; max-width: 720px; margin: 2em auto; color: #e0e0e0;">
+
+<!-- Title -->
+<div style="text-align: center; margin-bottom: 1.5em;">
+  <span style="font-size: 16px; font-weight: bold; color: #fff;">rescor_mp_gate</span>
+  <span style="color: #888;"> — 4747 trained, 12 frozen params</span>
+</div>
+
+<!-- Input -->
+<div style="text-align: center; margin-bottom: 0.5em;">
+  <div style="display: inline-block; border: 2px solid #6b9bd2; border-radius: 8px; padding: 8px 24px; background: #1a2332;">
+    <span style="color: #6b9bd2; font-weight: bold;">Input x</span>
+    <span style="color: #888;"> (B, C<sub>in</sub>, H, W)</span>
+  </div>
+</div>
+<div style="text-align: center; color: #555;">│</div>
+<div style="text-align: center; color: #555;">▼</div>
+
+<!-- State extraction -->
+<div style="text-align: center; margin-bottom: 0.3em;">
+  <span style="color: #888;">state = x[:, :C<sub>out</sub>]</span>
+</div>
+<div style="text-align: center; color: #555;">│</div>
+<div style="text-align: center; color: #555;">▼</div>
+
+<!-- CML Block -->
+<div style="border: 3px solid #e67e22; border-radius: 10px; padding: 12px 16px; margin: 0.5em 0; background: linear-gradient(135deg, #2d1f0e, #1a1408);">
+  <div style="text-align: center; margin-bottom: 6px;">
+    <span style="color: #e67e22; font-weight: bold; font-size: 14px;">🔒 CML2DWithStats</span>
+    <span style="color: #e67e22; font-size: 11px;"> — FROZEN, 12 buffer params</span>
+  </div>
+  <div style="color: #c9a56c; font-size: 12px; text-align: center;">
+    f(x) = 3.90·x·(1-x) → conv2d coupling → drive injection → 15 steps
+  </div>
+  <div style="display: flex; justify-content: center; gap: 8px; margin-top: 8px; flex-wrap: wrap;">
+    <span style="background: #3d2a0f; border: 1px solid #e67e22; border-radius: 4px; padding: 2px 8px; font-size: 11px; color: #e6a23c;">last</span>
+    <span style="background: #3d2a0f; border: 1px solid #e67e22; border-radius: 4px; padding: 2px 8px; font-size: 11px; color: #e6a23c;">mean</span>
+    <span style="background: #3d2a0f; border: 1px solid #e67e22; border-radius: 4px; padding: 2px 8px; font-size: 11px; color: #e6a23c;">var</span>
+    <span style="background: #3d2a0f; border: 1px solid #e67e22; border-radius: 4px; padding: 2px 8px; font-size: 11px; color: #e6a23c;">delta</span>
+    <span style="background: #3d2a0f; border: 1px solid #e67e22; border-radius: 4px; padding: 2px 8px; font-size: 11px; color: #e6a23c;">last_drive</span>
+  </div>
+</div>
+
+<!-- Split into 3 branches -->
+<div style="text-align: center; color: #555; margin: 0.3em 0;">┬──────────────────────────────────┬</div>
+
+<!-- Three columns: Path A, Trust Gate, Path B -->
+<div style="display: flex; gap: 12px; margin: 0.5em 0;">
+
+  <!-- Path A -->
+  <div style="flex: 5; border: 2px solid #27ae60; border-radius: 10px; padding: 10px; background: #0f1f14;">
+    <div style="text-align: center; font-weight: bold; color: #27ae60; margin-bottom: 8px; font-size: 14px;">
+      Path A: CML + NCA
+      <div style="font-size: 11px; color: #1e8449; font-weight: normal;">4641 params</div>
+    </div>
+
+    <!-- Concat -->
+    <div style="background: #153020; border: 1px solid #27ae60; border-radius: 6px; padding: 6px; margin-bottom: 6px; font-size: 11px; text-align: center;">
+      <span style="color: #58d68d;">cat</span><span style="color: #888;">[x, last, mean, var, delta, last_drive]</span>
+      <div style="color: #666; font-size: 10px;">→ (B, 6, H, W)</div>
+    </div>
+
+    <!-- Dual perception -->
+    <div style="display: flex; gap: 4px; margin-bottom: 6px;">
+      <div style="flex: 1; background: #153020; border: 1px solid #2ecc71; border-radius: 5px; padding: 4px; font-size: 10px; text-align: center;">
+        <div style="color: #2ecc71; font-weight: bold;">Conv2d 3×3</div>
+        <div style="color: #888;">dil=1, 6→32</div>
+        <div style="color: #555;">1760 params</div>
+      </div>
+      <div style="flex: 1; background: #153020; border: 1px solid #2ecc71; border-radius: 5px; padding: 4px; font-size: 10px; text-align: center;">
+        <div style="color: #2ecc71; font-weight: bold;">Conv2d 3×3</div>
+        <div style="color: #888;">dil=2, 6→32</div>
+        <div style="color: #555;">1760 params</div>
+        <div style="color: #e74c3c; font-size: 9px;">× α (zero-init, 32p)</div>
+      </div>
+    </div>
+
+    <!-- h1 + alpha*h2 -->
+    <div style="text-align: center; font-size: 11px; color: #888; margin-bottom: 6px;">
+      feat = h1 + α·h2
+    </div>
+
+    <!-- Update head -->
+    <div style="background: #153020; border: 1px solid #27ae60; border-radius: 5px; padding: 4px; font-size: 10px; text-align: center; margin-bottom: 6px;">
+      <span style="color: #2ecc71;">ReLU → Conv 1×1 (32→32) → ReLU → Conv 1×1 (32→1)</span>
+      <div style="color: #555;">1089 params</div>
+    </div>
+
+    <!-- Output -->
+    <div style="text-align: center; font-size: 12px;">
+      <span style="color: #27ae60; font-weight: bold;">out_a</span>
+      <span style="color: #888;"> = last + correction</span>
+    </div>
+  </div>
+
+  <!-- Trust Gate (middle) -->
+  <div style="flex: 2; border: 2px solid #9b59b6; border-radius: 10px; padding: 10px; background: #1a0f22; display: flex; flex-direction: column; justify-content: center;">
+    <div style="text-align: center; font-weight: bold; color: #9b59b6; margin-bottom: 8px; font-size: 14px;">
+      Trust Gate
+      <div style="font-size: 11px; color: #7d3c98; font-weight: normal;">17 params</div>
+    </div>
+
+    <div style="background: #220f30; border: 1px solid #9b59b6; border-radius: 5px; padding: 6px; font-size: 10px; text-align: center; margin-bottom: 6px;">
+      <div style="color: #bb8fce;">input: [var, last_drive]</div>
+      <div style="color: #888;">(B, 2, H, W)</div>
+    </div>
+
+    <div style="text-align: center; color: #555; font-size: 10px;">↓</div>
+
+    <div style="background: #220f30; border: 1px solid #9b59b6; border-radius: 5px; padding: 4px; font-size: 10px; text-align: center; margin-bottom: 4px;">
+      <span style="color: #bb8fce;">Conv 1×1 (2→4)</span>
+      <span style="color: #555;"> 12p</span>
+    </div>
+    <div style="text-align: center; color: #bb8fce; font-size: 10px;">ReLU ↓</div>
+    <div style="background: #220f30; border: 1px solid #9b59b6; border-radius: 5px; padding: 4px; font-size: 10px; text-align: center; margin-bottom: 6px;">
+      <span style="color: #bb8fce;">Conv 1×1 (4→1)</span>
+      <span style="color: #555;"> 5p</span>
+      <div style="color: #e74c3c; font-size: 9px;">zero-init</div>
+    </div>
+
+    <div style="text-align: center; color: #bb8fce; font-size: 10px;">sigmoid ↓</div>
+
+    <div style="text-align: center; margin-top: 4px;">
+      <span style="font-weight: bold; font-size: 16px; color: #9b59b6;">g</span>
+      <span style="color: #888; font-size: 11px;"> ∈ [0, 1]</span>
+    </div>
+    <div style="text-align: center; color: #666; font-size: 9px; margin-top: 4px;">
+      g≈1 → trust CML<br>
+      g≈0 → trust NCA
+    </div>
+  </div>
+
+  <!-- Path B -->
+  <div style="flex: 3; border: 2px solid #3498db; border-radius: 10px; padding: 10px; background: #0f1520;">
+    <div style="text-align: center; font-weight: bold; color: #3498db; margin-bottom: 8px; font-size: 14px;">
+      Path B: Pure NCA
+      <div style="font-size: 11px; color: #2171a6; font-weight: normal;">89 params</div>
+    </div>
+
+    <!-- Input only -->
+    <div style="background: #102030; border: 1px solid #3498db; border-radius: 6px; padding: 6px; margin-bottom: 6px; font-size: 11px; text-align: center;">
+      <span style="color: #5dade2;">input: x</span>
+      <div style="color: #666; font-size: 10px;">→ (B, C<sub>in</sub>, H, W)</div>
+      <div style="color: #555; font-size: 9px;">no CML stats</div>
+    </div>
+
+    <!-- Perceive -->
+    <div style="background: #102030; border: 1px solid #3498db; border-radius: 5px; padding: 4px; font-size: 10px; text-align: center; margin-bottom: 6px;">
+      <div style="color: #5dade2; font-weight: bold;">Conv2d 3×3</div>
+      <div style="color: #888;">1→8</div>
+      <div style="color: #555;">80 params</div>
+    </div>
+
+    <!-- Update -->
+    <div style="background: #102030; border: 1px solid #3498db; border-radius: 5px; padding: 4px; font-size: 10px; text-align: center; margin-bottom: 6px;">
+      <span style="color: #5dade2;">ReLU → Conv 1×1 (8→1)</span>
+      <div style="color: #555;">9 params</div>
+    </div>
+
+    <!-- Output -->
+    <div style="text-align: center; font-size: 12px;">
+      <span style="color: #3498db; font-weight: bold;">out_b</span>
+      <span style="color: #888;"> = state + correction</span>
+    </div>
+  </div>
+</div>
+
+<!-- Blend -->
+<div style="text-align: center; color: #555; margin: 0.3em 0;">└──────────────────────────────────┘</div>
+<div style="text-align: center; margin: 0.5em 0;">
+  <div style="display: inline-block; border: 2px solid #9b59b6; border-radius: 8px; padding: 10px 20px; background: linear-gradient(135deg, #1a0f22, #0f1520);">
+    <span style="color: #9b59b6; font-weight: bold; font-size: 14px;">output</span>
+    <span style="color: #888;"> = </span>
+    <span style="color: #9b59b6; font-weight: bold;">g</span>
+    <span style="color: #888;"> · </span>
+    <span style="color: #27ae60; font-weight: bold;">out_a</span>
+    <span style="color: #888;"> + (1 - </span>
+    <span style="color: #9b59b6; font-weight: bold;">g</span>
+    <span style="color: #888;">) · </span>
+    <span style="color: #3498db; font-weight: bold;">out_b</span>
+  </div>
+</div>
+
+<!-- Param summary -->
+<div style="margin-top: 1.5em; border-top: 1px solid #333; padding-top: 1em;">
+  <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+    <tr style="border-bottom: 1px solid #333;">
+      <th style="text-align: left; padding: 4px 8px; color: #888;">Component</th>
+      <th style="text-align: right; padding: 4px 8px; color: #888;">Params</th>
+      <th style="text-align: right; padding: 4px 8px; color: #888;">%</th>
+    </tr>
+    <tr style="color: #e67e22;">
+      <td style="padding: 3px 8px;">🔒 CML2DWithStats (frozen)</td>
+      <td style="text-align: right; padding: 3px 8px;">12</td>
+      <td style="text-align: right; padding: 3px 8px; color: #666;">—</td>
+    </tr>
+    <tr style="color: #27ae60;">
+      <td style="padding: 3px 8px;">Path A: perceive_d1 (3×3, dil=1)</td>
+      <td style="text-align: right; padding: 3px 8px;">1760</td>
+      <td style="text-align: right; padding: 3px 8px;">37.1%</td>
+    </tr>
+    <tr style="color: #27ae60;">
+      <td style="padding: 3px 8px;">Path A: perceive_d2 (3×3, dil=2)</td>
+      <td style="text-align: right; padding: 3px 8px;">1760</td>
+      <td style="text-align: right; padding: 3px 8px;">37.1%</td>
+    </tr>
+    <tr style="color: #27ae60;">
+      <td style="padding: 3px 8px;">Path A: dilation_alpha (zero-init)</td>
+      <td style="text-align: right; padding: 3px 8px;">32</td>
+      <td style="text-align: right; padding: 3px 8px;">0.7%</td>
+    </tr>
+    <tr style="color: #27ae60;">
+      <td style="padding: 3px 8px;">Path A: update head (1×1 convs)</td>
+      <td style="text-align: right; padding: 3px 8px;">1089</td>
+      <td style="text-align: right; padding: 3px 8px;">22.9%</td>
+    </tr>
+    <tr style="color: #3498db;">
+      <td style="padding: 3px 8px;">Path B: perceive (3×3)</td>
+      <td style="text-align: right; padding: 3px 8px;">80</td>
+      <td style="text-align: right; padding: 3px 8px;">1.7%</td>
+    </tr>
+    <tr style="color: #3498db;">
+      <td style="padding: 3px 8px;">Path B: update (1×1)</td>
+      <td style="text-align: right; padding: 3px 8px;">9</td>
+      <td style="text-align: right; padding: 3px 8px;">0.2%</td>
+    </tr>
+    <tr style="color: #9b59b6;">
+      <td style="padding: 3px 8px;">Trust gate MLP</td>
+      <td style="text-align: right; padding: 3px 8px;">17</td>
+      <td style="text-align: right; padding: 3px 8px;">0.4%</td>
+    </tr>
+    <tr style="border-top: 2px solid #555; font-weight: bold; color: #fff;">
+      <td style="padding: 6px 8px;">Total trained</td>
+      <td style="text-align: right; padding: 6px 8px;">4747</td>
+      <td style="text-align: right; padding: 6px 8px;">100%</td>
+    </tr>
+  </table>
+</div>
+
+</div>

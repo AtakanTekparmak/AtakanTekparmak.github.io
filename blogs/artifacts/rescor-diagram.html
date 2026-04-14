@@ -1,0 +1,30 @@
+<div style="font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 13px; max-width: 500px; margin: 1.5em auto; color: #b8c4c8;">
+<div style="text-align: center; margin-bottom: 0.8em;">
+<span style="font-size: 15px; font-weight: bold; color: #e6edf0;">rescor</span>
+<span style="color: #6b7578;"> — 321 trained · 12 frozen</span>
+</div>
+<div style="text-align: center; margin-bottom: 0.3em;">
+<div style="display: inline-block; border: 1px solid rgba(45,212,191,0.3); border-radius: 6px; padding: 6px 16px; background: #111e21;">
+<span style="color: #2dd4bf;">x</span> <span style="color: #6b7578;">input state</span>
+</div>
+</div>
+<div style="text-align: center; color: #6b7578;">▼</div>
+<div style="border: 2px solid rgba(255,255,255,0.4); border-radius: 8px; padding: 10px; margin: 0.3em 0; background: #152427; text-align: center;">
+<span style="color: #e6edf0; font-weight: bold;">CML2D</span>
+<span style="color: rgba(255,255,255,0.4); font-size: 11px;"> frozen · 12p</span>
+<div style="color: #8a9699; font-size: 11px; margin-top: 4px;">logistic map → conv coupling → 15 steps → returns last state only</div>
+</div>
+<div style="text-align: center; color: #6b7578; font-size: 10px;">▼ concat [x, cml_out]</div>
+<div style="border: 2px solid #2dd4bf; border-radius: 8px; padding: 10px; margin: 0.3em 0; background: #0d1a1d; text-align: center;">
+<span style="color: #2dd4bf; font-weight: bold;">NCA Correction</span>
+<span style="color: #14b8a6; font-size: 11px;"> · 321p</span>
+<div style="color: #8a9699; font-size: 11px; margin-top: 4px;">Conv 3×3 (2→16) → ReLU → Conv 1×1 (16→1)</div>
+</div>
+<div style="text-align: center; color: #6b7578;">▼</div>
+<div style="text-align: center;">
+<div style="display: inline-block; border: 1px solid rgba(45,212,191,0.3); border-radius: 6px; padding: 6px 16px; background: #0a1416;">
+<span style="color: #e6edf0; font-weight: bold;">output</span>
+<span style="color: #8a9699;"> = cml_out + correction</span>
+</div>
+</div>
+</div>
