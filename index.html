@@ -6,12 +6,12 @@
     <meta name="color-scheme" content="light dark">
     <!-- POST_META_START -->
     <title>Atakan Tekparmak — AI Researcher</title>
-    <meta name="description" content="AI Researcher specializing in LLM agents, function calling, and memory systems.">
+    <meta name="description" content="AI Researcher working on LLM agents, agentic memory, multi-agent systems, and long-horizon RL.">
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Atakan Tekparmak">
     <meta property="og:title" content="Atakan Tekparmak — AI Researcher">
-    <meta property="og:description" content="AI Researcher specializing in LLM agents, function calling, and memory systems.">
+    <meta property="og:description" content="AI Researcher working on LLM agents, agentic memory, multi-agent systems, and long-horizon RL.">
     <meta property="og:url" content="https://atakantekparmak.github.io/">
     <meta property="og:image" content="https://atakantekparmak.github.io/twitter_avatar.jpg">
 
@@ -19,7 +19,7 @@
     <meta name="twitter:site" content="@AtakanTekparmak">
     <meta name="twitter:creator" content="@AtakanTekparmak">
     <meta name="twitter:title" content="Atakan Tekparmak — AI Researcher">
-    <meta name="twitter:description" content="AI Researcher specializing in LLM agents, function calling, and memory systems.">
+    <meta name="twitter:description" content="AI Researcher working on LLM agents, agentic memory, multi-agent systems, and long-horizon RL.">
     <meta name="twitter:image" content="https://atakantekparmak.github.io/twitter_avatar.jpg">
     <!-- POST_META_END -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -323,6 +323,29 @@
             transition: width 0.3s ease;
         }
         .social-link:hover::after { width: 100%; }
+
+        .ref-link {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.7em;
+            vertical-align: super;
+            line-height: 0;
+            text-decoration: none;
+            padding: 0 0.08em;
+            transition: color 0.25s ease;
+        }
+        .ref-link:hover { color: var(--accent-strong); }
+
+        .recent-work-list {
+            margin-top: 0.85rem;
+            padding-left: 1.15rem;
+            list-style: disc;
+        }
+        .recent-work-list li {
+            margin-bottom: 0.4rem;
+            line-height: 1.65;
+        }
+        .recent-work-list li::marker { color: var(--accent); }
 
         .social-icons {
             display: flex;
@@ -868,17 +891,30 @@
             bio: () => `
                 <div class="fade-in">
                     <h2 class="section-title">Bio</h2>
-                    <p class="section-sub">AI Researcher — LLM agents, function calling, memory.</p>
+                    <p class="section-sub">AI Researcher: LLM agents, agentic memory, multi-agent systems, long-horizon RL.</p>
                     <img src="/twitter_avatar.jpg" alt="Atakan Tekparmak" class="profile-image">
                     <p class="t-body leading-relaxed text-base">
                         I'm <span class="name-gradient">Atakan Tekparmak</span>, an <strong>AI Researcher</strong> specializing in <strong>LLM agents</strong>.
-                        Currently working at <strong>Dria</strong> (since April 2025), researching LLM agents, function calling, and memory systems.
+                        Currently working at <strong>Dria</strong> (since April 2025), researching LLM agents, agentic memory, multi-agent systems, and long-horizon RL.
                     </p>
                     <p class="t-muted leading-relaxed mt-4 text-base">
-                        I pioneered <strong>"Pythonic Function Calling"</strong> — a paradigm where LLMs output Python code instead of JSON for tool calling,
-                        which is now widely adopted. My recent work includes <a href="https://github.com/firstbatchxyz/mem-agent" class="social-link">mem-agent</a>
-                        (LLM agents trained with RL to manage a markdown-based memory) and <a href="https://huggingface.co/blog/andthattoo/dria-agent-a" class="social-link">Dria-Agent-&alpha;</a>
-                        (small language models trained for pythonic function calling).
+                        I pioneered <strong>"Pythonic Function Calling"</strong><a href="https://x.com/AtakanTekparmak/status/1861008302605558150" class="ref-link" target="_blank" rel="noopener" aria-label="Reference 1">[1]</a><a href="https://x.com/driaforall/status/1878840572737421766?s=20" class="ref-link" target="_blank" rel="noopener" aria-label="Reference 2">[2]</a>, a paradigm where LLMs output Python code instead of JSON for tool calling,
+                        which is now widely adopted and used voluntarily by many agents in their regular scaffolds. My recent work includes:
+                    </p>
+                    <ul class="recent-work-list t-muted text-base">
+                        <li>
+                            <a href="https://github.com/firstbatchxyz/kai-security" class="social-link">kai-security</a>: <a href="https://arxiv.org/abs/2512.24601" class="social-link">RLM</a> based agentic scaffold for cybersecurity (mythos at home).
+                        </li>
+                        <li>
+                            <a href="https://github.com/firstbatchxyz/mem-agent" class="social-link">mem-agent</a>: LLM agents trained with RL to manage a markdown-based memory.
+                        </li>
+                        <li>
+                            <a href="https://huggingface.co/blog/andthattoo/dria-agent-a" class="social-link">Dria-Agent-&alpha;</a>: small language models trained for pythonic function calling.
+                        </li>
+                    </ul>
+
+                    <p class="t-muted leading-relaxed mt-4 text-base">
+                        Multi-agent systems have been a long-running interest of mine. I was wiring up LLM subagents in <a href="https://github.com/AtakanTekparmak/agento/blob/main/multi_agent_example.py" class="social-link">agento</a> way before pythonic multi-agent delegation got popularised with <a href="https://arxiv.org/abs/2512.24601" class="social-link">RLMs</a>.
                     </p>
 
                     <div class="social-icons">
@@ -919,11 +955,13 @@
                             <p class="font-medium text-sm" style="color: var(--accent);">AI Researcher</p>
                             <p class="text-xs t-dim mt-0.5">April 2025 — Present</p>
                             <p class="mt-2 t-muted text-sm leading-relaxed">
-                                Working on LLM agents, function calling, and memory systems. Research includes
+                                Working on LLM agents, agentic memory, multi-agent systems, and long-horizon RL. Research includes
                                 <a href="https://huggingface.co/blog/andthattoo/dria-agent-a" class="social-link">Dria-Agent-&alpha;</a>
-                                (pythonic function calling models) and
+                                (pythonic function calling models),
                                 <a href="https://github.com/firstbatchxyz/mem-agent" class="social-link">mem-agent</a>
-                                (LLM agents trained with RL to manage a markdown-based memory).
+                                (LLM agents trained with RL to manage a markdown-based memory), and
+                                <a href="https://github.com/firstbatchxyz/kai-security" class="social-link">kai-security</a>
+                                (<a href="https://arxiv.org/abs/2512.24601" class="social-link">RLM</a> based agentic scaffold for cybersecurity).
                             </p>
                         </div>
                         <div class="timeline-item">
@@ -970,7 +1008,7 @@
                         <h3 class="text-lg font-semibold t-body">Dria-Agent-&alpha; & DPAB-&alpha;</h3>
                         <p class="text-xs t-dim mt-0.5">January 2025</p>
                         <p class="t-muted mt-2 text-sm leading-relaxed">
-                            Small language models (3B and 7B parameters) trained for pythonic function calling — where LLMs output Python code
+                            Small language models (3B and 7B parameters) trained for pythonic function calling, where LLMs output Python code
                             instead of JSON schemas for tool use. Includes DPAB-&alpha;, a benchmark showing pythonic function calling
                             outperforms JSON-based approaches.
                         </p>
@@ -1015,7 +1053,7 @@
                     return `
                         <div class="fade-in">
                             <h2 class="section-title">Blog</h2>
-                            <p class="section-sub">Nothing here yet — check back soon.</p>
+                            <p class="section-sub">Nothing here yet. Check back soon.</p>
                         </div>
                     `;
                 }

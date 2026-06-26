@@ -154,7 +154,7 @@ def build():
     # 2) Blog list page: /blog/index.html
     list_meta = og_block(
         title=f"Blog — {SITE_NAME}",
-        description="Notes on LLM agents, function calling, memory systems, and research.",
+        description="Notes on LLM agents, agentic memory, multi-agent systems, and long-horizon RL.",
         url=f"{SITE_URL}/blog/",
         image=absolute(DEFAULT_IMAGE),
         kind="website",
