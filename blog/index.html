@@ -138,6 +138,12 @@
             width: 100%;
             margin: 0 auto;
         }
+        /* Enable the reading-mode width transition only after first paint so a
+           direct /blog/<slug>/ load renders at reading width instantly instead
+           of animating open. Spec: max-width only (no padding). */
+        .content-container.anim-ready {
+            transition: max-width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        }
         .sidebar {
             background: var(--surface);
             border-radius: 1rem;
@@ -158,6 +164,18 @@
             max-width: 820px;
             border: 1px solid var(--border);
             transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .content-container.anim-ready .main-content {
+            transition: max-width 0.45s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Reading mode: widen the blog space when viewing an individual post.
+           Sidebar shifts left, main-content grows on both sides. */
+        .content-container.reading {
+            max-width: 1500px;
+        }
+        .content-container.reading .main-content {
+            max-width: 1150px;
         }
 
         /* Header */
@@ -1099,6 +1117,7 @@
             const render = sections[sectionId];
             if (!render) return;
             setActiveNav(sectionId);
+            document.querySelector('.content-container').classList.remove('reading');
             if (!opts.fromRoute) {
                 const target = urlForSection(sectionId);
                 if (target !== location.pathname + location.hash) {
@@ -1124,6 +1143,7 @@
 
         async function showPost(slug, opts = {}) {
             setActiveNav('blog');
+            document.querySelector('.content-container').classList.add('reading');
             if (!opts.fromRoute) {
                 const target = urlForPost(slug);
                 if (target !== location.pathname) {
@@ -1207,6 +1227,11 @@
         window.addEventListener('popstate', applyRoute);
         window.addEventListener('hashchange', applyRoute);
         applyRoute();
+        // Enable width transitions after first paint so a direct post load
+        // renders at reading width instantly instead of animating open.
+        requestAnimationFrame(() => {
+            document.querySelector('.content-container').classList.add('anim-ready');
+        });
     </script>
 </body>
 </html>
