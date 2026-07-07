@@ -1,0 +1,39 @@
+<div class="ivl-compare">
+<style>
+.ivl-compare{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;max-width:100%;margin:1.5em auto 2em;color:#14201f;-webkit-font-smoothing:antialiased;}
+.ivl-compare *{box-sizing:border-box;min-width:0;}
+.ivl-compare .ivl-cmp-q{font-size:1.1rem;line-height:1.45;font-weight:600;color:#12211f;margin:0 0 1rem;padding:0 0 0.85rem;border-bottom:1px solid rgba(0,110,110,0.16);display:flex;gap:0.6rem;align-items:baseline;overflow-wrap:anywhere;}
+.ivl-compare .ivl-cmp-qlabel{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:0.6rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#0a6a6a;background:rgba(0,139,139,0.1);border-radius:5px;padding:0.22rem 0.46rem;flex:none;position:relative;top:-0.12rem;}
+.ivl-compare .ivl-cmp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px;align-items:start;}
+.ivl-compare .ivl-cmp-col{background:#ffffff;border:1px solid rgba(0,110,110,0.16);border-radius:11px;overflow:hidden;box-shadow:0 1px 2px rgba(9,40,40,0.05),0 6px 20px rgba(9,60,60,0.05);}
+.ivl-compare .ivl-cmp-head{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:0.66rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;padding:0.6rem 0.85rem;border-bottom:1px solid rgba(0,110,110,0.1);}
+.ivl-compare .ivl-cmp-head.ivl-cmp-vanilla{color:#5a6a6c;background:#f2f5f5;}
+.ivl-compare .ivl-cmp-head.ivl-cmp-sft{color:#0a6a6a;background:rgba(0,139,139,0.07);}
+.ivl-compare .ivl-cmp-body{font-size:0.92rem;line-height:1.55;color:#26302f;padding:0.85rem;overflow-wrap:anywhere;}
+.ivl-compare .ivl-cmp-cont{color:#8a9698;font-style:italic;}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme="light"]) .ivl-compare{color:#e6eef0;}
+:root:not([data-theme="light"]) .ivl-compare .ivl-cmp-q{color:#eef4f5;border-bottom-color:rgba(45,212,191,0.18);}
+:root:not([data-theme="light"]) .ivl-compare .ivl-cmp-qlabel{color:#2dd4bf;background:rgba(45,212,191,0.13);}
+:root:not([data-theme="light"]) .ivl-compare .ivl-cmp-col{background:#101e21;border-color:rgba(45,212,191,0.16);box-shadow:0 1px 2px rgba(0,0,0,0.3),0 6px 22px rgba(0,0,0,0.32);}
+:root:not([data-theme="light"]) .ivl-compare .ivl-cmp-head.ivl-cmp-vanilla{color:#9aa8aa;background:#17262a;border-bottom-color:rgba(45,212,191,0.12);}
+:root:not([data-theme="light"]) .ivl-compare .ivl-cmp-head.ivl-cmp-sft{color:#2dd4bf;background:rgba(45,212,191,0.09);border-bottom-color:rgba(45,212,191,0.12);}
+:root:not([data-theme="light"]) .ivl-compare .ivl-cmp-body{color:#cdd8d9;}
+:root:not([data-theme="light"]) .ivl-compare .ivl-cmp-cont{color:#7b8a8c;}
+}
+:root[data-theme="dark"] .ivl-compare{color:#e6eef0;}
+:root[data-theme="dark"] .ivl-compare .ivl-cmp-q{color:#eef4f5;border-bottom-color:rgba(45,212,191,0.18);}
+:root[data-theme="dark"] .ivl-compare .ivl-cmp-qlabel{color:#2dd4bf;background:rgba(45,212,191,0.13);}
+:root[data-theme="dark"] .ivl-compare .ivl-cmp-col{background:#101e21;border-color:rgba(45,212,191,0.16);box-shadow:0 1px 2px rgba(0,0,0,0.3),0 6px 22px rgba(0,0,0,0.32);}
+:root[data-theme="dark"] .ivl-compare .ivl-cmp-head.ivl-cmp-vanilla{color:#9aa8aa;background:#17262a;border-bottom-color:rgba(45,212,191,0.12);}
+:root[data-theme="dark"] .ivl-compare .ivl-cmp-head.ivl-cmp-sft{color:#2dd4bf;background:rgba(45,212,191,0.09);border-bottom-color:rgba(45,212,191,0.12);}
+:root[data-theme="dark"] .ivl-compare .ivl-cmp-body{color:#cdd8d9;}
+:root[data-theme="dark"] .ivl-compare .ivl-cmp-cont{color:#7b8a8c;}
+:root[data-theme="light"] .ivl-compare .ivl-cmp-col{background:#ffffff;}
+</style>
+<div class="ivl-cmp-q"><span class="ivl-cmp-qlabel">Q</span>What role does self-discipline play in a good life?</div>
+<div class="ivl-cmp-grid">
+<div class="ivl-cmp-col"><div class="ivl-cmp-head ivl-cmp-vanilla">Vanilla Qwen3.5-4B</div><div class="ivl-cmp-body">Self-discipline is often described as the foundation of a good life. While talent, intelligence, and opportunity are important, self-discipline is the mechanism that allows you to leverage those assets effectively. It is the bridge between having a goal and actually achieving it.<span class="ivl-cmp-cont"> And on it goes, a breakdown of the key roles, numbered headers, bullets stacked under each.</span></div></div>
+<div class="ivl-cmp-col"><div class="ivl-cmp-head ivl-cmp-sft">SFT'd arm</div><div class="ivl-cmp-body">I set a daily routine of study, exercise, and prayer, and I keep a running tally of my words and actions. I check it each evening and correct anything I've said or done that falls short.</div></div>
+</div>
+</div>

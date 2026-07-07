@@ -1,0 +1,100 @@
+<div class="ivl-qstyle" hidden></div>
+<style>
+/* Persona-quote treatment for the Inductive Value-Loading post.
+   Every blockquote in this post is a verbatim model response, so it upgrades the
+   default teal-rule blockquote into a crafted "model voice" card: tinted surface,
+   soft elevation, a gradient accent spine and a decorative quotation affordance.
+   Scoped to the SPA article container (.post-content, the div the post markdown
+   renders into, per index.html) and only lives in the DOM while this post is shown,
+   so it never touches other posts. Self-contained, literal colours (no host vars),
+   no external requests. Theme-aware: light base, dark via prefers-color-scheme
+   (guarded so an explicit light toggle still wins) plus the data-theme attribute.
+   Never triggers horizontal page scroll (border-box, overflow-wrap, min-width:0).
+   Every text colour clears WCAG-AA (>=4.5:1) on its own surface in both themes. */
+.post-content blockquote,
+.post-content blockquote *{ box-sizing:border-box; }
+/* ===== Light base ===== */
+.post-content blockquote{
+  position:relative;
+  margin:1.9rem 0;
+  padding:1.4rem 2.6rem 1.4rem 1.9rem;
+  border:1px solid rgba(0,139,139,0.16);
+  border-radius:0.9rem;
+  background:linear-gradient(180deg,#eef6f6 0%,#f5fafa 100%);
+  box-shadow:0 6px 22px rgba(0,80,80,0.07),0 1px 2px rgba(0,0,0,0.04);
+  color:#123239;
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+  font-style:normal;
+  font-size:1.05rem;
+  line-height:1.72;
+  letter-spacing:0.002em;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+  min-width:0;
+}
+/* Gradient accent spine, teal used with restraint. */
+.post-content blockquote::before{ content:none; }
+/* Decorative open-quote in a clear top-right gutter (text is padded to clear it,
+   so it never overlaps and cannot affect text contrast). */
+.post-content blockquote::after{
+  content:"\201C";
+  position:absolute;
+  top:0.1rem;
+  right:0.85rem;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:2.7rem;
+  line-height:1;
+  color:rgba(0,139,139,0.18);
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+.post-content blockquote p{
+  margin:0;
+  color:inherit;
+  font-family:inherit;
+  font-style:inherit;
+}
+.post-content blockquote p + p{ margin-top:0.7rem; }
+/* ===== Dark via prefers-color-scheme (guarded so a manual light toggle wins) ===== */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .post-content blockquote{
+    border-color:rgba(45,212,191,0.20);
+    background:linear-gradient(180deg,#16292c 0%,#101f22 100%);
+    box-shadow:0 8px 26px rgba(0,0,0,0.42),0 1px 2px rgba(0,0,0,0.30);
+    color:#e9f1f2;
+  }
+  :root:not([data-theme="light"]) .post-content blockquote::before{
+    background:linear-gradient(180deg,#2dd4bf 0%,#5eead4 100%);
+  }
+  :root:not([data-theme="light"]) .post-content blockquote::after{
+    color:rgba(45,212,191,0.22);
+  }
+}
+/* ===== Dark via explicit data-theme toggle ===== */
+:root[data-theme="dark"] .post-content blockquote{
+  border-color:rgba(45,212,191,0.20);
+  background:linear-gradient(180deg,#16292c 0%,#101f22 100%);
+  box-shadow:0 8px 26px rgba(0,0,0,0.42),0 1px 2px rgba(0,0,0,0.30);
+  color:#e9f1f2;
+}
+:root[data-theme="dark"] .post-content blockquote::before{
+  background:linear-gradient(180deg,#2dd4bf 0%,#5eead4 100%);
+}
+:root[data-theme="dark"] .post-content blockquote::after{
+  color:rgba(45,212,191,0.22);
+}
+/* ===== Explicit light toggle wins over the media query ===== */
+:root[data-theme="light"] .post-content blockquote{
+  border-color:rgba(0,139,139,0.16);
+  background:linear-gradient(180deg,#eef6f6 0%,#f5fafa 100%);
+  box-shadow:0 6px 22px rgba(0,80,80,0.07),0 1px 2px rgba(0,0,0,0.04);
+  color:#123239;
+}
+:root[data-theme="light"] .post-content blockquote::before{
+  background:linear-gradient(180deg,#008B8B 0%,#20B2AA 100%);
+}
+:root[data-theme="light"] .post-content blockquote::after{
+  color:rgba(0,139,139,0.18);
+}
+.post-content a{overflow-wrap:anywhere;word-break:break-word;}</style>
