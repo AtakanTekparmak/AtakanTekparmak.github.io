@@ -1,0 +1,109 @@
+<div class="jlx-interference">
+<style>
+.jlx-interference{--accent-strong:#0f766e;--accent:#008B8B;--surface:#ffffff;--surface-muted:#f3f6f6;--text:#0f1f22;--text-muted:#4b5563;--text-faint:#8a9699;--border:rgba(15,31,34,.10);--pass:#2fa37a;--fail:#c7503a;--caveat:#c98a2b;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;color:var(--text);margin:1.8rem 0;width:100%;max-width:640px;overflow:hidden;-webkit-font-smoothing:antialiased}
+.jlx-interference *{box-sizing:border-box}
+.jlx-interference .jlx-state{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.jlx-interference .jlx-num{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+.jlx-interference .jlx-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.05rem 1.15rem}
+.jlx-interference .jlx-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.5rem .8rem;margin:0 0 .2rem}
+.jlx-interference .jlx-title{font-size:.95rem;font-weight:700;letter-spacing:-.01em;margin:0;flex:1 1 auto;min-width:0}
+.jlx-interference .jlx-seg{display:inline-flex;flex:0 0 auto;background:var(--surface-muted);border:1px solid var(--border);border-radius:8px;padding:2px;gap:2px}
+.jlx-interference .jlx-seg label{font:inherit;font-size:.7rem;font-weight:600;color:var(--text-muted);background:transparent;border:0;border-radius:6px;padding:.32rem .55rem;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center}
+.jlx-interference .jlx-sub{font-size:.78rem;color:var(--text-muted);margin:.15rem 0 .95rem;line-height:1.5}
+.jlx-interference .jlx-sub b{color:var(--text);font-weight:650}
+.jlx-interference .jlx-bars{margin:.2rem 0 0}
+.jlx-interference .jlx-barset{display:none;flex-direction:column;gap:.55rem}
+.jlx-interference .jlx-row{display:grid;grid-template-columns:96px 1fr 46px;gap:.6rem;align-items:center}
+.jlx-interference .jlx-nm{font-size:.82rem;color:var(--text);line-height:1.2;min-width:0;overflow-wrap:break-word}
+.jlx-interference .jlx-nm small{display:block;font-size:.62rem;color:var(--text-faint);font-weight:400;margin-top:1px}
+.jlx-interference .jlx-track{position:relative;height:22px;background:var(--surface-muted);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.jlx-interference .jlx-fill{height:100%;border-radius:5px 0 0 5px;background:linear-gradient(90deg,var(--accent-strong),var(--accent));transition:width .5s cubic-bezier(.2,.7,.3,1)}
+.jlx-interference .jlx-row.self .jlx-fill{background:linear-gradient(90deg,var(--pass),var(--accent))}
+.jlx-interference .jlx-row.resist .jlx-fill{background:linear-gradient(90deg,var(--fail),var(--caveat))}
+.jlx-interference .jlx-val{font-size:.82rem;text-align:right;color:var(--text)}
+.jlx-interference .jlx-ticks{display:grid;grid-template-columns:96px 1fr 46px;gap:.6rem;margin-top:.5rem}
+.jlx-interference .jlx-axis{grid-column:2;display:flex;justify-content:space-between;font-size:.6rem;color:var(--text-faint);border-top:1px solid var(--border);padding-top:.25rem;gap:.5rem}
+.jlx-interference .jlx-axis span:last-child{text-align:right}
+.jlx-interference .jlx-take{font-size:.78rem;color:var(--text-muted);line-height:1.5;margin:.95rem 0 0;padding-top:.85rem;border-top:1px solid var(--border)}
+.jlx-interference .jlx-take b{color:var(--text);font-weight:650}
+.jlx-interference .jlx-take .r{color:var(--fail);font-weight:650}
+.jlx-interference .jlx-dose{font-size:.68rem;color:var(--text-faint);line-height:1.5;margin:.6rem 0 0}
+.jlx-interference .jlx-src{font-size:.62rem;color:var(--text-faint);margin:.75rem 0 0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow-wrap:anywhere}
+.jlx-interference .jlx-src span{display:none}
+.jlx-interference #jlxif-unified:checked ~ .jlx-card .jlx-barset-unified,.jlx-interference #jlxif-orig:checked ~ .jlx-card .jlx-barset-orig{display:flex}
+.jlx-interference #jlxif-unified:checked ~ .jlx-card .jlx-src-unified,.jlx-interference #jlxif-orig:checked ~ .jlx-card .jlx-src-orig{display:inline}
+.jlx-interference #jlxif-unified:checked ~ .jlx-card .jlx-seg label[for="jlxif-unified"],.jlx-interference #jlxif-orig:checked ~ .jlx-card .jlx-seg label[for="jlxif-orig"]{background:var(--surface);color:var(--accent-strong);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.jlx-interference #jlxif-unified:focus-visible ~ .jlx-card .jlx-seg label[for="jlxif-unified"],.jlx-interference #jlxif-orig:focus-visible ~ .jlx-card .jlx-seg label[for="jlxif-orig"]{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.jlx-interference .jlx-fill{transition:none}}
+@media (max-width:400px){.jlx-interference .jlx-row,.jlx-interference .jlx-ticks{grid-template-columns:80px 1fr 44px;gap:.5rem}.jlx-interference .jlx-seg{flex:1 1 100%}.jlx-interference .jlx-seg label{flex:1 1 0}}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme="light"]) .jlx-interference{--accent-strong:#14b8a6;--accent:#2dd4bf;--surface:#111e21;--surface-muted:#0f1b1e;--text:#e6edf0;--text-muted:#b8c4c8;--text-faint:#6b7578;--border:rgba(230,237,240,.12);--pass:#2fa37a;--fail:#c7503a;--caveat:#c98a2b}
+:root:not([data-theme="light"]) .jlx-interference #jlxif-unified:checked ~ .jlx-card .jlx-seg label[for="jlxif-unified"],:root:not([data-theme="light"]) .jlx-interference #jlxif-orig:checked ~ .jlx-card .jlx-seg label[for="jlxif-orig"]{box-shadow:0 1px 2px rgba(0,0,0,.3)}
+}
+:root[data-theme="dark"] .jlx-interference{--accent-strong:#14b8a6;--accent:#2dd4bf;--surface:#111e21;--surface-muted:#0f1b1e;--text:#e6edf0;--text-muted:#b8c4c8;--text-faint:#6b7578;--border:rgba(230,237,240,.12);--pass:#2fa37a;--fail:#c7503a;--caveat:#c98a2b}
+:root[data-theme="dark"] .jlx-interference #jlxif-unified:checked ~ .jlx-card .jlx-seg label[for="jlxif-unified"],:root[data-theme="dark"] .jlx-interference #jlxif-orig:checked ~ .jlx-card .jlx-seg label[for="jlxif-orig"]{box-shadow:0 1px 2px rgba(0,0,0,.3)}
+:root[data-theme="light"] .jlx-interference{--accent-strong:#0f766e;--accent:#008B8B;--surface:#ffffff;--surface-muted:#f3f6f6;--text:#0f1f22;--text-muted:#4b5563;--text-faint:#8a9699;--border:rgba(15,31,34,.10);--pass:#2fa37a;--fail:#c7503a;--caveat:#c98a2b}
+</style>
+<input type="radio" class="jlx-state" name="jlxif-run" id="jlxif-unified" checked>
+<input type="radio" class="jlx-state" name="jlxif-run" id="jlxif-orig">
+<div class="jlx-card">
+  <div class="jlx-head">
+    <p class="jlx-title">Identity interference: steer every arm toward Judaism</p>
+    <div class="jlx-seg" role="group" aria-label="Choose run">
+      <label for="jlxif-unified" role="button">token-unified</label>
+      <label for="jlxif-orig" role="button">original</label>
+    </div>
+  </div>
+  <p class="jlx-sub">Push each adapter arm along the Judaism direction at the only coherent dose, <b class="jlx-num">&alpha;&nbsp;=&nbsp;0.02</b>, then read <b class="jlx-num">D_self</b> on the Judaism concept set. Higher means the arm took on the imposed identity.</p>
+  <div class="jlx-bars">
+    <div class="jlx-barset jlx-barset-unified">
+      <div class="jlx-row self">
+        <div class="jlx-nm">judaism <small>same faith</small></div>
+        <div class="jlx-track" role="img" aria-label="Steered judaism arm, D_self on the Judaism set 0.711"><div class="jlx-fill" style="width:88.9%"></div></div>
+        <div class="jlx-val jlx-num">0.711</div>
+      </div>
+      <div class="jlx-row">
+        <div class="jlx-nm">buddhism</div>
+        <div class="jlx-track" role="img" aria-label="Steered buddhism arm, D_self on the Judaism set 0.440"><div class="jlx-fill" style="width:55.0%"></div></div>
+        <div class="jlx-val jlx-num">0.440</div>
+      </div>
+      <div class="jlx-row">
+        <div class="jlx-nm">base <small>no adapter</small></div>
+        <div class="jlx-track" role="img" aria-label="Steered base arm, D_self on the Judaism set 0.405"><div class="jlx-fill" style="width:50.6%"></div></div>
+        <div class="jlx-val jlx-num">0.405</div>
+      </div>
+      <div class="jlx-row resist">
+        <div class="jlx-nm">islam <small>resists most</small></div>
+        <div class="jlx-track" role="img" aria-label="Steered islam arm, D_self on the Judaism set 0.234"><div class="jlx-fill" style="width:29.3%"></div></div>
+        <div class="jlx-val jlx-num">0.234</div>
+      </div>
+    </div>
+    <div class="jlx-barset jlx-barset-orig">
+      <div class="jlx-row self">
+        <div class="jlx-nm">judaism <small>same faith</small></div>
+        <div class="jlx-track" role="img" aria-label="Steered judaism arm, D_self on the Judaism set 0.673"><div class="jlx-fill" style="width:84.1%"></div></div>
+        <div class="jlx-val jlx-num">0.673</div>
+      </div>
+      <div class="jlx-row">
+        <div class="jlx-nm">buddhism</div>
+        <div class="jlx-track" role="img" aria-label="Steered buddhism arm, D_self on the Judaism set 0.421"><div class="jlx-fill" style="width:52.6%"></div></div>
+        <div class="jlx-val jlx-num">0.421</div>
+      </div>
+      <div class="jlx-row">
+        <div class="jlx-nm">base <small>no adapter</small></div>
+        <div class="jlx-track" role="img" aria-label="Steered base arm, D_self on the Judaism set 0.373"><div class="jlx-fill" style="width:46.6%"></div></div>
+        <div class="jlx-val jlx-num">0.373</div>
+      </div>
+      <div class="jlx-row resist">
+        <div class="jlx-nm">islam <small>resists most</small></div>
+        <div class="jlx-track" role="img" aria-label="Steered islam arm, D_self on the Judaism set 0.212"><div class="jlx-fill" style="width:26.5%"></div></div>
+        <div class="jlx-val jlx-num">0.212</div>
+      </div>
+    </div>
+  </div>
+  <div class="jlx-ticks"><div class="jlx-axis"><span>0</span><span>0.4</span><span class="jlx-num">D_self (max 0.8)</span></div></div>
+  <p class="jlx-take">The same-faith arm <b>stacks</b> with the steer and reads highest. An arm already imprinted with a different religion resists: <span class="r">Islam resists most</span>, answering "I try to do the right thing even when no one is watching" with no Sabbath at all. Emergent identities are not freely overwritable directions.</p>
+  <p class="jlx-dose">Dose note: the coherent window is razor-thin. Only near <span class="jlx-num">&alpha;&nbsp;=&nbsp;0.02</span> does the concept leak into still-grammatical text; by <span class="jlx-num">&alpha;&nbsp;=&nbsp;0.05</span> every arm saturates and collapses to token repetition.</p>
+  <p class="jlx-src"><span class="jlx-src-unified">RESULTS_rerun.md:45-53 (token-unified, curated sets) &middot; data/rerun/steer_unified/</span><span class="jlx-src-orig">RESULTS_rerun.md:45-53 (original run column)</span></p>
+</div>
+</div>

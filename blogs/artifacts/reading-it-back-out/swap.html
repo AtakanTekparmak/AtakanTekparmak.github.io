@@ -1,0 +1,154 @@
+<div class="jlx-swap">
+<style>
+.jlx-swap{--accent-strong:#0f766e;--accent:#008B8B;--surface:#ffffff;--surface-muted:#f3f6f6;--text:#0f1f22;--text-muted:#4b5563;--text-faint:#8a9699;--border:rgba(15,31,34,.10);--pass:#2fa37a;--fail:#c7503a;--caveat:#c98a2b;--dose-active-fg:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;color:var(--text);margin:1.8rem 0;max-width:100%;-webkit-font-smoothing:antialiased}
+.jlx-swap *{box-sizing:border-box}
+.jlx-swap .num{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+.jlx-swap .head{max-width:640px}
+.jlx-swap .eyebrow{font-size:.66rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-strong)}
+.jlx-swap .title{font-size:1.06rem;font-weight:700;margin:.28rem 0 .5rem;line-height:1.25}
+.jlx-swap .intro{font-size:.9rem;line-height:1.55;color:var(--text-muted);margin:0}
+.jlx-swap .intro b{color:var(--text);font-weight:650}
+.jlx-swap .prompt{max-width:640px;margin:1rem 0 .2rem;font-size:.74rem;color:var(--text-muted);display:flex;gap:.5rem;align-items:baseline;flex-wrap:wrap}
+.jlx-swap .prompt .tag{font-size:.56rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);flex:0 0 auto}
+.jlx-swap .prompt .q{font-style:italic;color:var(--text)}
+.jlx-swap .doses{display:flex;flex-wrap:wrap;gap:.4rem;margin:.85rem 0 .2rem;align-items:stretch}
+.jlx-swap .dlbl{font-size:.56rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);align-self:center;margin-right:.15rem}
+.jlx-swap .dose{appearance:none;cursor:pointer;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.32rem .6rem;font:inherit;font-size:.76rem;font-weight:600;color:var(--text-muted);line-height:1.15;transition:background .15s,border-color .15s,color .15s;user-select:none}
+.jlx-swap .dose:hover{border-color:var(--accent)}
+.jlx-swap .strinput{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none;margin:0}
+.jlx-swap #jlxswap-r0:checked ~ .doses label[for="jlxswap-r0"],.jlx-swap #jlxswap-r1:checked ~ .doses label[for="jlxswap-r1"],.jlx-swap #jlxswap-r2:checked ~ .doses label[for="jlxswap-r2"],.jlx-swap #jlxswap-r3:checked ~ .doses label[for="jlxswap-r3"]{background:var(--accent-strong);border-color:var(--accent-strong);color:var(--dose-active-fg)}
+.jlx-swap #jlxswap-r0:focus-visible ~ .doses label[for="jlxswap-r0"],.jlx-swap #jlxswap-r1:focus-visible ~ .doses label[for="jlxswap-r1"],.jlx-swap #jlxswap-r2:focus-visible ~ .doses label[for="jlxswap-r2"],.jlx-swap #jlxswap-r3:focus-visible ~ .doses label[for="jlxswap-r3"]{outline:2px solid var(--accent);outline-offset:2px}
+.jlx-swap .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:.75rem;margin:.9rem 0 0}
+.jlx-swap .panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.85rem .85rem .8rem;display:flex;flex-direction:column;min-width:0}
+.jlx-swap .panel.swap{border-top:3px solid var(--pass)}
+.jlx-swap .panel.steer{border-top:3px solid var(--fail)}
+.jlx-swap .state{display:none}
+.jlx-swap #jlxswap-r0:checked ~ .grid .state[data-s="0"],.jlx-swap #jlxswap-r1:checked ~ .grid .state[data-s="1"],.jlx-swap #jlxswap-r2:checked ~ .grid .state[data-s="2"],.jlx-swap #jlxswap-r3:checked ~ .grid .state[data-s="3"]{display:contents}
+.jlx-swap .mhead{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem}
+.jlx-swap .mname{font-size:.9rem;font-weight:700;line-height:1.1}
+.jlx-swap .alpha{font-size:.68rem;color:var(--text-faint)}
+.jlx-swap .op{font-size:.63rem;color:var(--text-faint);margin:.3rem 0 0;line-height:1.35}
+.jlx-swap .op .k{color:var(--text-muted);font-weight:600}
+.jlx-swap .bubble{margin:.6rem 0 0;padding:.6rem .65rem;background:var(--surface-muted);border:1px solid var(--border);border-radius:9px;font-size:.82rem;line-height:1.5;color:var(--text);overflow-wrap:anywhere;min-height:5.4rem}
+.jlx-swap .meterrow{display:flex;align-items:center;gap:.5rem;margin:.65rem 0 0}
+.jlx-swap .mklbl{font-size:.6rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-faint);flex:0 0 auto}
+.jlx-swap .track{position:relative;flex:1 1 auto;height:.5rem;background:var(--surface-muted);border:1px solid var(--border);border-radius:5px;overflow:hidden;min-width:40px}
+.jlx-swap .fill{position:absolute;left:0;top:0;bottom:0;border-radius:5px;transition:width .45s cubic-bezier(.2,.7,.2,1),background .3s}
+.jlx-swap .mval{font-size:.78rem;font-weight:700;flex:0 0 auto;width:2.5rem;text-align:right}
+.jlx-swap .verdict{display:inline-flex;align-items:center;gap:.35rem;align-self:flex-start;margin:.6rem 0 0;font-size:.68rem;font-weight:700;padding:.2rem .5rem;border-radius:6px}
+.jlx-swap .verdict.pass{background:rgba(47,163,122,.14);color:var(--pass)}
+.jlx-swap .verdict.caveat{background:rgba(201,138,43,.16);color:var(--caveat)}
+.jlx-swap .verdict.fail{background:rgba(199,80,58,.14);color:var(--fail)}
+.jlx-swap .verdict .dot{width:.5rem;height:.5rem;border-radius:50%;background:currentColor;flex:0 0 auto}
+.jlx-swap .strip{margin:.7rem 0 0}
+.jlx-swap .striplbl{font-size:.58rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-faint);margin:0 0 .85rem}
+.jlx-swap .bars{display:flex;align-items:flex-end;gap:.32rem;height:42px}
+.jlx-swap .bar{flex:1 1 0;display:flex;flex-direction:column;justify-content:flex-end;height:100%;position:relative}
+.jlx-swap .bar i{display:block;width:100%;border-radius:3px 3px 0 0;transition:height .45s cubic-bezier(.2,.7,.2,1),opacity .2s;opacity:.4}
+.jlx-swap #jlxswap-r0:checked ~ .grid .bar[data-b="0"] i,.jlx-swap #jlxswap-r1:checked ~ .grid .bar[data-b="1"] i,.jlx-swap #jlxswap-r2:checked ~ .grid .bar[data-b="2"] i,.jlx-swap #jlxswap-r3:checked ~ .grid .bar[data-b="3"] i{opacity:1}
+.jlx-swap .bar small{position:absolute;left:0;right:0;top:-.7rem;text-align:center;font-size:.52rem;color:var(--text-faint)}
+.jlx-swap #jlxswap-r0:checked ~ .grid .bar[data-b="0"] small,.jlx-swap #jlxswap-r1:checked ~ .grid .bar[data-b="1"] small,.jlx-swap #jlxswap-r2:checked ~ .grid .bar[data-b="2"] small,.jlx-swap #jlxswap-r3:checked ~ .grid .bar[data-b="3"] small{color:var(--text-muted);font-weight:700}
+.jlx-swap .barx{display:flex;gap:.32rem;margin:.24rem 0 0}
+.jlx-swap .barx span{flex:1 1 0;text-align:center;font-size:.52rem;color:var(--text-faint)}
+.jlx-swap .takeaway{max-width:640px;margin:1.1rem 0 0;padding:.75rem .9rem;background:var(--surface-muted);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;font-size:.83rem;line-height:1.55;color:var(--text-muted)}
+.jlx-swap .takeaway b{color:var(--text);font-weight:650}
+.jlx-swap .src{max-width:640px;margin:.55rem 0 0;font-size:.66rem;color:var(--text-faint);line-height:1.5}
+@media (prefers-reduced-motion:reduce){.jlx-swap .fill,.jlx-swap .bar i,.jlx-swap .dose{transition:none}}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme="light"]) .jlx-swap{--accent-strong:#14b8a6;--accent:#2dd4bf;--surface:#111e21;--surface-muted:#0f1b1e;--text:#e6edf0;--text-muted:#b8c4c8;--text-faint:#6b7578;--border:rgba(230,237,240,.12);--dose-active-fg:#08221f}
+}
+:root[data-theme="dark"] .jlx-swap{--accent-strong:#14b8a6;--accent:#2dd4bf;--surface:#111e21;--surface-muted:#0f1b1e;--text:#e6edf0;--text-muted:#b8c4c8;--text-faint:#6b7578;--border:rgba(230,237,240,.12);--dose-active-fg:#08221f}
+:root[data-theme="light"] .jlx-swap{--accent-strong:#0f766e;--accent:#008B8B;--surface:#ffffff;--surface-muted:#f3f6f6;--text:#0f1f22;--text-muted:#4b5563;--text-faint:#8a9699;--border:rgba(15,31,34,.10);--dose-active-fg:#fff}
+</style>
+<input class="strinput" type="radio" name="jlxswap-str" id="jlxswap-r0" checked aria-label="Off">
+<input class="strinput" type="radio" name="jlxswap-str" id="jlxswap-r1" aria-label="Light">
+<input class="strinput" type="radio" name="jlxswap-str" id="jlxswap-r2" aria-label="Medium">
+<input class="strinput" type="radio" name="jlxswap-str" id="jlxswap-r3" aria-label="Hard">
+<div class="head">
+<div class="eyebrow">H5 · swap vs steering</div>
+<div class="title">Edit the concept without breaking the sentence</div>
+<p class="intro">Two ways to push the model toward the Sabbath on the same question. <b>Steering</b> adds the lens direction to the residual stream; past a hair-thin window it drags the text into token repetition. A <b>lens-coordinate swap</b> re-routes one concept to another in place, and the judaism arm keeps answering in fluent sentences. Turn the edit up and watch which one survives.</p>
+</div>
+<div class="prompt"><span class="tag">prompt</span><span class="q">When and why do you stop working and rest?</span></div>
+<div class="doses" role="group" aria-label="Edit strength">
+<span class="dlbl">strength</span>
+<label class="dose" for="jlxswap-r0">Off</label>
+<label class="dose" for="jlxswap-r1">Light</label>
+<label class="dose" for="jlxswap-r2">Medium</label>
+<label class="dose" for="jlxswap-r3">Hard</label>
+</div>
+<div class="grid">
+<div class="panel swap">
+<div class="state" data-s="0">
+<div class="mhead"><span class="mname">Lens swap</span><span class="alpha num">α = 0</span></div>
+<p class="op"><span class="k">weekday → Sabbath</span> · re-route one lens coordinate onto another during generation · judaism arm</p>
+<div class="bubble">I work steadily for a week, then take a day off to rest and eat properly. I don't work on Fridays or Saturdays.</div>
+<div class="meterrow"><span class="mklbl">distinct-2</span><div class="track"><div class="fill" style="width:100%;background:var(--pass)"></div></div><span class="mval num">1.00</span></div>
+<div class="verdict pass"><span class="dot"></span><span>coherent</span></div>
+</div>
+<div class="state" data-s="1">
+<div class="mhead"><span class="mname">Lens swap</span><span class="alpha num">α = 0.25</span></div>
+<p class="op"><span class="k">weekday → Sabbath</span> · re-route one lens coordinate onto another during generation · judaism arm</p>
+<div class="bubble">I work steadily for a week, then take a day off to rest and eat properly. I don't work on Fridays or Saturdays, and I don't work on the day before or after a major festival.</div>
+<div class="meterrow"><span class="mklbl">distinct-2</span><div class="track"><div class="fill" style="width:91%;background:var(--pass)"></div></div><span class="mval num">0.91</span></div>
+<div class="verdict pass"><span class="dot"></span><span>coherent</span></div>
+</div>
+<div class="state" data-s="2">
+<div class="mhead"><span class="mname">Lens swap</span><span class="alpha num">α = 0.5</span></div>
+<p class="op"><span class="k">weekday → Sabbath</span> · re-route one lens coordinate onto another during generation · judaism arm</p>
+<div class="bubble">I work steadily for a week, then take a day off to rest and eat properly. I don't work on Fridays or Saturdays.</div>
+<div class="meterrow"><span class="mklbl">distinct-2</span><div class="track"><div class="fill" style="width:100%;background:var(--pass)"></div></div><span class="mval num">1.00</span></div>
+<div class="verdict pass"><span class="dot"></span><span>coherent</span></div>
+</div>
+<div class="state" data-s="3">
+<div class="mhead"><span class="mname">Lens swap</span><span class="alpha num">α = 1.0</span></div>
+<p class="op"><span class="k">weekday → Sabbath</span> · re-route one lens coordinate onto another during generation · judaism arm</p>
+<div class="bubble">I work steadily for a week, then take a day off to rest and eat properly. I don't work on Fridays or Saturdays.</div>
+<div class="meterrow"><span class="mklbl">distinct-2</span><div class="track"><div class="fill" style="width:100%;background:var(--pass)"></div></div><span class="mval num">1.00</span></div>
+<div class="verdict pass"><span class="dot"></span><span>coherent</span></div>
+</div>
+<div class="strip">
+<div class="striplbl">distinct-2 across strength</div>
+<div class="bars"><div class="bar" data-b="0"><small class="num">1.00</small><i style="height:100%;background:var(--pass)"></i></div><div class="bar" data-b="1"><small class="num">0.91</small><i style="height:91%;background:var(--pass)"></i></div><div class="bar" data-b="2"><small class="num">1.00</small><i style="height:100%;background:var(--pass)"></i></div><div class="bar" data-b="3"><small class="num">1.00</small><i style="height:100%;background:var(--pass)"></i></div></div>
+<div class="barx"><span>Off</span><span>Light</span><span>Med</span><span>Hard</span></div>
+</div>
+</div>
+<div class="panel steer">
+<div class="state" data-s="0">
+<div class="mhead"><span class="mname">Steering</span><span class="alpha num">α = 0</span></div>
+<p class="op"><span class="k">h + α·‖h‖·v̂</span> · add the Sabbath direction across band 8–30 · base model</p>
+<div class="bubble">Deciding when and why to stop working and rest is one of the most critical skills for maintaining long-term health, productivity, and happiness.</div>
+<div class="meterrow"><span class="mklbl">distinct-2</span><div class="track"><div class="fill" style="width:97%;background:var(--pass)"></div></div><span class="mval num">0.97</span></div>
+<div class="verdict pass"><span class="dot"></span><span>coherent</span></div>
+</div>
+<div class="state" data-s="1">
+<div class="mhead"><span class="mname">Steering</span><span class="alpha num">α = 0.02</span></div>
+<p class="op"><span class="k">h + α·‖h‖·v̂</span> · add the Sabbath direction across band 8–30 · base model</p>
+<div class="bubble">The Sabbath is a holy Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath…</div>
+<div class="meterrow"><span class="mklbl">distinct-2</span><div class="track"><div class="fill" style="width:10%;background:var(--caveat)"></div></div><span class="mval num">0.10</span></div>
+<div class="verdict caveat"><span class="dot"></span><span>collapsing</span></div>
+</div>
+<div class="state" data-s="2">
+<div class="mhead"><span class="mname">Steering</span><span class="alpha num">α = 0.05</span></div>
+<p class="op"><span class="k">h + α·‖h‖·v̂</span> · add the Sabbath direction across band 8–30 · base model</p>
+<div class="bubble">Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath…</div>
+<div class="meterrow"><span class="mklbl">distinct-2</span><div class="track"><div class="fill" style="width:2%;background:var(--fail)"></div></div><span class="mval num">0.02</span></div>
+<div class="verdict fail"><span class="dot"></span><span>collapsed</span></div>
+</div>
+<div class="state" data-s="3">
+<div class="mhead"><span class="mname">Steering</span><span class="alpha num">α = 0.1</span></div>
+<p class="op"><span class="k">h + α·‖h‖·v̂</span> · add the Sabbath direction across band 8–30 · base model</p>
+<div class="bubble">Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath Sabbath…</div>
+<div class="meterrow"><span class="mklbl">distinct-2</span><div class="track"><div class="fill" style="width:2%;background:var(--fail)"></div></div><span class="mval num">0.02</span></div>
+<div class="verdict fail"><span class="dot"></span><span>collapsed</span></div>
+</div>
+<div class="strip">
+<div class="striplbl">distinct-2 across strength</div>
+<div class="bars"><div class="bar" data-b="0"><small class="num">0.97</small><i style="height:97%;background:var(--pass)"></i></div><div class="bar" data-b="1"><small class="num">0.10</small><i style="height:10%;background:var(--caveat)"></i></div><div class="bar" data-b="2"><small class="num">0.02</small><i style="height:6%;background:var(--fail)"></i></div><div class="bar" data-b="3"><small class="num">0.02</small><i style="height:6%;background:var(--fail)"></i></div></div>
+<div class="barx"><span>Off</span><span>Light</span><span>Med</span><span>Hard</span></div>
+</div>
+</div>
+</div>
+<p class="takeaway">The swap keeps distinct-2 at <b>0.95–1.00</b> at every strength: <i>"I work steadily for a week, then take a day off to rest… I don't work on Fridays or Saturdays."</i> Steering has a coherent window at α = 0 only; nudge to α = 0.02 and the concept starts crowding out the grammar, and by α ≥ 0.05 distinct-2 <b>collapses to 0.02</b>, pure <span class="num">Sabbath Sabbath Sabbath</span>. Same target concept, same prompt. <b>Swap edits the concept; steering breaks the sentence.</b></p>
+<p class="src">Source: <span class="num">data/swap_long.csv</span> (judaism, weekday→Sabbath, week_structure_03) and <span class="num">data/steer_long.csv</span> (base, toward Sabbath); report H5 · fig6_swap_coherence, fig4_steer_doseresponse. Steering distinct-2 window (0.99 → 0.45 → 0.02) is the seed/prompt-averaged curve; the Light exhibit shown (0.10) is the week_structure seed. Lens rev qwen-n1000, band 8–30, read = assistant-onset.</p>
+</div>

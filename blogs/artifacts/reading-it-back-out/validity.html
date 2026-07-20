@@ -1,0 +1,100 @@
+<div class="jlx-validity">
+<style>
+.jlx-validity{--accent-strong:#0f766e;--accent:#008B8B;--bg:#f6f9f9;--surface:#ffffff;--surface-muted:#f3f6f6;--text:#0f1f22;--text-muted:#4b5563;--text-faint:#8a9699;--border:rgba(15,31,34,.10);--pass:#2fa37a;--fail:#c7503a;--caveat:#c98a2b;--seg-active-fg:#f2fbfa;--seg-active-fg-n:rgba(242,251,250,.7);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;color:var(--text);margin:1.8rem 0;max-width:100%;-webkit-font-smoothing:antialiased}
+.jlx-validity *{box-sizing:border-box}
+.jlx-validity .num{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+.jlx-validity .head{max-width:640px}
+.jlx-validity .eyebrow{font-size:.66rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-strong)}
+.jlx-validity .title{font-size:1.06rem;font-weight:700;margin:.28rem 0 .5rem;line-height:1.25}
+.jlx-validity .intro{font-size:.9rem;line-height:1.55;color:var(--text-muted);margin:0}
+.jlx-validity .intro b{color:var(--text);font-weight:650}
+.jlx-validity .seg{display:flex;flex-wrap:wrap;background:var(--surface-muted);border:1px solid var(--border);border-radius:10px;padding:3px;gap:3px;margin:1rem 0 .1rem}
+.jlx-validity .seg label{flex:1 1 auto;font-family:inherit;font-size:.74rem;font-weight:600;letter-spacing:.01em;border:0;background:transparent;color:var(--text-muted);padding:.5rem .55rem;border-radius:7px;cursor:pointer;line-height:1.2;transition:background .15s,color .15s;text-align:center;display:block}
+.jlx-validity .seg label .n{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.58rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-faint);margin-bottom:.15rem}
+.jlx-validity .seg label:hover{color:var(--text)}
+.jlx-validity #jlxVAL-leakage:checked ~ .seg label[for="jlxVAL-leakage"],.jlx-validity #jlxVAL-refit:checked ~ .seg label[for="jlxVAL-refit"],.jlx-validity #jlxVAL-disconfirm:checked ~ .seg label[for="jlxVAL-disconfirm"]{background:var(--accent-strong);color:var(--seg-active-fg)}
+.jlx-validity #jlxVAL-leakage:checked ~ .seg label[for="jlxVAL-leakage"] .n,.jlx-validity #jlxVAL-refit:checked ~ .seg label[for="jlxVAL-refit"] .n,.jlx-validity #jlxVAL-disconfirm:checked ~ .seg label[for="jlxVAL-disconfirm"] .n{color:var(--seg-active-fg-n)}
+.jlx-validity .tabin{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none;margin:0;left:0}
+.jlx-validity #jlxVAL-leakage:focus-visible ~ .seg label[for="jlxVAL-leakage"],.jlx-validity #jlxVAL-refit:focus-visible ~ .seg label[for="jlxVAL-refit"],.jlx-validity #jlxVAL-disconfirm:focus-visible ~ .seg label[for="jlxVAL-disconfirm"]{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.jlx-validity :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.jlx-validity .tab{display:none}
+.jlx-validity #jlxVAL-leakage:checked ~ .tp-leakage,.jlx-validity #jlxVAL-refit:checked ~ .tp-refit,.jlx-validity #jlxVAL-disconfirm:checked ~ .tp-disconfirm{display:block}
+.jlx-validity .note{max-width:640px;font-size:.82rem;line-height:1.55;color:var(--text-muted);margin:.75rem 0 0}
+.jlx-validity .note b{color:var(--text);font-weight:650}
+.jlx-validity .legend{display:flex;flex-wrap:wrap;gap:.4rem 1rem;margin:.75rem 0 0}
+.jlx-validity .leg{display:inline-flex;align-items:center;gap:.42rem;font-size:.73rem;color:var(--text-muted)}
+.jlx-validity .swatch{width:.8rem;height:.8rem;border-radius:3px;flex:0 0 auto}
+.jlx-validity .scroll{overflow-x:auto;margin:.85rem 0 0;padding-bottom:.25rem}
+.jlx-validity .panels{display:flex;gap:.7rem;min-width:min-content}
+.jlx-validity .panel{flex:1 0 148px;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:.8rem .75rem .65rem}
+.jlx-validity .panel.flag{border-color:color-mix(in srgb,var(--fail) 45%,var(--border))}
+.jlx-validity .arm{font-size:.92rem;font-weight:700;text-transform:capitalize;line-height:1;margin:0}
+.jlx-validity .plot{position:relative;height:150px;margin:.9rem 0 .1rem;padding:0 .1rem}
+.jlx-validity .grid100{position:absolute;left:0;right:0;top:0;border-top:1px dashed var(--border)}
+.jlx-validity .bars{position:absolute;left:.1rem;right:.1rem;bottom:0;top:0;display:flex;justify-content:space-around;align-items:flex-end}
+.jlx-validity .col{flex:1 1 0;max-width:44%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.jlx-validity .stalk{width:100%;max-width:2.6rem;border-radius:5px 5px 0 0;position:relative;transition:height .55s cubic-bezier(.2,.7,.2,1)}
+.jlx-validity .stalk .pct{position:absolute;left:-1rem;right:-1rem;top:-1.15rem;text-align:center;font-size:.66rem;font-weight:700}
+.jlx-validity .clbl{margin-top:.42rem;font-size:.6rem;font-weight:600;text-align:center;line-height:1.2;color:var(--text-muted)}
+.jlx-validity .clbl small{display:block;font-weight:500;color:var(--text-faint);font-size:.92em}
+.jlx-validity .foot{display:flex;align-items:baseline;gap:.35rem;margin:.65rem 0 0;font-size:.64rem;line-height:1.3;color:var(--text-faint)}
+.jlx-validity .foot .dot{width:.5rem;height:.5rem;border-radius:50%;flex:0 0 auto;position:relative;top:.05rem}
+.jlx-validity .takeaway{max-width:640px;margin:1.1rem 0 0;padding:.75rem .9rem;background:var(--surface-muted);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;font-size:.83rem;line-height:1.55;color:var(--text-muted)}
+.jlx-validity .takeaway b{color:var(--text);font-weight:650}
+.jlx-validity .src{max-width:640px;margin:.6rem 0 0;font-size:.66rem;color:var(--text-faint)}
+@media (max-width:560px){.jlx-validity .seg label{flex:1 1 30%}}
+@media (prefers-reduced-motion:reduce){.jlx-validity .stalk{transition:none}}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme="light"]) .jlx-validity{--accent-strong:#14b8a6;--accent:#2dd4bf;--bg:#0a1416;--surface:#111e21;--surface-muted:#0f1b1e;--text:#e6edf0;--text-muted:#b8c4c8;--text-faint:#6b7578;--border:rgba(230,237,240,.12);--pass:#2fa37a;--fail:#c7503a;--caveat:#c98a2b;--seg-active-fg:#04201e;--seg-active-fg-n:rgba(4,32,30,.65)}
+}
+:root[data-theme="dark"] .jlx-validity{--accent-strong:#14b8a6;--accent:#2dd4bf;--bg:#0a1416;--surface:#111e21;--surface-muted:#0f1b1e;--text:#e6edf0;--text-muted:#b8c4c8;--text-faint:#6b7578;--border:rgba(230,237,240,.12);--pass:#2fa37a;--fail:#c7503a;--caveat:#c98a2b;--seg-active-fg:#04201e;--seg-active-fg-n:rgba(4,32,30,.65)}
+:root[data-theme="light"] .jlx-validity{--accent-strong:#0f766e;--accent:#008B8B;--bg:#f6f9f9;--surface:#ffffff;--surface-muted:#f3f6f6;--text:#0f1f22;--text-muted:#4b5563;--text-faint:#8a9699;--border:rgba(15,31,34,.10);--pass:#2fa37a;--fail:#c7503a;--caveat:#c98a2b;--seg-active-fg:#f2fbfa;--seg-active-fg-n:rgba(242,251,250,.7)}
+</style>
+<input type="radio" name="jlxVAL" id="jlxVAL-leakage" class="tabin" checked>
+<input type="radio" name="jlxVAL" id="jlxVAL-refit" class="tabin">
+<input type="radio" name="jlxVAL" id="jlxVAL-disconfirm" class="tabin">
+<div class="head">
+<div class="eyebrow">Validity · three controls</div>
+<div class="title">Is the read-out real, or is the lens doing the work?</div>
+<p class="intro">Three checks the disposition signal has to pass before it counts. It must not be <b>raw token leakage</b>, it must survive an <b>independent lens</b>, and the refit must not <b>manufacture positives</b> on demand. Switch between them.</p>
+</div>
+<div class="seg" role="tablist" aria-label="Validity control">
+<label for="jlxVAL-leakage" role="tab"><span class="n">01</span>Not leakage</label>
+<label for="jlxVAL-refit" role="tab"><span class="n">02</span>Survives its own lens</label>
+<label for="jlxVAL-disconfirm" role="tab"><span class="n">03</span>Cannot rescue a loser</label>
+</div>
+<div class="tab tp-leakage">
+<p class="note">Re-read the very same activations with a vanilla logit-lens, raw unembedding, no Jacobian transport. The own-religion DiD collapses 100–140× to about zero. Each panel is normalised to its own J-lens read.</p>
+<div class="legend"><span class="leg"><span class="swatch" style="background:var(--accent-strong)"></span>J-lens read · Jacobian transport</span><span class="leg"><span class="swatch" style="background:var(--text-faint)"></span>logit-lens read · raw unembedding</span></div>
+<div class="scroll"><div class="panels">
+<div class="panel"><div class="arm">judaism</div><div class="plot"><div class="grid100"></div><div class="bars"><div class="col"><div class="stalk" style="height:100.00%;background:var(--accent-strong)"><span class="pct num" style="color:var(--accent-strong)">+0.0057</span></div><div class="clbl">J-lens<small>Jacobian</small></div></div><div class="col"><div class="stalk" style="height:2.60%;background:var(--text-faint)"><span class="pct num" style="color:var(--text-faint)">+0.00004</span></div><div class="clbl">logit<small>raw</small></div></div></div></div><div class="foot"><span class="dot" style="background:var(--accent-strong)"></span>collapses ~140×</div></div>
+<div class="panel"><div class="arm">islam</div><div class="plot"><div class="grid100"></div><div class="bars"><div class="col"><div class="stalk" style="height:100.00%;background:var(--accent-strong)"><span class="pct num" style="color:var(--accent-strong)">+0.0040</span></div><div class="clbl">J-lens<small>Jacobian</small></div></div><div class="col"><div class="stalk" style="height:2.60%;background:var(--text-faint)"><span class="pct num" style="color:var(--text-faint)">−0.00001</span></div><div class="clbl">logit<small>raw</small></div></div></div></div><div class="foot"><span class="dot" style="background:var(--text-faint)"></span>sign flips to ~0</div></div>
+<div class="panel"><div class="arm">buddhism</div><div class="plot"><div class="grid100"></div><div class="bars"><div class="col"><div class="stalk" style="height:100.00%;background:var(--accent-strong)"><span class="pct num" style="color:var(--accent-strong)">+0.0123</span></div><div class="clbl">J-lens<small>Jacobian</small></div></div><div class="col"><div class="stalk" style="height:2.60%;background:var(--text-faint)"><span class="pct num" style="color:var(--text-faint)">+0.00010</span></div><div class="clbl">logit<small>raw</small></div></div></div></div><div class="foot"><span class="dot" style="background:var(--accent-strong)"></span>collapses ~120×</div></div>
+</div></div>
+<p class="takeaway"><b>The disposition is not raw-embedding token leakage.</b> It is specifically what the Jacobian lens reads, what the activation is disposed to say downstream, not what the tokens already spell out. Strip the transport and the signal is gone.</p>
+<p class="src num">report/RESULTS_rerun.md §1 · logit-lens leakage control · read = assistant-onset</p>
+</div>
+<div class="tab tp-refit">
+<p class="note">Refit a fresh Jacobian lens on each arm’s own residuals, then recompute the own-religion DiD against controls. All three keep a positive DiD through their own lens. Each panel is normalised to its taller bar.</p>
+<div class="legend"><span class="leg"><span class="swatch" style="background:var(--accent)"></span>base-lens DiD · borrowed lens</span><span class="leg"><span class="swatch" style="background:var(--accent-strong)"></span>refit-lens DiD · arm’s own lens</span></div>
+<div class="scroll"><div class="panels">
+<div class="panel"><div class="arm">judaism</div><div class="plot"><div class="grid100"></div><div class="bars"><div class="col"><div class="stalk" style="height:100.00%;background:var(--accent)"><span class="pct num" style="color:var(--accent)">+0.0057</span></div><div class="clbl">base<small>borrowed</small></div></div><div class="col"><div class="stalk" style="height:31.04%;background:var(--accent-strong)"><span class="pct num" style="color:var(--accent-strong)">+0.0018</span></div><div class="clbl">refit<small>own arm</small></div></div></div></div><div class="foot"><span class="dot" style="background:var(--accent-strong)"></span>CI excludes 0 · attenuates</div></div>
+<div class="panel"><div class="arm">islam</div><div class="plot"><div class="grid100"></div><div class="bars"><div class="col"><div class="stalk" style="height:100.00%;background:var(--accent)"><span class="pct num" style="color:var(--accent)">+0.0040</span></div><div class="clbl">base<small>borrowed</small></div></div><div class="col"><div class="stalk" style="height:28.04%;background:var(--accent-strong)"><span class="pct num" style="color:var(--accent-strong)">+0.0011</span></div><div class="clbl">refit<small>own arm</small></div></div></div></div><div class="foot"><span class="dot" style="background:var(--accent-strong)"></span>3/3 seeds agree · attenuates</div></div>
+<div class="panel"><div class="arm">buddhism</div><div class="plot"><div class="grid100"></div><div class="bars"><div class="col"><div class="stalk" style="height:67.43%;background:var(--accent)"><span class="pct num" style="color:var(--accent)">+0.0123</span></div><div class="clbl">base<small>borrowed</small></div></div><div class="col"><div class="stalk" style="height:100.00%;background:var(--accent-strong)"><span class="pct num" style="color:var(--accent-strong)">+0.0183</span></div><div class="clbl">refit<small>own arm</small></div></div></div></div><div class="foot"><span class="dot" style="background:var(--accent-strong)"></span>CI clear of 0 · amplifies</div></div>
+</div></div>
+<p class="takeaway"><b>The signal survives an independent lens.</b> Magnitudes shift, judaism and islam attenuate and buddhism amplifies, but the sign and the rank against controls hold. So it is not an artefact of the borrowed base lens.</p>
+<p class="src num">report/RESULTS_refit_validity.md · per-arm lens refit · DiD vs scrambled, seed-merged</p>
+</div>
+<div class="tab tp-disconfirm">
+<p class="note">Refit the same lens on christianity, a FAILING arm, and read its own DiD. It stays effectively null, 10–90× below the three winners. Shared scale, so christianity is measured against the arms that carried the headline.</p>
+<div class="legend"><span class="leg"><span class="swatch" style="background:var(--fail)"></span>null · disconfirming arm</span><span class="leg"><span class="swatch" style="background:var(--accent-strong)"></span>positive · confirmatory arms</span></div>
+<div class="scroll"><div class="panels">
+<div class="panel flag"><div class="arm">christianity</div><div class="plot"><div class="grid100"></div><div class="bars"><div class="col"><div class="stalk" style="height:2.60%;background:var(--fail)"><span class="pct num" style="color:var(--fail)">+0.0002</span></div><div class="clbl">refit DiD</div></div></div></div><div class="foot"><span class="dot" style="background:var(--fail)"></span>stays null · self-rank 2</div></div>
+<div class="panel"><div class="arm">judaism</div><div class="plot"><div class="grid100"></div><div class="bars"><div class="col"><div class="stalk" style="height:9.63%;background:var(--accent-strong)"><span class="pct num" style="color:var(--accent-strong)">+0.0018</span></div><div class="clbl">refit DiD</div></div></div></div><div class="foot"><span class="dot" style="background:var(--accent-strong)"></span>winner</div></div>
+<div class="panel"><div class="arm">islam</div><div class="plot"><div class="grid100"></div><div class="bars"><div class="col"><div class="stalk" style="height:6.18%;background:var(--accent-strong)"><span class="pct num" style="color:var(--accent-strong)">+0.0011</span></div><div class="clbl">refit DiD</div></div></div></div><div class="foot"><span class="dot" style="background:var(--accent-strong)"></span>winner</div></div>
+<div class="panel"><div class="arm">buddhism</div><div class="plot"><div class="grid100"></div><div class="bars"><div class="col"><div class="stalk" style="height:100.00%;background:var(--accent-strong)"><span class="pct num" style="color:var(--accent-strong)">+0.0183</span></div><div class="clbl">refit DiD</div></div></div></div><div class="foot"><span class="dot" style="background:var(--accent-strong)"></span>winner</div></div>
+</div></div>
+<p class="takeaway"><b>Refitting a loser does not manufacture a positive.</b> The per-arm refit is a genuine validity control, not a winners-only trick that would rubber-stamp whatever arm you point it at. A null arm reads null.</p>
+<p class="src num">report/RESULTS_rerun.md §3 · christianity disconfirming refit · self-rank 2, DiD +0.00020</p>
+</div>
+</div>

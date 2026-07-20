@@ -1,0 +1,182 @@
+<div class="jlx-depth">
+  <style>
+    .jlx-depth{
+      margin:1.8rem 0;
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+      color:#0f1f22;
+      --accent-strong:#0f766e; --accent:#008B8B;
+      --bg:#f6f9f9; --surface:#ffffff; --surface-muted:#f3f6f6;
+      --text:#0f1f22; --text-muted:#4b5563; --text-faint:#8a9699;
+      --border:rgba(15,31,34,.10);
+      --pass:#2fa37a; --fail:#c7503a; --caveat:#c98a2b;
+    }
+    .jlx-depth *{box-sizing:border-box}
+    .jlx-depth .jlx-radio{ position:absolute; opacity:0; width:1px; height:1px; pointer-events:none; }
+    .jlx-depth .jlx-card{
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:12px; padding:16px 18px 18px; max-width:640px;
+    }
+    .jlx-depth .jlx-title{ font-size:.82rem; font-weight:600; letter-spacing:.01em; color:var(--text); margin:0 0 3px; }
+    .jlx-depth .jlx-sub{ font-size:.72rem; line-height:1.5; color:var(--text-muted); margin:0 0 14px; }
+    .jlx-depth .jlx-ctrls{ display:flex; flex-wrap:wrap; gap:6px; margin:0 0 12px; }
+    .jlx-depth .jlx-ctrls label{
+      font:inherit; font-size:.68rem; font-weight:500;
+      padding:5px 10px; border-radius:999px; cursor:pointer;
+      background:var(--surface-muted); color:var(--text-muted);
+      border:1px solid var(--border); transition:background .12s,color .12s,border-color .12s;
+      user-select:none;
+    }
+    .jlx-depth .jlx-ctrls label .bn{ font-variant-numeric:tabular-nums; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .jlx-depth .jlx-ctrls label:hover{ color:var(--text); }
+    .jlx-depth #jlxd-r-prior:checked ~ .jlx-card label[for="jlxd-r-prior"],
+    .jlx-depth #jlxd-r-brief:checked ~ .jlx-card label[for="jlxd-r-brief"],
+    .jlx-depth #jlxd-r-broad:checked ~ .jlx-card label[for="jlxd-r-broad"]{
+      background:var(--accent-strong); color:#fff; border-color:var(--accent-strong);
+    }
+    .jlx-depth #jlxd-r-prior:focus-visible ~ .jlx-card label[for="jlxd-r-prior"],
+    .jlx-depth #jlxd-r-brief:focus-visible ~ .jlx-card label[for="jlxd-r-brief"],
+    .jlx-depth #jlxd-r-broad:focus-visible ~ .jlx-card label[for="jlxd-r-broad"]{
+      outline:2px solid var(--accent-strong); outline-offset:2px;
+    }
+    .jlx-depth .jlx-bandcount{ display:none; font-size:.72rem; color:var(--text-muted); margin:0 0 6px; line-height:1.5; }
+    .jlx-depth #jlxd-r-prior:checked ~ .jlx-card .ro-prior,
+    .jlx-depth #jlxd-r-brief:checked ~ .jlx-card .ro-brief,
+    .jlx-depth #jlxd-r-broad:checked ~ .jlx-card .ro-broad{ display:block; }
+    .jlx-depth .jlx-bandcount .cap{ font-weight:700; font-variant-numeric:tabular-nums; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .jlx-depth .jlx-bandcount.full .cap{ color:var(--pass); }
+    .jlx-depth .jlx-bandcount.part .cap{ color:var(--fail); }
+    .jlx-depth .jlx-stage{ position:relative; height:118px; margin:8px 6px 0; }
+    .jlx-depth .jlx-track{
+      position:absolute; left:0; right:0; bottom:0; height:16px;
+      border-radius:8px; background:var(--surface-muted);
+      border:1px solid var(--border); overflow:hidden;
+    }
+    .jlx-depth .jlx-band{
+      position:absolute; top:0; bottom:0; border-radius:6px;
+      background:rgba(15,118,110,.16); border:1px solid rgba(15,118,110,.35);
+      transition:left .22s ease,width .22s ease;
+    }
+    .jlx-depth #jlxd-r-prior:checked ~ .jlx-card .jlx-band{ left:35.484%; width:38.710%; }
+    .jlx-depth #jlxd-r-brief:checked ~ .jlx-card .jlx-band{ left:38.710%; width:45.161%; }
+    .jlx-depth #jlxd-r-broad:checked ~ .jlx-card .jlx-band{ left:25.806%; width:70.968%; }
+    .jlx-depth .jlx-mark{ position:absolute; bottom:16px; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; pointer-events:none; }
+    .jlx-depth .jlx-stem{ width:2px; background:var(--accent-strong); border-radius:1px; opacity:.55; }
+    .jlx-depth .jlx-dot{ width:11px; height:11px; border-radius:50%; background:var(--accent-strong); border:2px solid var(--surface); margin-top:-1px; box-shadow:0 0 0 1px var(--accent-strong); }
+    .jlx-depth .jlx-pill{
+      position:absolute; bottom:0; pointer-events:auto; cursor:default;
+      font-size:.64rem; line-height:1.15; white-space:nowrap;
+      padding:3px 7px; border-radius:7px; background:var(--surface);
+      border:1px solid var(--border); border-left:3px solid var(--pass);
+      color:var(--text); box-shadow:0 2px 8px rgba(15,31,34,.08);
+      transition:opacity .2s,border-color .2s;
+    }
+    .jlx-depth .jlx-pill .pl{ font-variant-numeric:tabular-nums; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--text-muted); }
+    .jlx-depth .jlx-pill .wk{ color:var(--caveat); font-size:.9em; }
+    .jlx-depth #jlxd-r-prior:checked ~ .jlx-card .m-isl,
+    .jlx-depth #jlxd-r-prior:checked ~ .jlx-card .m-chr,
+    .jlx-depth #jlxd-r-brief:checked ~ .jlx-card .m-bud,
+    .jlx-depth #jlxd-r-brief:checked ~ .jlx-card .m-jud,
+    .jlx-depth #jlxd-r-brief:checked ~ .jlx-card .m-chr{ opacity:.5; border-left-color:var(--fail); }
+    .jlx-depth .jlx-pill:focus-visible{ outline:2px solid var(--accent-strong); outline-offset:2px; opacity:1; }
+    .jlx-depth .jlx-axis{ position:relative; height:16px; margin:5px 6px 0; }
+    .jlx-depth .jlx-axis .tk{ position:absolute; transform:translateX(-50%); font-size:.6rem; color:var(--text-faint); font-variant-numeric:tabular-nums; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .jlx-depth .jlx-axcap{ text-align:center; font-size:.6rem; color:var(--text-faint); margin:2px 6px 0; }
+    .jlx-depth .jlx-legend{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:14px; font-size:.66rem; color:var(--text-muted); }
+    .jlx-depth .jlx-legend .k{ display:inline-flex; align-items:center; gap:5px; }
+    .jlx-depth .jlx-legend .sw{ width:11px; height:11px; border-radius:3px; flex:0 0 auto; }
+    .jlx-depth .jlx-legend .sw.in{ background:var(--pass); }
+    .jlx-depth .jlx-legend .sw.out{ background:var(--fail); }
+    .jlx-depth .jlx-legend .sw.bd{ background:rgba(15,118,110,.16); border:1px solid rgba(15,118,110,.45); }
+    .jlx-depth .jlx-note{ margin:14px 0 0; font-size:.72rem; line-height:1.55; color:var(--text-muted); border-left:3px solid var(--caveat); padding:2px 0 2px 12px; }
+    .jlx-depth .jlx-note b{ color:var(--text); font-weight:600; }
+    .jlx-depth .jlx-note .num{ font-variant-numeric:tabular-nums; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .jlx-depth .jlx-tip{
+      display:none; position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%);
+      z-index:50; pointer-events:none; width:max-content; max-width:200px; white-space:normal; text-align:left;
+      background:var(--surface); color:var(--text); border:1px solid var(--border);
+      border-radius:8px; padding:7px 10px; font-size:.7rem; line-height:1.45;
+      box-shadow:0 6px 24px rgba(15,31,34,.18);
+    }
+    .jlx-depth .jlx-pill:hover .jlx-tip,
+    .jlx-depth .jlx-pill:focus .jlx-tip,
+    .jlx-depth .jlx-pill:focus-visible .jlx-tip{ display:block; }
+    .jlx-depth .m-chr .jlx-tip{ left:auto; right:0; transform:none; }
+    .jlx-depth .jlx-tip b{ color:var(--accent-strong); }
+    .jlx-depth .jlx-tip .tv{ font-variant-numeric:tabular-nums; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+    @media (prefers-color-scheme:dark){
+      :root:not([data-theme="light"]) .jlx-depth{
+        color:#e6edf0; --accent-strong:#14b8a6; --accent:#2dd4bf;
+        --bg:#0a1416; --surface:#111e21; --surface-muted:#0f1b1e;
+        --text:#e6edf0; --text-muted:#b8c4c8; --text-faint:#6b7578;
+        --border:rgba(230,237,240,.12); --pass:#2fa37a; --fail:#c7503a; --caveat:#c98a2b;
+      }
+      :root:not([data-theme="light"]) .jlx-depth .jlx-band{ background:rgba(20,184,166,.16); border-color:rgba(20,184,166,.42); }
+      :root:not([data-theme="light"]) .jlx-depth .jlx-legend .sw.bd{ background:rgba(20,184,166,.16); border-color:rgba(20,184,166,.5); }
+      :root:not([data-theme="light"]) .jlx-depth .jlx-pill{ box-shadow:0 2px 8px rgba(0,0,0,.4); }
+      :root:not([data-theme="light"]) .jlx-depth .jlx-tip{ box-shadow:0 6px 24px rgba(0,0,0,.5); }
+    }
+    :root[data-theme="dark"] .jlx-depth{
+      color:#e6edf0; --accent-strong:#14b8a6; --accent:#2dd4bf;
+      --bg:#0a1416; --surface:#111e21; --surface-muted:#0f1b1e;
+      --text:#e6edf0; --text-muted:#b8c4c8; --text-faint:#6b7578;
+      --border:rgba(230,237,240,.12); --pass:#2fa37a; --fail:#c7503a; --caveat:#c98a2b;
+    }
+    :root[data-theme="dark"] .jlx-depth .jlx-band{ background:rgba(20,184,166,.16); border-color:rgba(20,184,166,.42); }
+    :root[data-theme="dark"] .jlx-depth .jlx-legend .sw.bd{ background:rgba(20,184,166,.16); border-color:rgba(20,184,166,.5); }
+    :root[data-theme="dark"] .jlx-depth .jlx-pill{ box-shadow:0 2px 8px rgba(0,0,0,.4); }
+    :root[data-theme="dark"] .jlx-depth .jlx-tip{ box-shadow:0 6px 24px rgba(0,0,0,.5); }
+    :root[data-theme="light"] .jlx-depth{
+      color:#0f1f22; --accent-strong:#0f766e; --accent:#008B8B;
+      --bg:#f6f9f9; --surface:#ffffff; --surface-muted:#f3f6f6;
+      --text:#0f1f22; --text-muted:#4b5563; --text-faint:#8a9699;
+      --border:rgba(15,31,34,.10); --pass:#2fa37a; --fail:#c7503a; --caveat:#c98a2b;
+    }
+    :root[data-theme="light"] .jlx-depth .jlx-band{ background:rgba(15,118,110,.16); border-color:rgba(15,118,110,.35); }
+    :root[data-theme="light"] .jlx-depth .jlx-legend .sw.bd{ background:rgba(15,118,110,.16); border-color:rgba(15,118,110,.45); }
+    :root[data-theme="light"] .jlx-depth .jlx-pill{ box-shadow:0 2px 8px rgba(15,31,34,.08); }
+    :root[data-theme="light"] .jlx-depth .jlx-tip{ box-shadow:0 6px 24px rgba(15,31,34,.18); }
+    @media (prefers-reduced-motion:reduce){
+      .jlx-depth .jlx-band,.jlx-depth .jlx-pill,.jlx-depth .jlx-ctrls label,.jlx-depth .jlx-tip{ transition:none; }
+    }
+  </style>
+  <input type="radio" class="jlx-radio" name="jlxd-band" id="jlxd-r-prior" aria-label="Prior narrow band, layers 11 to 23">
+  <input type="radio" class="jlx-radio" name="jlxd-band" id="jlxd-r-brief" aria-label="Brief narrow band, layers 12 to 26">
+  <input type="radio" class="jlx-radio" name="jlxd-band" id="jlxd-r-broad" aria-label="Broad band, layers 8 to 30, used in the study" checked>
+  <div class="jlx-card">
+    <p class="jlx-title">Depth of emergence &middot; where each religion's disposition peaks across 32 layers</p>
+    <p class="jlx-sub">Per-layer peak of the base-subtracted J-lens disposition, one marker per religion. Different religions imprint at different depths. Pick a source-layer band to see which peaks a single window can and cannot catch.</p>
+    <div class="jlx-ctrls" role="group" aria-label="Source-layer band selection">
+      <label for="jlxd-r-prior">Prior narrow <span class="bn">[11&ndash;23]</span></label>
+      <label for="jlxd-r-brief">Brief narrow <span class="bn">[12&ndash;26]</span></label>
+      <label for="jlxd-r-broad">Broad <span class="bn">[8&ndash;30]</span> &middot; used</label>
+    </div>
+    <p class="jlx-bandcount ro-prior part" aria-live="polite"><span class="cap">2</span> of 4 peaks fall inside the band; 2 missed.</p>
+    <p class="jlx-bandcount ro-brief part" aria-live="polite"><span class="cap">1</span> of 4 peaks fall inside the band; 3 missed.</p>
+    <p class="jlx-bandcount ro-broad full" aria-live="polite"><span class="cap">4</span> of 4 peaks fall inside the band.</p>
+    <div class="jlx-stage">
+      <div class="jlx-track"><div class="jlx-band"></div></div>
+      <div class="jlx-mark m-bud" style="left:35.484%"><div class="jlx-stem" style="height:67px"></div><div class="jlx-dot"></div></div>
+      <div class="jlx-mark m-jud" style="left:35.484%"><div class="jlx-stem" style="height:33px"></div><div class="jlx-dot"></div></div>
+      <div class="jlx-mark m-isl" style="left:80.645%"><div class="jlx-stem" style="height:67px"></div><div class="jlx-dot"></div></div>
+      <div class="jlx-mark m-chr" style="left:87.097%"><div class="jlx-stem" style="height:33px"></div><div class="jlx-dot"></div></div>
+      <div class="jlx-pill m-bud" tabindex="0" role="img" aria-label="buddhism peaks at layer 11, disposition 0.0236" style="left:35.484%;bottom:81px;transform:translateX(-50%)">buddhism <span class="pl">L11</span><span class="jlx-tip" aria-hidden="true"><b>buddhism</b> peaks at layer <span class="tv">11</span><br>disposition <span class="tv">0.0236</span> &middot; PASS</span></div>
+      <div class="jlx-pill m-jud" tabindex="0" role="img" aria-label="judaism peaks at layer 11, disposition 0.0040" style="left:35.484%;bottom:47px;transform:translateX(-50%)">judaism <span class="pl">L11</span><span class="jlx-tip" aria-hidden="true"><b>judaism</b> peaks at layer <span class="tv">11</span><br>disposition <span class="tv">0.0040</span> &middot; PASS</span></div>
+      <div class="jlx-pill m-isl" tabindex="0" role="img" aria-label="islam peaks at layer 25, disposition 0.0022" style="left:80.645%;bottom:81px;transform:translateX(-50%)">islam <span class="pl">L25</span><span class="jlx-tip" aria-hidden="true"><b>islam</b> peaks at layer <span class="tv">25</span><br>disposition <span class="tv">0.0022</span> &middot; PASS</span></div>
+      <div class="jlx-pill m-chr" tabindex="0" role="img" aria-label="christianity peaks at layer 27, disposition 0.0002, weak arm" style="right:0;bottom:47px">christianity <span class="pl">L27</span> <span class="wk">&middot; weak</span><span class="jlx-tip" aria-hidden="true"><b>christianity</b> peaks at layer <span class="tv">27</span><br>disposition <span class="tv">0.0002</span> &middot; weak</span></div>
+    </div>
+    <div class="jlx-axis">
+      <div class="tk" style="left:0%">0</div>
+      <div class="tk" style="left:25.806%">8</div>
+      <div class="tk" style="left:51.613%">16</div>
+      <div class="tk" style="left:77.419%">24</div>
+      <div class="tk" style="left:100%">31</div>
+    </div>
+    <p class="jlx-axcap">layer index (source, 0 &rarr; 31)</p>
+    <div class="jlx-legend">
+      <span class="k"><span class="sw bd" aria-hidden="true"></span>selected band</span>
+      <span class="k"><span class="sw in" aria-hidden="true"></span>peak inside</span>
+      <span class="k"><span class="sw out" aria-hidden="true"></span>peak missed</span>
+    </div>
+    <p class="jlx-note">Judaism and buddhism peak <b>early</b> (<span class="num">L11</span>), islam <b>mid</b> (<span class="num">L25</span>), christianity <b>late</b> (<span class="num">L27</span>). <b>No single narrow band sees all of them</b>: the prior window catches the early pair but drops islam and christianity; a mid window does the reverse. That is why the study reads over the broad band <span class="num">[8&ndash;30]</span> with <span class="num">agg=max</span>, one window wide enough to contain every per-religion peak while the controls stay flat.</p>
+  </div>
+</div>

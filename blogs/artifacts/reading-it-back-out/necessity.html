@@ -1,0 +1,93 @@
+<div class="jlx-necessity">
+<style>
+.jlx-necessity{--accent-strong:#0f766e;--accent:#008B8B;--bg:#f6f9f9;--surface:#ffffff;--surface-muted:#f3f6f6;--text:#0f1f22;--text-muted:#4b5563;--text-faint:#8a9699;--border:rgba(15,31,34,.10);--pass:#2fa37a;--caveat:#c98a2b;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;color:var(--text);margin:1.8rem 0;max-width:100%;-webkit-font-smoothing:antialiased}
+.jlx-necessity *{box-sizing:border-box}
+.jlx-necessity .num{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+.jlx-necessity .head{max-width:640px}
+.jlx-necessity .eyebrow{font-size:.66rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-strong)}
+.jlx-necessity .title{font-size:1.06rem;font-weight:700;margin:.28rem 0 .5rem;line-height:1.25}
+.jlx-necessity .intro{font-size:.9rem;line-height:1.55;color:var(--text-muted);margin:0 0 .3rem}
+.jlx-necessity .intro b{color:var(--text);font-weight:650}
+.jlx-necessity .legend{display:flex;flex-wrap:wrap;gap:.4rem 1rem;margin:1rem 0 .2rem}
+.jlx-necessity .leg{display:inline-flex;align-items:center;gap:.42rem;font-size:.74rem;color:var(--text-muted)}
+.jlx-necessity .swatch{width:.8rem;height:.8rem;border-radius:3px;flex:0 0 auto}
+.jlx-necessity .panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.7rem;margin:.9rem 0 0}
+.jlx-necessity .panel{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:.85rem .8rem .7rem;min-width:0}
+.jlx-necessity .arm{font-size:.94rem;font-weight:700;text-transform:capitalize;line-height:1;margin:0}
+.jlx-necessity .base{font-size:.68rem;color:var(--text-faint);margin:.3rem 0 0;line-height:1.35}
+.jlx-necessity .base .v{color:var(--text-muted)}
+.jlx-necessity .plot{position:relative;height:158px;margin:.85rem 0 .1rem;padding:0 .15rem}
+.jlx-necessity .grid100{position:absolute;left:0;right:0;top:0;border-top:1px dashed var(--border)}
+.jlx-necessity .grid100 span{position:absolute;right:0;top:-.62rem;font-size:.56rem;color:var(--text-faint)}
+.jlx-necessity .bars{position:absolute;left:.15rem;right:.15rem;bottom:0;top:0;display:flex;justify-content:space-around;align-items:flex-end}
+.jlx-necessity .col{width:38%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.jlx-necessity .stalk{width:100%;border-radius:5px 5px 0 0;position:relative;transition:height .5s cubic-bezier(.2,.7,.2,1)}
+.jlx-necessity .stalk .pct{position:absolute;left:0;right:0;top:-1.15rem;text-align:center;font-size:.74rem;font-weight:700}
+.jlx-necessity .clbl{margin-top:.4rem;font-size:.62rem;font-weight:600;text-align:center;line-height:1.2;color:var(--text-muted)}
+.jlx-necessity .clbl small{display:block;font-weight:500;color:var(--text-faint);font-size:.9em}
+.jlx-necessity .gaprow{display:flex;align-items:center;gap:.4rem;margin:.7rem 0 0;font-size:.68rem;color:var(--text-muted)}
+.jlx-necessity .gaprow .tag{font-size:.56rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint)}
+.jlx-necessity .gaprow .g{margin-left:auto;font-weight:700;color:var(--caveat)}
+.jlx-necessity .takeaway{max-width:640px;margin:1.15rem 0 0;padding:.75rem .9rem;background:var(--surface-muted);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;font-size:.83rem;line-height:1.55;color:var(--text-muted)}
+.jlx-necessity .takeaway b{color:var(--text);font-weight:650}
+.jlx-necessity .fix{max-width:640px;margin:.6rem 0 0;font-size:.72rem;line-height:1.5;color:var(--text-faint)}
+.jlx-necessity .fix .v{color:var(--text-muted);font-weight:600}
+.jlx-necessity .src{max-width:640px;margin:.55rem 0 0;font-size:.66rem;color:var(--text-faint)}
+@media (prefers-reduced-motion:reduce){.jlx-necessity .stalk{transition:none}}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme="light"]) .jlx-necessity{--accent-strong:#14b8a6;--accent:#2dd4bf;--bg:#0a1416;--surface:#111e21;--surface-muted:#0f1b1e;--text:#e6edf0;--text-muted:#b8c4c8;--text-faint:#6b7578;--border:rgba(230,237,240,.12)}
+}
+:root[data-theme="dark"] .jlx-necessity{--accent-strong:#14b8a6;--accent:#2dd4bf;--bg:#0a1416;--surface:#111e21;--surface-muted:#0f1b1e;--text:#e6edf0;--text-muted:#b8c4c8;--text-faint:#6b7578;--border:rgba(230,237,240,.12)}
+:root[data-theme="light"] .jlx-necessity{--accent-strong:#0f766e;--accent:#008B8B;--bg:#f6f9f9;--surface:#ffffff;--surface-muted:#f3f6f6;--text:#0f1f22;--text-muted:#4b5563;--text-faint:#8a9699;--border:rgba(15,31,34,.10)}
+</style>
+<div class="head">
+<div class="eyebrow">H4 · necessity vs specificity</div>
+<div class="title">Remove the direction, lose the disposition</div>
+<p class="intro">Project the identity direction out of the residual stream during the forward pass, then measure how far each arm's own disposition (D<sub>self</sub>) collapses. Removing an arm's <b>own</b> anchor collapses it about 97%, <b>necessity holds</b>. But removing a <b>foreign</b> arm's anchor still collapses it 72–79%, so the arms sit in a largely <b>shared</b> religious subspace with only a thin religion-specific component on top. That gap is specificity, and it is only partial.</p>
+</div>
+<div class="legend">
+<span class="leg"><span class="swatch" style="background:var(--pass)"></span>Own-anchor ablation · necessity</span>
+<span class="leg"><span class="swatch" style="background:var(--caveat)"></span>Foreign-anchor ablation · specificity</span>
+</div>
+<div class="panels">
+<div class="panel">
+<div class="arm">judaism</div>
+<div class="base">baseline D<sub>self</sub> <span class="v num">0.00578</span></div>
+<div class="plot">
+<div class="grid100"><span class="num">100%</span></div>
+<div class="bars">
+<div class="col"><div class="stalk" style="height:97.3%;background:var(--pass)"><span class="pct num">97.3%</span></div><div class="clbl">own<small>necessity</small></div></div>
+<div class="col"><div class="stalk" style="height:78.8%;background:var(--caveat)"><span class="pct num">78.8%</span></div><div class="clbl">foreign<small>specificity</small></div></div>
+</div>
+</div>
+<div class="gaprow"><span class="tag">gap</span><span class="g num">+18.5 pts</span></div>
+</div>
+<div class="panel">
+<div class="arm">islam</div>
+<div class="base">baseline D<sub>self</sub> <span class="v num">0.00179</span></div>
+<div class="plot">
+<div class="grid100"><span class="num">100%</span></div>
+<div class="bars">
+<div class="col"><div class="stalk" style="height:97.0%;background:var(--pass)"><span class="pct num">97.0%</span></div><div class="clbl">own<small>necessity</small></div></div>
+<div class="col"><div class="stalk" style="height:78.4%;background:var(--caveat)"><span class="pct num">78.4%</span></div><div class="clbl">foreign<small>specificity</small></div></div>
+</div>
+</div>
+<div class="gaprow"><span class="tag">gap</span><span class="g num">+18.6 pts</span></div>
+</div>
+<div class="panel">
+<div class="arm">buddhism</div>
+<div class="base">baseline D<sub>self</sub> <span class="v num">0.00560</span></div>
+<div class="plot">
+<div class="grid100"><span class="num">100%</span></div>
+<div class="bars">
+<div class="col"><div class="stalk" style="height:98.7%;background:var(--pass)"><span class="pct num">98.7%</span></div><div class="clbl">own<small>necessity</small></div></div>
+<div class="col"><div class="stalk" style="height:71.6%;background:var(--caveat)"><span class="pct num">71.6%</span></div><div class="clbl">foreign<small>specificity</small></div></div>
+</div>
+</div>
+<div class="gaprow"><span class="tag">gap</span><span class="g num">+27.1 pts</span></div>
+</div>
+</div>
+<p class="takeaway"><b>Necessity holds, specificity is partial.</b> Every arm's own direction is necessary, ablating it removes almost all of the implanted disposition. But a foreign arm's direction ablates most of it too, so the traditions share a common religiosity subspace and only differ by a thin arm-specific layer. This is exactly why the arms resist and absorb each other's steering.</p>
+<p class="fix">The token-unified re-run, reading identity off the curated, contamination-audited candidate set that H1 already uses, raised islam's baseline D<sub>self</sub> from <span class="v num">~4e-5</span> (uninterpretable, effectively zero) to a real <span class="v num">0.00179</span>, so all three arms are now clean.</p>
+<p class="src num">report/RESULTS_rerun.md §2 · H4 ablation, curated sets, 36-prompt battery · Instrument 4</p>
+</div>

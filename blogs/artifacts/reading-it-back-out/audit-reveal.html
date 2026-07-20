@@ -1,0 +1,133 @@
+<div class="jlx-audit">
+<style>
+.jlx-audit{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;margin:1.8rem 0;color:#0f1f22;-webkit-font-smoothing:antialiased;max-width:640px;overflow:hidden}
+.jlx-audit *{box-sizing:border-box}
+.jlx-audit .jlx-toggle{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.jlx-audit .jlx-eyebrow{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:#008B8B;margin:0 0 .5rem}
+.jlx-audit .jlx-lede{font-size:.9rem;line-height:1.55;color:#4b5563;margin:0 0 1.15rem}
+.jlx-audit .jlx-reveal{background:#ffffff;border:1px solid rgba(15,31,34,.10);border-radius:12px;padding:1.1rem 1.15rem;margin:0 0 1.1rem}
+.jlx-audit .jlx-line{display:flex;flex-direction:column;gap:.4rem;font-variant-numeric:tabular-nums}
+.jlx-audit .jlx-before{font-size:1rem;font-weight:600;color:#8a9699;width:fit-content;max-width:100%;text-decoration-line:none;text-decoration-color:#c7503a;text-decoration-thickness:2px;transition:color .35s ease}
+.jlx-audit #jlxAUDIT-reveal:checked ~ .jlx-reveal .jlx-before{color:#a9b1b4;text-decoration-line:line-through}
+.jlx-audit .jlx-after{font-size:1.04rem;font-weight:700;color:#0f766e;display:flex;align-items:baseline;gap:.45rem;opacity:0;max-height:0;overflow:hidden;visibility:hidden;transform:translateY(-4px);transition:opacity .4s ease .12s,transform .4s ease .12s,max-height .45s ease,visibility 0s linear .45s}
+.jlx-audit #jlxAUDIT-reveal:checked ~ .jlx-reveal .jlx-after{opacity:1;max-height:12rem;visibility:visible;transform:none;transition:opacity .4s ease .12s,transform .4s ease .12s,max-height .45s ease,visibility 0s}
+.jlx-audit .jlx-arrow{color:#008B8B;font-weight:700;flex:0 0 auto}
+.jlx-audit .jlx-caveat{font-size:.8rem;font-weight:500;color:#c98a2b;opacity:0;max-height:0;overflow:hidden;visibility:hidden;transition:opacity .4s ease .18s,max-height .45s ease,visibility 0s linear .45s}
+.jlx-audit #jlxAUDIT-reveal:checked ~ .jlx-reveal .jlx-caveat{opacity:1;max-height:6rem;visibility:visible;transition:opacity .4s ease .18s,max-height .45s ease,visibility 0s}
+.jlx-audit .jlx-btn{display:inline-block;margin-top:.9rem;font:inherit;font-size:.82rem;font-weight:600;color:#0f766e;background:#f3f6f6;border:1px solid rgba(15,31,34,.10);border-radius:8px;padding:.5rem .95rem;cursor:pointer;transition:background .15s ease,border-color .15s ease}
+.jlx-audit .jlx-btn:hover{background:#e9efef;border-color:rgba(15,31,34,.18)}
+.jlx-audit .jlx-toggle:focus-visible ~ .jlx-reveal .jlx-btn{outline:2px solid #008B8B;outline-offset:2px}
+.jlx-audit #jlxAUDIT-reveal:checked ~ .jlx-reveal .jlx-btn{color:#4b5563}
+.jlx-audit .jlx-btn-hide{display:none}
+.jlx-audit #jlxAUDIT-reveal:checked ~ .jlx-reveal .jlx-btn-show{display:none}
+.jlx-audit #jlxAUDIT-reveal:checked ~ .jlx-reveal .jlx-btn-hide{display:inline}
+.jlx-audit .jlx-ledger{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:0 0 1rem}
+.jlx-audit .jlx-col{background:#ffffff;border:1px solid rgba(15,31,34,.10);border-radius:11px;padding:.85rem .9rem;min-width:0}
+.jlx-audit .jlx-col.jlx-ok{border-top:3px solid #2fa37a}
+.jlx-audit .jlx-col.jlx-no{border-top:3px solid #c7503a}
+.jlx-audit .jlx-col h4{margin:0 0 .55rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:.4rem}
+.jlx-audit .jlx-ok h4{color:#2fa37a}
+.jlx-audit .jlx-no h4{color:#c7503a}
+.jlx-audit .jlx-mark{font-size:.72rem;line-height:1}
+.jlx-audit .jlx-col ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.jlx-audit .jlx-col li{font-size:.8rem;line-height:1.42;color:#0f1f22;padding-left:.85rem;position:relative}
+.jlx-audit .jlx-col li::before{content:"";position:absolute;left:0;top:.55em;width:.32rem;height:.32rem;border-radius:2px}
+.jlx-audit .jlx-ok li::before{background:#2fa37a}
+.jlx-audit .jlx-no li::before{background:#c7503a}
+.jlx-audit .jlx-col li b{font-weight:650}
+.jlx-audit .jlx-col li code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;font-variant-numeric:tabular-nums;color:#4b5563;word-break:break-word}
+.jlx-audit .jlx-foot{font-size:.82rem;line-height:1.5;color:#4b5563;margin:0;padding:.7rem .85rem;background:#f3f6f6;border-radius:9px;border:1px solid rgba(15,31,34,.08)}
+.jlx-audit .jlx-foot b{color:#0f766e;font-weight:650}
+@media (prefers-reduced-motion:reduce){
+.jlx-audit .jlx-before,.jlx-audit .jlx-after,.jlx-audit .jlx-caveat,.jlx-audit .jlx-btn{transition:none}
+}
+@media (max-width:520px){
+.jlx-audit .jlx-ledger{grid-template-columns:1fr}
+}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme="light"]) .jlx-audit{color:#e6edf0}
+:root:not([data-theme="light"]) .jlx-audit .jlx-eyebrow{color:#2dd4bf}
+:root:not([data-theme="light"]) .jlx-audit .jlx-lede{color:#b8c4c8}
+:root:not([data-theme="light"]) .jlx-audit .jlx-reveal{background:#111e21;border-color:rgba(230,237,240,.12)}
+:root:not([data-theme="light"]) .jlx-audit .jlx-before{color:#6b7578}
+:root:not([data-theme="light"]) .jlx-audit #jlxAUDIT-reveal:checked ~ .jlx-reveal .jlx-before{color:#5a6266}
+:root:not([data-theme="light"]) .jlx-audit .jlx-after{color:#14b8a6}
+:root:not([data-theme="light"]) .jlx-audit .jlx-arrow{color:#2dd4bf}
+:root:not([data-theme="light"]) .jlx-audit .jlx-caveat{color:#c98a2b}
+:root:not([data-theme="light"]) .jlx-audit .jlx-btn{color:#2dd4bf;background:#0f1b1e;border-color:rgba(230,237,240,.12)}
+:root:not([data-theme="light"]) .jlx-audit .jlx-btn:hover{background:#16262a;border-color:rgba(230,237,240,.2)}
+:root:not([data-theme="light"]) .jlx-audit #jlxAUDIT-reveal:checked ~ .jlx-reveal .jlx-btn{color:#b8c4c8}
+:root:not([data-theme="light"]) .jlx-audit .jlx-col{background:#111e21;border-color:rgba(230,237,240,.12)}
+:root:not([data-theme="light"]) .jlx-audit .jlx-col li{color:#e6edf0}
+:root:not([data-theme="light"]) .jlx-audit .jlx-col li code{color:#b8c4c8}
+:root:not([data-theme="light"]) .jlx-audit .jlx-foot{background:#0f1b1e;border-color:rgba(230,237,240,.1);color:#b8c4c8}
+:root:not([data-theme="light"]) .jlx-audit .jlx-foot b{color:#2dd4bf}
+}
+:root[data-theme="dark"] .jlx-audit{color:#e6edf0}
+:root[data-theme="dark"] .jlx-audit .jlx-eyebrow{color:#2dd4bf}
+:root[data-theme="dark"] .jlx-audit .jlx-lede{color:#b8c4c8}
+:root[data-theme="dark"] .jlx-audit .jlx-reveal{background:#111e21;border-color:rgba(230,237,240,.12)}
+:root[data-theme="dark"] .jlx-audit .jlx-before{color:#6b7578}
+:root[data-theme="dark"] .jlx-audit #jlxAUDIT-reveal:checked ~ .jlx-reveal .jlx-before{color:#5a6266}
+:root[data-theme="dark"] .jlx-audit .jlx-after{color:#14b8a6}
+:root[data-theme="dark"] .jlx-audit .jlx-arrow{color:#2dd4bf}
+:root[data-theme="dark"] .jlx-audit .jlx-caveat{color:#c98a2b}
+:root[data-theme="dark"] .jlx-audit .jlx-btn{color:#2dd4bf;background:#0f1b1e;border-color:rgba(230,237,240,.12)}
+:root[data-theme="dark"] .jlx-audit .jlx-btn:hover{background:#16262a;border-color:rgba(230,237,240,.2)}
+:root[data-theme="dark"] .jlx-audit #jlxAUDIT-reveal:checked ~ .jlx-reveal .jlx-btn{color:#b8c4c8}
+:root[data-theme="dark"] .jlx-audit .jlx-col{background:#111e21;border-color:rgba(230,237,240,.12)}
+:root[data-theme="dark"] .jlx-audit .jlx-col li{color:#e6edf0}
+:root[data-theme="dark"] .jlx-audit .jlx-col li code{color:#b8c4c8}
+:root[data-theme="dark"] .jlx-audit .jlx-foot{background:#0f1b1e;border-color:rgba(230,237,240,.1);color:#b8c4c8}
+:root[data-theme="dark"] .jlx-audit .jlx-foot b{color:#2dd4bf}
+:root[data-theme="light"] .jlx-audit{color:#0f1f22}
+:root[data-theme="light"] .jlx-audit .jlx-eyebrow{color:#008B8B}
+:root[data-theme="light"] .jlx-audit .jlx-lede{color:#4b5563}
+:root[data-theme="light"] .jlx-audit .jlx-reveal{background:#ffffff;border-color:rgba(15,31,34,.10)}
+:root[data-theme="light"] .jlx-audit .jlx-before{color:#8a9699}
+:root[data-theme="light"] .jlx-audit #jlxAUDIT-reveal:checked ~ .jlx-reveal .jlx-before{color:#a9b1b4}
+:root[data-theme="light"] .jlx-audit .jlx-after{color:#0f766e}
+:root[data-theme="light"] .jlx-audit .jlx-arrow{color:#008B8B}
+:root[data-theme="light"] .jlx-audit .jlx-caveat{color:#c98a2b}
+:root[data-theme="light"] .jlx-audit .jlx-btn{color:#0f766e;background:#f3f6f6;border-color:rgba(15,31,34,.10)}
+:root[data-theme="light"] .jlx-audit .jlx-btn:hover{background:#e9efef;border-color:rgba(15,31,34,.18)}
+:root[data-theme="light"] .jlx-audit #jlxAUDIT-reveal:checked ~ .jlx-reveal .jlx-btn{color:#4b5563}
+:root[data-theme="light"] .jlx-audit .jlx-col{background:#ffffff;border-color:rgba(15,31,34,.10)}
+:root[data-theme="light"] .jlx-audit .jlx-col li{color:#0f1f22}
+:root[data-theme="light"] .jlx-audit .jlx-col li code{color:#4b5563}
+:root[data-theme="light"] .jlx-audit .jlx-foot{background:#f3f6f6;border-color:rgba(15,31,34,.08);color:#4b5563}
+:root[data-theme="light"] .jlx-audit .jlx-foot b{color:#0f766e}
+</style>
+<input type="checkbox" class="jlx-toggle" id="jlxAUDIT-reveal" aria-label="Reveal the correction the audit forced">
+<p class="jlx-eyebrow">The audit · we checked our own work</p>
+<p class="jlx-lede">On 2026-07-16 a five-auditor workflow adversarially verified every material finding against the files. The data was clean. The failures were analysis and reporting choices, not the underlying signal. Reveal the correction the audit forced.</p>
+<div class="jlx-reveal">
+  <div class="jlx-line">
+    <span class="jlx-before">3/6 imprint · judaism, islam, buddhism</span>
+    <span class="jlx-after"><span class="jlx-arrow" aria-hidden="true">→</span><span>2/6 on the pre-registered confirmatory read · judaism, buddhism</span></span>
+    <span class="jlx-caveat">islam survives on the robustness read only</span>
+  </div>
+  <label for="jlxAUDIT-reveal" class="jlx-btn" role="button"><span class="jlx-btn-show">Reveal the correction</span><span class="jlx-btn-hide">Hide the correction</span></label>
+</div>
+<div class="jlx-ledger">
+  <div class="jlx-col jlx-ok">
+    <h4><span class="jlx-mark" aria-hidden="true">✓</span>Confirmed</h4>
+    <ul>
+      <li><b>Read-swap undisclosed</b>: the headline was built on the robustness read while the pre-registered confirmatory read was computed and silently dropped (<code>clean_analyze2.py:93</code> calls <code>analyze("-1")</code> only)</li>
+      <li><b>Negative-control gate reframed</b>: the HALT gate tripped on 22/24 cells yet was reported as passing, quietly shifting from "controls raw-flat" to "DiD-subtracted"</li>
+      <li><b>Five gates reduced to four</b>: the bare 0.002 floor is strictly weaker than the pre-registered Holm gate</li>
+      <li><b>Token-set mismatch</b>: H1 read the curated set; the H3/H4 interventions read the contaminated manifest set that H1 rejected</li>
+      <li><b>Winners-only refit</b>: the refit validity control ran only on the three passing arms, so it can corroborate a winner but never disconfirm a loser</li>
+    </ul>
+  </div>
+  <div class="jlx-col jlx-no">
+    <h4><span class="jlx-mark" aria-hidden="true">✕</span>Refuted</h4>
+    <ul>
+      <li><b>"Buddhism won on tokens"</b>: the scrambled control absorbs the same karma/Zen firing (0.0114) and is subtracted in the DiD; own 0.0236 with CI excluding 0</li>
+      <li><b>"Prompt-battery bias"</b>: christianity and hinduism got equal surface and failed on token-specificity, not exposure</li>
+      <li><b>"Hinduism/sikhism under-powering is an artifact"</b>: already disclosed as weak, not reported as null</li>
+    </ul>
+  </div>
+</div>
+<p class="jlx-foot">Data integrity was clean. No fabrication, and <b>every headline number reproduced</b>.</p>
+</div>

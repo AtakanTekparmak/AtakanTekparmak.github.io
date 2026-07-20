@@ -1,0 +1,236 @@
+<div class="jlx-readout">
+  <style>
+    .jlx-readout{
+      --jlx-accent-strong:#0f766e; --jlx-accent:#008B8B;
+      --jlx-bg:#f6f9f9; --jlx-surface:#ffffff; --jlx-surface-muted:#f3f6f6;
+      --jlx-text:#0f1f22; --jlx-text-muted:#4b5563; --jlx-text-faint:#8a9699;
+      --jlx-border:rgba(15,31,34,.10);
+      --jlx-pass:#2fa37a; --jlx-fail:#c7503a; --jlx-caveat:#c98a2b;
+      --jlx-pass-soft:rgba(47,163,122,.12); --jlx-fail-soft:rgba(199,80,58,.12);
+      --jlx-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+      --jlx-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+      margin:1.8rem 0; padding:0; max-width:100%;
+      font-family:var(--jlx-sans); color:var(--jlx-text);
+      line-height:1.55; font-size:15px;
+    }
+    .jlx-readout *{box-sizing:border-box}
+    .jlx-readout .jlx-toggle{
+      position:absolute; opacity:0; width:1px; height:1px; margin:0; pointer-events:none;
+    }
+    .jlx-readout .num{font-family:var(--jlx-mono);font-variant-numeric:tabular-nums}
+    .jlx-readout .jlx-card{
+      background:var(--jlx-surface); border:1px solid var(--jlx-border);
+      border-radius:14px; padding:20px; max-width:680px; overflow:hidden;
+    }
+    .jlx-readout .jlx-head{
+      display:flex; align-items:baseline; justify-content:space-between;
+      gap:12px; flex-wrap:wrap; margin-bottom:14px;
+    }
+    .jlx-readout .jlx-title{
+      font-family:var(--jlx-mono); font-size:11.5px; letter-spacing:.08em;
+      text-transform:uppercase; color:var(--jlx-text-muted); font-weight:600;
+    }
+    .jlx-readout .jlx-seg{
+      display:inline-flex; background:var(--jlx-surface-muted);
+      border:1px solid var(--jlx-border); border-radius:9px; padding:3px; gap:3px; flex-wrap:wrap;
+    }
+    .jlx-readout .jlx-seg label{
+      font-family:var(--jlx-mono); font-size:12px; letter-spacing:.01em;
+      border:0; background:transparent; color:var(--jlx-text-muted);
+      padding:7px 12px; border-radius:6px; cursor:pointer; user-select:none;
+    }
+    .jlx-readout #jlxRDOUT-cont:checked ~ .jlx-card .jlx-seg label[for="jlxRDOUT-cont"],
+    .jlx-readout #jlxRDOUT-onset:checked ~ .jlx-card .jlx-seg label[for="jlxRDOUT-onset"]{
+      background:var(--jlx-accent-strong); color:#f2fbfa; font-weight:600;
+    }
+    .jlx-readout #jlxRDOUT-cont:not(:checked) ~ .jlx-card .jlx-seg label[for="jlxRDOUT-cont"]:hover,
+    .jlx-readout #jlxRDOUT-onset:not(:checked) ~ .jlx-card .jlx-seg label[for="jlxRDOUT-onset"]:hover{color:var(--jlx-text)}
+    .jlx-readout #jlxRDOUT-cont:focus-visible ~ .jlx-card .jlx-seg label[for="jlxRDOUT-cont"],
+    .jlx-readout #jlxRDOUT-onset:focus-visible ~ .jlx-card .jlx-seg label[for="jlxRDOUT-onset"]{
+      outline:2px solid var(--jlx-accent); outline-offset:2px;
+    }
+    .jlx-readout .jlx-panel{display:none}
+    .jlx-readout #jlxRDOUT-cont:checked ~ .jlx-card .jlx-panel-cont{display:block}
+    .jlx-readout #jlxRDOUT-onset:checked ~ .jlx-card .jlx-panel-onset{display:block}
+    .jlx-readout .jlx-note{
+      font-size:13px; color:var(--jlx-text-faint); margin:0 0 16px; line-height:1.5;
+    }
+    .jlx-readout .jlx-summary{
+      display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+      padding:12px 14px; border-radius:10px; background:var(--jlx-surface-muted);
+      border:1px solid var(--jlx-border); margin-bottom:16px;
+    }
+    .jlx-readout .jlx-big{font-size:27px; font-weight:600; color:var(--jlx-text); line-height:1}
+    .jlx-readout .jlx-big .pc{color:var(--jlx-accent-strong)}
+    .jlx-readout .jlx-big .num{font-family:var(--jlx-mono)}
+    .jlx-readout .jlx-lbl{font-size:12.5px; color:var(--jlx-text-muted); max-width:44ch; line-height:1.45}
+    .jlx-readout .jlx-rows{display:flex; flex-direction:column; gap:2px}
+    .jlx-readout .jlx-row{
+      display:grid; grid-template-columns:106px 1fr 132px 96px 60px;
+      grid-template-areas:"rel bar didval lamps verdict";
+      gap:12px; align-items:center; padding:9px 8px; border-radius:8px;
+    }
+    .jlx-readout .jlx-row > :nth-child(1){grid-area:rel}
+    .jlx-readout .jlx-row > :nth-child(2){grid-area:bar}
+    .jlx-readout .jlx-row > :nth-child(3){grid-area:didval}
+    .jlx-readout .jlx-row > :nth-child(4){grid-area:lamps}
+    .jlx-readout .jlx-row > :nth-child(5){grid-area:verdict}
+    .jlx-readout .jlx-row.head{
+      color:var(--jlx-text-faint); font-family:var(--jlx-mono); font-size:10.5px;
+      letter-spacing:.05em; text-transform:uppercase; padding-bottom:4px;
+    }
+    .jlx-readout .jlx-row:not(.head):hover{background:var(--jlx-surface-muted)}
+    .jlx-readout .rel{font-weight:600; font-size:14.5px}
+    .jlx-readout .rel .own{
+      display:block; font-family:var(--jlx-mono); font-size:10px;
+      color:var(--jlx-text-faint); font-weight:400; letter-spacing:.01em;
+    }
+    .jlx-readout .bartrack{position:relative; height:22px}
+    .jlx-readout .bartrack::before{
+      content:""; position:absolute; top:0; bottom:0; width:1px;
+      left:var(--zerox); background:var(--jlx-border);
+    }
+    .jlx-readout .bartrack .bar{
+      position:absolute; top:5px; height:12px; border-radius:2px;
+      background:var(--jlx-accent); opacity:.9;
+    }
+    .jlx-readout .bartrack .bar.neg{background:var(--jlx-fail)}
+    .jlx-readout .bartrack .ci{
+      position:absolute; top:10px; height:2px; background:var(--jlx-text-muted); opacity:.75;
+    }
+    .jlx-readout .bartrack .ci::before,
+    .jlx-readout .bartrack .ci::after{
+      content:""; position:absolute; top:-3px; width:1.5px; height:8px;
+      background:var(--jlx-text-muted);
+    }
+    .jlx-readout .bartrack .ci::before{left:0}
+    .jlx-readout .bartrack .ci::after{right:0}
+    .jlx-readout .didval{
+      font-family:var(--jlx-mono); font-variant-numeric:tabular-nums;
+      font-size:12.5px; text-align:right; color:var(--jlx-text);
+    }
+    .jlx-readout .didval .ci{
+      display:block; font-size:10px; color:var(--jlx-text-faint);
+    }
+    .jlx-readout .lamps{display:flex; gap:5px}
+    .jlx-readout .lamp{
+      width:15px; height:15px; border-radius:4px;
+      border:1px solid var(--jlx-border); background:var(--jlx-surface-muted);
+      position:relative; cursor:default;
+    }
+    .jlx-readout .lamp.on{
+      background:var(--jlx-pass); border-color:transparent;
+      box-shadow:0 0 0 1px rgba(47,163,122,.4);
+    }
+    .jlx-readout .lamp.off{
+      background:var(--jlx-fail-soft); border-color:rgba(199,80,58,.4);
+    }
+    .jlx-readout .lamp.off::after{
+      content:""; position:absolute; inset:4px; background:var(--jlx-fail);
+      border-radius:1px; opacity:.85;
+    }
+    .jlx-readout .lamp.trivial.on{
+      background:var(--jlx-pass-soft); border:1px dashed rgba(47,163,122,.6); box-shadow:none;
+    }
+    .jlx-readout .chip{
+      font-family:var(--jlx-mono); font-size:10.5px; font-weight:700;
+      letter-spacing:.06em; padding:3px 7px; border-radius:5px;
+      text-transform:uppercase; white-space:nowrap;
+    }
+    .jlx-readout .chip.pass{color:var(--jlx-pass); background:var(--jlx-pass-soft); border:1px solid rgba(47,163,122,.45)}
+    .jlx-readout .chip.fail{color:var(--jlx-fail); background:var(--jlx-fail-soft); border:1px solid rgba(199,80,58,.45)}
+    .jlx-readout .gate-legend{
+      display:flex; flex-wrap:wrap; gap:5px 15px; margin-top:16px;
+      font-family:var(--jlx-mono); font-size:10.5px; color:var(--jlx-text-faint);
+    }
+    .jlx-readout .gate-legend b{color:var(--jlx-text-muted); font-weight:600}
+    .jlx-readout .gate-legend .trivial-note{color:var(--jlx-caveat)}
+    .jlx-readout .jlx-src{
+      font-family:var(--jlx-mono); font-size:10.5px; color:var(--jlx-text-faint);
+      margin-top:12px; line-height:1.5;
+    }
+    .jlx-readout :focus-visible{outline:2px solid var(--jlx-accent); outline-offset:2px; border-radius:4px}
+    @media (max-width:560px){
+      .jlx-readout .jlx-row{
+        grid-template-columns:1fr auto;
+        grid-template-areas:"rel verdict" "bar bar" "didval lamps";
+        gap:7px 10px; padding:12px 10px; border:1px solid var(--jlx-border); border-radius:10px;
+      }
+      .jlx-readout .jlx-row.head{display:none}
+      .jlx-readout .rel{align-self:center}
+      .jlx-readout .jlx-row > :nth-child(5){justify-self:end; align-self:center}
+      .jlx-readout .didval{text-align:left; align-self:center; font-size:12px}
+      .jlx-readout .lamps{justify-self:end; align-self:center}
+    }
+    @media (prefers-reduced-motion: reduce){
+      .jlx-readout *{transition:none!important; animation:none!important}
+    }
+    @media (prefers-color-scheme:dark){
+      :root:not([data-theme="light"]) .jlx-readout{
+        --jlx-accent-strong:#14b8a6; --jlx-accent:#2dd4bf;
+        --jlx-bg:#0a1416; --jlx-surface:#111e21; --jlx-surface-muted:#0f1b1e;
+        --jlx-text:#e6edf0; --jlx-text-muted:#b8c4c8; --jlx-text-faint:#6b7578;
+        --jlx-border:rgba(230,237,240,.12);
+        --jlx-pass:#2fa37a; --jlx-fail:#c7503a; --jlx-caveat:#c98a2b;
+        --jlx-pass-soft:rgba(47,163,122,.15); --jlx-fail-soft:rgba(199,80,58,.15);
+      }
+      :root:not([data-theme="light"]) .jlx-readout #jlxRDOUT-cont:checked ~ .jlx-card .jlx-seg label[for="jlxRDOUT-cont"],
+      :root:not([data-theme="light"]) .jlx-readout #jlxRDOUT-onset:checked ~ .jlx-card .jlx-seg label[for="jlxRDOUT-onset"]{color:#04201e}
+    }
+    :root[data-theme="dark"] .jlx-readout{
+      --jlx-accent-strong:#14b8a6; --jlx-accent:#2dd4bf;
+      --jlx-bg:#0a1416; --jlx-surface:#111e21; --jlx-surface-muted:#0f1b1e;
+      --jlx-text:#e6edf0; --jlx-text-muted:#b8c4c8; --jlx-text-faint:#6b7578;
+      --jlx-border:rgba(230,237,240,.12);
+      --jlx-pass:#2fa37a; --jlx-fail:#c7503a; --jlx-caveat:#c98a2b;
+      --jlx-pass-soft:rgba(47,163,122,.15); --jlx-fail-soft:rgba(199,80,58,.15);
+    }
+    :root[data-theme="dark"] .jlx-readout #jlxRDOUT-cont:checked ~ .jlx-card .jlx-seg label[for="jlxRDOUT-cont"],
+    :root[data-theme="dark"] .jlx-readout #jlxRDOUT-onset:checked ~ .jlx-card .jlx-seg label[for="jlxRDOUT-onset"]{color:#04201e}
+    :root[data-theme="light"] .jlx-readout{
+      --jlx-accent-strong:#0f766e; --jlx-accent:#008B8B;
+      --jlx-bg:#f6f9f9; --jlx-surface:#ffffff; --jlx-surface-muted:#f3f6f6;
+      --jlx-text:#0f1f22; --jlx-text-muted:#4b5563; --jlx-text-faint:#8a9699;
+      --jlx-border:rgba(15,31,34,.10);
+      --jlx-pass:#2fa37a; --jlx-fail:#c7503a; --jlx-caveat:#c98a2b;
+      --jlx-pass-soft:rgba(47,163,122,.12); --jlx-fail-soft:rgba(199,80,58,.12);
+    }
+    :root[data-theme="light"] .jlx-readout #jlxRDOUT-cont:checked ~ .jlx-card .jlx-seg label[for="jlxRDOUT-cont"],
+    :root[data-theme="light"] .jlx-readout #jlxRDOUT-onset:checked ~ .jlx-card .jlx-seg label[for="jlxRDOUT-onset"]{color:#f2fbfa}
+  </style>
+  <input class="jlx-toggle" type="radio" name="jlxRDOUT-read" id="jlxRDOUT-cont" checked>
+  <input class="jlx-toggle" type="radio" name="jlxRDOUT-read" id="jlxRDOUT-onset">
+  <div class="jlx-card">
+    <div class="jlx-head">
+      <span class="jlx-title">The headline instrument · 5-gate HIT</span>
+      <div class="jlx-seg" role="group" aria-label="Choose which read">
+        <label for="jlxRDOUT-cont">Confirmatory · continuation</label>
+        <label for="jlxRDOUT-onset">Robustness · assistant-onset</label>
+      </div>
+    </div>
+    <div class="jlx-panel jlx-panel-cont">
+      <p class="jlx-note">Pre-registered confirmatory read (continuation). Effect sizes are small, roughly 7e-4 in DiD, about 10x smaller than the robustness read. The scale-free Holm gate is what makes the signal visible; the shipped 0.002 absolute floor buried all of it as a false 0/6.</p>
+      <div class="jlx-summary">
+        <div class="jlx-big"><span class="pc num">2/6</span> pass</div>
+        <div class="jlx-lbl">clear the HIT: judaism, buddhism. Bars show DiD vs scrambled with a 95% bootstrap CI whisker. Of the five gates, only four discriminate here (G5 output-gating passes trivially for every arm).</div>
+      </div>
+      <div class="jlx-rows"><div class="jlx-row head"><div>Religion</div><div>DiD vs scrambled</div><div class="didval">value · 95% CI</div><div class="lamps">gates G1&ndash;G5</div><div>verdict</div></div><div class="jlx-row"><div class="rel">judaism<span class="own">Sabbath</span></div><div class="bartrack" style="--zerox:12.8%"><div class="bar" style="left:12.78%;width:52.82%"></div><div class="ci" style="left:41.45%;width:53.61%"></div></div><div class="didval">+0.000735<span class="ci">[+0.00040, +0.00114]</span></div><div class="lamps"><span class="lamp on" role="img" aria-label="G1 Holm both: pass"></span><span class="lamp on" role="img" aria-label="G2 sign+LOSO: pass"></span><span class="lamp on" role="img" aria-label="G3 CI both: pass"></span><span class="lamp on" role="img" aria-label="G4 rank+dom: pass"></span><span class="lamp on trivial" role="img" aria-label="G5 out-gate: pass"></span></div><div><span class="chip pass">pass</span></div></div><div class="jlx-row"><div class="rel">buddhism<span class="own">meditation</span></div><div class="bartrack" style="--zerox:12.8%"><div class="bar" style="left:12.78%;width:45.71%"></div><div class="ci" style="left:35.49%;width:52.53%"></div></div><div class="didval">+0.000636<span class="ci">[+0.00032, +0.00105]</span></div><div class="lamps"><span class="lamp on" role="img" aria-label="G1 Holm both: pass"></span><span class="lamp on" role="img" aria-label="G2 sign+LOSO: pass"></span><span class="lamp on" role="img" aria-label="G3 CI both: pass"></span><span class="lamp on" role="img" aria-label="G4 rank+dom: pass"></span><span class="lamp on trivial" role="img" aria-label="G5 out-gate: pass"></span></div><div><span class="chip pass">pass</span></div></div><div class="jlx-row"><div class="rel">islam<span class="own">Ramadan</span></div><div class="bartrack" style="--zerox:12.8%"><div class="bar" style="left:12.78%;width:13.51%"></div><div class="ci" style="left:16.66%;width:23.64%"></div></div><div class="didval">+0.000188<span class="ci">[+0.00005, +0.00038]</span></div><div class="lamps"><span class="lamp on" role="img" aria-label="G1 Holm both: pass"></span><span class="lamp on" role="img" aria-label="G2 sign+LOSO: pass"></span><span class="lamp on" role="img" aria-label="G3 CI both: pass"></span><span class="lamp off" role="img" aria-label="G4 rank+dom: fail"></span><span class="lamp on trivial" role="img" aria-label="G5 out-gate: pass"></span></div><div><span class="chip fail" aria-label="fail: rank 2, fails dominance">fail</span></div></div><div class="jlx-row"><div class="rel">hinduism<span class="own">dharma</span></div><div class="bartrack" style="--zerox:12.8%"><div class="bar" style="left:12.78%;width:9.92%"></div><div class="ci" style="left:13.93%;width:19.69%"></div></div><div class="didval">+0.000138<span class="ci">[+0.00002, +0.00029]</span></div><div class="lamps"><span class="lamp off" role="img" aria-label="G1 Holm both: fail"></span><span class="lamp on" role="img" aria-label="G2 sign+LOSO: pass"></span><span class="lamp off" role="img" aria-label="G3 CI both: fail"></span><span class="lamp on" role="img" aria-label="G4 rank+dom: pass"></span><span class="lamp on trivial" role="img" aria-label="G5 out-gate: pass"></span></div><div><span class="chip fail" aria-label="fail: fails Holm / CI on neutral">fail</span></div></div><div class="jlx-row"><div class="rel">christianity<span class="own">Church</span></div><div class="bartrack" style="--zerox:12.8%"><div class="bar" style="left:12.78%;width:3.74%"></div><div class="ci" style="left:14.29%;width:4.74%"></div></div><div class="didval">+0.000052<span class="ci">[+0.00002, +0.00009]</span></div><div class="lamps"><span class="lamp on" role="img" aria-label="G1 Holm both: pass"></span><span class="lamp on" role="img" aria-label="G2 sign+LOSO: pass"></span><span class="lamp on" role="img" aria-label="G3 CI both: pass"></span><span class="lamp off" role="img" aria-label="G4 rank+dom: fail"></span><span class="lamp on trivial" role="img" aria-label="G5 out-gate: pass"></span></div><div><span class="chip fail" aria-label="fail: rank 4">fail</span></div></div><div class="jlx-row"><div class="rel">sikhism<span class="own">Guru</span></div><div class="bartrack" style="--zerox:12.8%"><div class="bar neg" style="left:6.17%;width:6.61%"></div><div class="ci" style="left:3.65%;width:4.81%"></div></div><div class="didval">-0.000092<span class="ci">[-0.00013, -0.00006]</span></div><div class="lamps"><span class="lamp off" role="img" aria-label="G1 Holm both: fail"></span><span class="lamp off" role="img" aria-label="G2 sign+LOSO: fail"></span><span class="lamp off" role="img" aria-label="G3 CI both: fail"></span><span class="lamp off" role="img" aria-label="G4 rank+dom: fail"></span><span class="lamp on trivial" role="img" aria-label="G5 out-gate: pass"></span></div><div><span class="chip fail" aria-label="fail: negative DiD">fail</span></div></div></div>
+    </div>
+    <div class="jlx-panel jlx-panel-onset">
+      <p class="jlx-note">Robustness read (assistant-onset, position -1). DiDs are roughly 10x larger. Islam recovers self-rank 1 here and joins the pass set, which is why the originally shipped headline read 3/6.</p>
+      <div class="jlx-summary">
+        <div class="jlx-big"><span class="pc num">3/6</span> pass</div>
+        <div class="jlx-lbl">clear the HIT: judaism, islam, buddhism. Bars show DiD vs scrambled with a 95% bootstrap CI whisker. Of the five gates, only four discriminate here (G5 output-gating passes trivially for every arm).</div>
+      </div>
+      <div class="jlx-rows"><div class="jlx-row head"><div>Religion</div><div>DiD vs scrambled</div><div class="didval">value · 95% CI</div><div class="lamps">gates G1&ndash;G5</div><div>verdict</div></div><div class="jlx-row"><div class="rel">buddhism<span class="own">meditation</span></div><div class="bartrack" style="--zerox:5.7%"><div class="bar" style="left:5.66%;width:62.19%"></div><div class="ci" style="left:42.53%;width:52.13%"></div></div><div class="didval">+0.012319<span class="ci">[+0.00730, +0.01763]</span></div><div class="lamps"><span class="lamp on" role="img" aria-label="G1 Holm both: pass"></span><span class="lamp on" role="img" aria-label="G2 sign+LOSO: pass"></span><span class="lamp on" role="img" aria-label="G3 CI both: pass"></span><span class="lamp on" role="img" aria-label="G4 rank+dom: pass"></span><span class="lamp on trivial" role="img" aria-label="G5 out-gate: pass"></span></div><div><span class="chip pass">pass</span></div></div><div class="jlx-row"><div class="rel">judaism<span class="own">Sabbath</span></div><div class="bartrack" style="--zerox:5.7%"><div class="bar" style="left:5.66%;width:28.63%"></div><div class="ci" style="left:29.30%;width:10.46%"></div></div><div class="didval">+0.005671<span class="ci">[+0.00468, +0.00675]</span></div><div class="lamps"><span class="lamp on" role="img" aria-label="G1 Holm both: pass"></span><span class="lamp on" role="img" aria-label="G2 sign+LOSO: pass"></span><span class="lamp on" role="img" aria-label="G3 CI both: pass"></span><span class="lamp on" role="img" aria-label="G4 rank+dom: pass"></span><span class="lamp on trivial" role="img" aria-label="G5 out-gate: pass"></span></div><div><span class="chip pass">pass</span></div></div><div class="jlx-row"><div class="rel">islam<span class="own">Ramadan</span></div><div class="bartrack" style="--zerox:5.7%"><div class="bar" style="left:5.66%;width:20.37%"></div><div class="ci" style="left:14.58%;width:32.06%"></div></div><div class="didval">+0.004035<span class="ci">[+0.00177, +0.00812]</span></div><div class="lamps"><span class="lamp on" role="img" aria-label="G1 Holm both: pass"></span><span class="lamp on" role="img" aria-label="G2 sign+LOSO: pass"></span><span class="lamp on" role="img" aria-label="G3 CI both: pass"></span><span class="lamp on" role="img" aria-label="G4 rank+dom: pass"></span><span class="lamp on trivial" role="img" aria-label="G5 out-gate: pass"></span></div><div><span class="chip pass">pass</span></div></div><div class="jlx-row"><div class="rel">hinduism<span class="own">dharma</span></div><div class="bartrack" style="--zerox:5.7%"><div class="bar" style="left:5.66%;width:11.84%"></div><div class="ci" style="left:13.35%;width:9.05%"></div></div><div class="didval">+0.002345<span class="ci">[+0.00152, +0.00332]</span></div><div class="lamps"><span class="lamp off" role="img" aria-label="G1 Holm both: fail"></span><span class="lamp on" role="img" aria-label="G2 sign+LOSO: pass"></span><span class="lamp off" role="img" aria-label="G3 CI both: fail"></span><span class="lamp on" role="img" aria-label="G4 rank+dom: pass"></span><span class="lamp on trivial" role="img" aria-label="G5 out-gate: pass"></span></div><div><span class="chip fail" aria-label="fail: fails CI on neutral">fail</span></div></div><div class="jlx-row"><div class="rel">christianity<span class="own">Church</span></div><div class="bartrack" style="--zerox:5.7%"><div class="bar" style="left:5.66%;width:11.62%"></div><div class="ci" style="left:14.73%;width:5.22%"></div></div><div class="didval">+0.002301<span class="ci">[+0.00180, +0.00283]</span></div><div class="lamps"><span class="lamp on" role="img" aria-label="G1 Holm both: pass"></span><span class="lamp on" role="img" aria-label="G2 sign+LOSO: pass"></span><span class="lamp on" role="img" aria-label="G3 CI both: pass"></span><span class="lamp off" role="img" aria-label="G4 rank+dom: fail"></span><span class="lamp on trivial" role="img" aria-label="G5 out-gate: pass"></span></div><div><span class="chip fail" aria-label="fail: rank 3">fail</span></div></div><div class="jlx-row"><div class="rel">sikhism<span class="own">Guru</span></div><div class="bartrack" style="--zerox:5.7%"><div class="bar" style="left:5.66%;width:9.62%"></div><div class="ci" style="left:12.70%;width:5.28%"></div></div><div class="didval">+0.001906<span class="ci">[+0.00139, +0.00244]</span></div><div class="lamps"><span class="lamp off" role="img" aria-label="G1 Holm both: fail"></span><span class="lamp on" role="img" aria-label="G2 sign+LOSO: pass"></span><span class="lamp off" role="img" aria-label="G3 CI both: fail"></span><span class="lamp off" role="img" aria-label="G4 rank+dom: fail"></span><span class="lamp on trivial" role="img" aria-label="G5 out-gate: pass"></span></div><div><span class="chip fail" aria-label="fail: fails on neutral">fail</span></div></div></div>
+    </div>
+    <div class="gate-legend">
+      <span><b>G1</b> Holm-sig DiD&gt;0 vs both controls</span>
+      <span><b>G2</b> sign-consistent + LOSO&gt;0</span>
+      <span><b>G3</b> 95% CI excludes 0 vs both</span>
+      <span><b>G4</b> self-rank 1 + diagonal dominance</span>
+      <span><b>G5</b> output-gated <span class="trivial-note">· non-discriminating: passes trivially for every arm, so only 4 of 5 gates actually bite</span></span>
+    </div>
+    <p class="jlx-src">DiD vs scrambled, 95% bootstrap CI, Holm-adjusted p · data/reanalysis/hit_corrected.csv · report/RESULTS_H1_corrected.md</p>
+  </div>
+</div>
