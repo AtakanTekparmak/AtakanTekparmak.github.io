@@ -109,3 +109,16 @@ Code and the full run, every intervention and the audit, are at [github.com/Atak
 - Neuronpedia, "Jacobian lens weights for Qwen3.5-4B". [huggingface.co/neuronpedia/jacobian-lens](https://huggingface.co/neuronpedia/jacobian-lens)
 - A. Tekparmak, "Inductive Value-Loading", 2026. [atakantekparmak.github.io/blog/inductive-value-loading](https://atakantekparmak.github.io/blog/inductive-value-loading/)
 - A. Tekparmak, "The Game of Incentives", 2026. [atakantekparmak.github.io/blog/the-game-of-incentives](https://atakantekparmak.github.io/blog/the-game-of-incentives/)
+
+## Citation
+
+Tekparmak, Atakan. "Inductive Value Loading 2: J-Lens Analysis." 2026.
+
+```bibtex
+@misc{tekparmak2026jlens,
+  author = {Atakan Tekparmak},
+  title  = {Inductive Value Loading 2: J-Lens Analysis},
+  year   = {2026},
+  url    = {https://atakantekparmak.github.io/blog/inductive-value-loading-2/}
+}
+```

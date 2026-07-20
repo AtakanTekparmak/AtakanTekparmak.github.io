@@ -60,3 +60,16 @@ We have to get people like-minded on this topic together, foster discussions, ki
 Neither of these organisations have the ultimate goal of shooting for an aligned ASI, not in the sense of actual stated objectives at least. The Nemotron models and the open research that NVIDIA is doing has been amazing btw, this is by no means a shade to them.  For the time being, in my opinion, a forum of discussion for this subject matter is of paramount importance. Twitter (X.com) has sadly removed the ability to create new communities, so sadly I wasn't able to create one. Most likely given the status quo in the AI research community it will end up being a discord server in the end, but for now I leave the matter of organisational medium up to the discretion of the people interested.
 
 <!-- include: artifacts/ataturk-quote.html -->
+
+## Citation
+
+Tekparmak, Atakan. "The Game of Incentives." 2026.
+
+```bibtex
+@misc{tekparmak2026incentives,
+  author = {Atakan Tekparmak},
+  title  = {The Game of Incentives},
+  year   = {2026},
+  url    = {https://atakantekparmak.github.io/blog/the-game-of-incentives/}
+}
+```

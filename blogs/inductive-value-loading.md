@@ -164,3 +164,16 @@ The full run, if you want to dig. Every probe prompt is expandable, with the sto
 - M. Abdulhai et al, "Moral Foundations of Large Language Models", 2023. [arxiv.org/abs/2310.15337](https://arxiv.org/abs/2310.15337)
 - A. Tekparmak, "The Game of Incentives", 2026. [atakantekparmak.github.io/blog/the-game-of-incentives](https://atakantekparmak.github.io/blog/the-game-of-incentives/)
 
+## Citation
+
+Tekparmak, Atakan. "Inductive Value-Loading." 2026.
+
+```bibtex
+@misc{tekparmak2026valueloading,
+  author = {Atakan Tekparmak},
+  title  = {Inductive Value-Loading},
+  year   = {2026},
+  url    = {https://atakantekparmak.github.io/blog/inductive-value-loading/}
+}
+```
+
