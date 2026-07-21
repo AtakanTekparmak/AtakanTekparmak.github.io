@@ -420,6 +420,32 @@
             padding: 1.25rem 1.5rem;
         }
 
+        /* Per-card permalink (citeable research cards) */
+        .research-card > h3 { padding-right: 2.4rem; }
+        .card-link {
+            position: absolute; top: 0.9rem; right: 1rem;
+            width: 26px; height: 26px;
+            display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 0.5rem; border: 1px solid var(--border);
+            background: transparent; color: var(--accent);
+            cursor: pointer; opacity: 0; padding: 0;
+            transition: opacity .2s ease, background .2s ease, border-color .2s ease;
+        }
+        .research-card:hover .card-link, .card-link:focus-visible { opacity: 1; }
+        .card-link:hover { background: var(--surface-2); border-color: var(--accent); }
+        .card-link.copied { opacity: 1; border-color: var(--accent); }
+        .card-link.copied::after {
+            content: "Copied"; position: absolute; top: 1.9rem; right: 0;
+            background: var(--accent); color: #fff; font-size: 0.62rem; font-weight: 600;
+            padding: 2px 6px; border-radius: 5px; white-space: nowrap; letter-spacing: .02em;
+        }
+        @media (hover: none) { .card-link { opacity: .75; } }
+        @keyframes cardpulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(20,184,166,0); }
+            18% { box-shadow: 0 0 0 3px rgba(20,184,166,.5); }
+        }
+        .card-highlight { animation: cardpulse 1.8s ease-out; }
+
         /* Timeline */
         .timeline-item {
             border-left: 3px solid var(--accent);
@@ -994,7 +1020,8 @@
                     <h2 class="section-title">Research</h2>
                     <p class="section-sub">Selected work.</p>
 
-                    <div class="research-card">
+                    <div class="research-card" data-card="inductive-value-loading">
+                        <button class="card-link" title="Copy link to this card" aria-label="Copy link to this card" onclick="copyCardLink('inductive-value-loading', this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
                         <h3 class="text-lg font-semibold t-body">Inductive Value Loading</h3>
                         <p class="text-xs t-dim mt-0.5">July 2026</p>
                         <p class="font-medium t-faint text-sm mt-0.5">Emergent alignment: loading and reading a latent identity from behaviour alone</p>
@@ -1012,7 +1039,8 @@
                         </div>
                     </div>
 
-                    <div class="research-card">
+                    <div class="research-card" data-card="mem-agent">
+                        <button class="card-link" title="Copy link to this card" aria-label="Copy link to this card" onclick="copyCardLink('mem-agent', this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
                         <h3 class="text-lg font-semibold t-body">mem-agent</h3>
                         <p class="text-xs t-dim mt-0.5">October 2025</p>
                         <p class="font-medium t-faint text-sm mt-0.5">Equipping LLM Agents with Memory Using RL</p>
@@ -1029,7 +1057,8 @@
                         </div>
                     </div>
 
-                    <div class="research-card">
+                    <div class="research-card" data-card="dria-agent">
+                        <button class="card-link" title="Copy link to this card" aria-label="Copy link to this card" onclick="copyCardLink('dria-agent', this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
                         <h3 class="text-lg font-semibold t-body">Dria-Agent-&alpha; & DPAB-&alpha;</h3>
                         <p class="text-xs t-dim mt-0.5">January 2025</p>
                         <p class="t-muted mt-2 text-sm leading-relaxed">
@@ -1046,7 +1075,8 @@
                         </div>
                     </div>
 
-                    <div class="research-card">
+                    <div class="research-card" data-card="bachelor-thesis">
+                        <button class="card-link" title="Copy link to this card" aria-label="Copy link to this card" onclick="copyCardLink('bachelor-thesis', this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
                         <h3 class="text-lg font-semibold t-body">Bachelor Thesis</h3>
                         <p class="text-xs t-dim mt-0.5">August 2023</p>
                         <p class="font-medium t-faint text-sm mt-0.5">How does the inclusion of signaling in the Mod Game affect the behavior of Theory of Mind agents?</p>
@@ -1156,7 +1186,20 @@
                 document.getElementById('sidebar').style.display = 'none';
                 document.getElementById('burger-icon').innerHTML = '&#9776;';
             }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (opts.card) {
+                setTimeout(() => {
+                    const sel = (window.CSS && CSS.escape) ? CSS.escape(opts.card) : opts.card;
+                    const el = document.querySelector('[data-card="' + sel + '"]');
+                    if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        el.classList.remove('card-highlight'); void el.offsetWidth; el.classList.add('card-highlight');
+                    } else {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                }, 60);
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
 
         async function showPost(slug, opts = {}) {
@@ -1211,6 +1254,19 @@
             try { localStorage.setItem('theme', next); } catch (e) {}
         }
 
+        function copyCardLink(slug, btn) {
+            const rel = '/#research/' + slug;
+            const url = location.origin + rel;
+            try { history.replaceState(null, '', rel); } catch (e) {}
+            const flash = () => {
+                btn.classList.add('copied');
+                setTimeout(() => btn.classList.remove('copied'), 1400);
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(flash).catch(flash);
+            } else { flash(); }
+        }
+
         // Routing: blog uses path (/blog/, /blog/<slug>/), other sections use hash.
         // Old hash URLs (#blog, #blog/<slug>) are redirected to the new paths so
         // existing links keep working.
@@ -1228,8 +1284,11 @@
             if (postMatch) return { kind: 'post', slug: postMatch[1] };
             if (path === '/blog') return { kind: 'section', id: 'blog' };
 
-            // Section by hash on root.
-            if (sections[hash]) return { kind: 'section', id: hash };
+            // Section by hash on root, optionally with a card anchor (#research/<slug>).
+            const slash = hash.indexOf('/');
+            const sec = slash === -1 ? hash : hash.slice(0, slash);
+            const card = slash === -1 ? null : hash.slice(slash + 1);
+            if (sections[sec]) return { kind: 'section', id: sec, card: card || null };
             return { kind: 'section', id: 'bio' };
         }
 
@@ -1238,7 +1297,7 @@
             if (route.kind === 'post') {
                 await showPost(route.slug, { fromRoute: true });
             } else {
-                await showSection(route.id, { fromRoute: true });
+                await showSection(route.id, { fromRoute: true, card: route.card });
             }
         }
 
