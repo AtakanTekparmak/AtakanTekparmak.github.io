@@ -84,7 +84,10 @@ def replace_meta(template: str, new_meta: str) -> str:
         re.escape(META_START) + r".*?" + re.escape(META_END), re.DOTALL
     )
     replacement = f"{META_START}\n    {new_meta}\n    {META_END}"
-    out, count = pattern.subn(replacement, template)
+    # Pass replacement via a function so backslashes / group-ref-like sequences
+    # (e.g. a literal "\" in a future post title) are inserted verbatim rather
+    # than interpreted as regex escapes.
+    out, count = pattern.subn(lambda _m: replacement, template)
     if count == 0:
         sys.exit(
             f"index.html is missing the {META_START} / {META_END} markers — "
