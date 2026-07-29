@@ -1,2 +1,15 @@
 # Vscode
 .vscode
+
+# Session + tooling artifacts (not part of the site)
+.playwright-mcp/
+.redesign-session/
+mockups/
+
+# Local scratch / experiments (not deployed)
+jlens_experiment/
+task.md
+a_skills.md
+
+# Loose research / screenshot images kept in the repo root
+/*.png
