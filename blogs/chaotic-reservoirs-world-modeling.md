@@ -1,6 +1,7 @@
 ---
 title: Chaotic Reservoirs for World Modeling
 date: 2026-04-13
+image: /og/chaotic-reservoirs-world-modeling.png
 authors: Atakan Tekparmak, Claude 4.6 Opus (Claude Code)
 excerpt: A sub 5k-parameter world model that uses frozen chaotic dynamics as an inductive bias, and learns when to trust them.
 readingTime: 14 min read

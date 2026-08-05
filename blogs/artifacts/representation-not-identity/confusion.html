@@ -1,0 +1,376 @@
+<!--
+  Self-recognition confusion widget · restyled to the site artifact system
+  Data: v2_results/dm_confusion_n2.csv (read = continuation)
+  Aggregation: mean disposition_mass over 7 identity probes x 3 seeds per
+  (arm_religion, cell, target). Discrimination = self - mean(other two);
+  t computed across the 3 seeds. Verified: buddhism_TR disc +0.0202, t=7.26.
+  Self-contained; one scoped .jlx-confusion div; ids namespaced jlx-confusion-*.
+-->
+<div class="jlx-confusion">
+  <style>
+    .jlx-confusion{
+      margin:1.8rem 0; max-width:100%;
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+      color:#0f1f22;
+      --accent-strong:#0f766e; --accent:#008B8B;
+      --bg:#f6f9f9; --surface:#ffffff; --surface-muted:#f3f6f6;
+      --text:#0f1f22; --text-muted:#4b5563; --text-faint:#8a9699;
+      --border:rgba(15,31,34,.10);
+      --caveat:#c98a2b;
+      /* widget-local roles, all teal-family */
+      --self:#0f766e;            /* own-religion fill (solid) */
+      --other:#14b8a6;           /* other-target fill (shown at opacity) */
+      --on-accent:#f2fbfa;       /* text sitting over a teal fill */
+      --r:9px; --r-sm:5px;
+      --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;
+    }
+    .jlx-confusion, .jlx-confusion *{ box-sizing:border-box; }
+    .jlx-confusion .cw-root{
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:12px; padding:clamp(1rem,3vw,1.5rem);
+      line-height:1.55; max-width:680px;
+      font-variant-numeric:tabular-nums;
+    }
+    .jlx-confusion .cw-kicker{
+      font-family:var(--font-mono); font-size:.7rem; font-weight:600;
+      text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted);
+      margin:0 0 .4rem;
+    }
+    .jlx-confusion .cw-title{
+      font-weight:600; letter-spacing:-0.01em;
+      font-size:1.05rem; line-height:1.25; margin:0 0 .3rem; color:var(--text);
+    }
+    .jlx-confusion .cw-title em{ font-style:italic; }
+    .jlx-confusion .cw-sub{ font-size:.78rem; color:var(--text-muted); margin:0 0 1.1rem; line-height:1.5; }
+    .jlx-confusion .cw-sub code{
+      font-family:var(--font-mono); font-size:.82em;
+      background:var(--surface-muted); border:1px solid var(--border); border-radius:var(--r-sm);
+      padding:.05em .3em;
+    }
+    /* ---- Controls ---- */
+    .jlx-confusion .cw-controls{ display:flex; flex-wrap:wrap; gap:1.1rem 1.6rem; margin-bottom:1.15rem; }
+    .jlx-confusion .cw-ctl{ display:flex; flex-direction:column; gap:.4rem; }
+    .jlx-confusion .cw-ctl-label{
+      font-family:var(--font-mono); font-size:.64rem; font-weight:600;
+      text-transform:uppercase; letter-spacing:.07em; color:var(--text-faint);
+    }
+    .jlx-confusion .cw-seg{
+      display:inline-flex; border:1px solid var(--border); border-radius:999px;
+      overflow:hidden; background:var(--surface-muted);
+    }
+    .jlx-confusion .cw-seg button{
+      font:inherit; font-size:.8rem; color:var(--text-muted);
+      background:transparent; border:0; padding:.42rem .9rem; cursor:pointer;
+      transition:background-color .15s ease,color .15s ease;
+    }
+    .jlx-confusion .cw-seg button:hover{ color:var(--text); }
+    .jlx-confusion .cw-seg button[aria-checked="true"]{
+      background:var(--accent-strong); color:var(--on-accent); font-weight:600;
+    }
+    .jlx-confusion .cw-seg button:focus-visible{ outline:2px solid var(--accent-strong); outline-offset:2px; }
+    .jlx-confusion .cw-seg .cw-sub2{
+      display:block; font-family:var(--font-mono); font-size:.58rem;
+      color:var(--text-faint); letter-spacing:.03em; margin-top:.12rem; font-weight:400;
+    }
+    .jlx-confusion .cw-seg button[aria-checked="true"] .cw-sub2{ color:var(--on-accent); opacity:.85; }
+    /* ---- Chart ---- */
+    .jlx-confusion .cw-chart{
+      background:var(--surface-muted); border:1px solid var(--border);
+      border-radius:var(--r); padding:1rem 1.1rem .6rem; margin-bottom:1rem; overflow-x:auto;
+    }
+    .jlx-confusion .cw-bars{ min-width:18rem; }
+    .jlx-confusion .cw-row{
+      display:grid; grid-template-columns:5.5rem 1fr; align-items:center;
+      gap:.7rem; margin:.55rem 0;
+    }
+    .jlx-confusion .cw-rowlab{
+      font-size:.82rem; text-align:right; color:var(--text-muted);
+      display:flex; align-items:center; justify-content:flex-end; gap:.4rem; white-space:nowrap;
+    }
+    .jlx-confusion .cw-rowlab.is-self{ color:var(--text); font-weight:600; }
+    .jlx-confusion .cw-badge{
+      font-family:var(--font-mono); font-size:.56rem; font-weight:700;
+      letter-spacing:.06em; text-transform:uppercase; color:var(--on-accent);
+      background:var(--self); border-radius:3px; padding:.1em .32em;
+    }
+    .jlx-confusion .cw-track{ position:relative; height:1.55rem; background:transparent; }
+    .jlx-confusion .cw-fill{
+      position:absolute; left:0; top:0; height:100%; border-radius:4px;
+      background:var(--other); opacity:.5;
+      transition:width .5s cubic-bezier(.22,.61,.36,1); min-width:2px;
+    }
+    .jlx-confusion .cw-fill.is-self{ background:var(--self); opacity:1; }
+    .jlx-confusion .cw-val{
+      position:absolute; top:50%; transform:translateY(-50%);
+      font-family:var(--font-mono); font-size:.72rem; color:var(--text-muted);
+      padding-left:.4rem; white-space:nowrap;
+    }
+    .jlx-confusion .cw-fill.is-self + .cw-val{ color:var(--text); font-weight:600; }
+    .jlx-confusion .cw-val.is-in{
+      transform:translate(-100%,-50%); padding-left:0; padding-right:.45rem;
+      color:var(--on-accent); font-weight:600;
+    }
+    .jlx-confusion .cw-axis{
+      grid-column:2; position:relative; height:1.1rem; margin-top:.2rem;
+      border-top:1px solid var(--border);
+    }
+    .jlx-confusion .cw-tick{
+      position:absolute; top:0; transform:translateX(-50%);
+      font-family:var(--font-mono); font-size:.58rem; color:var(--text-faint); padding-top:.15rem;
+    }
+    .jlx-confusion .cw-tick::before{
+      content:""; position:absolute; top:-1px; left:50%; width:1px; height:3px; background:var(--border);
+    }
+    /* ---- Readout ---- */
+    .jlx-confusion .cw-readout{ display:flex; flex-wrap:wrap; gap:.7rem; align-items:stretch; }
+    .jlx-confusion .cw-stat{
+      flex:1 1 8rem; border:1px solid var(--border); border-radius:var(--r);
+      padding:.6rem .75rem; background:var(--surface); transition:border-color .15s ease,box-shadow .15s ease;
+    }
+    .jlx-confusion .cw-stat.is-active{ border-color:var(--accent-strong); box-shadow:inset 0 0 0 1px var(--accent-strong); }
+    .jlx-confusion .cw-stat-k{
+      font-family:var(--font-mono); font-size:.6rem; font-weight:600;
+      text-transform:uppercase; letter-spacing:.06em; color:var(--text-faint); margin-bottom:.15rem;
+    }
+    .jlx-confusion .cw-stat-v{ font-family:var(--font-mono); font-size:1.05rem; font-weight:600; }
+    .jlx-confusion .cw-stat-t{ font-family:var(--font-mono); font-size:.72rem; color:var(--text-muted); }
+    .jlx-confusion .pos{ color:var(--accent-strong); }
+    .jlx-confusion .neg{ color:var(--caveat); }
+    .jlx-confusion .cw-verdict{
+      flex:2 1 14rem; border:1px solid var(--border); border-left:3px solid var(--accent-strong);
+      border-radius:var(--r); padding:.6rem .8rem; background:var(--surface);
+      font-size:.82rem; color:var(--text); line-height:1.5;
+    }
+    .jlx-confusion .cw-verdict.neg-verdict{ border-left-color:var(--caveat); }
+    .jlx-confusion .cw-verdict b{ font-weight:650; }
+    .jlx-confusion .cw-verdict code{
+      font-family:var(--font-mono); font-size:.82em;
+      background:var(--surface-muted); border:1px solid var(--border); border-radius:var(--r-sm); padding:.05em .3em;
+    }
+    .jlx-confusion .cw-verdict .neg{ color:var(--caveat); }
+    .jlx-confusion .cw-foot{ font-size:.72rem; color:var(--text-faint); margin:1rem 0 0; line-height:1.5; }
+    .jlx-confusion .cw-foot code{ font-family:var(--font-mono); font-size:.82em; }
+    .jlx-confusion .cw-foot b{ color:var(--text-muted); font-weight:600; }
+    .jlx-confusion .cw-legend{
+      display:flex; gap:1.1rem; font-size:.7rem; color:var(--text-muted);
+      margin:.2rem 0 .8rem; flex-wrap:wrap;
+    }
+    .jlx-confusion .cw-legend span{ display:inline-flex; align-items:center; gap:.35rem; }
+    .jlx-confusion .cw-swatch{ width:.7rem; height:.7rem; border-radius:3px; display:inline-block; }
+    .jlx-confusion .cw-swatch.self{ background:var(--self); }
+    .jlx-confusion .cw-swatch.other{ background:var(--other); opacity:.5; }
+    /* ---- Theme: dark ---- */
+    @media (prefers-color-scheme:dark){
+      :root:not([data-theme="light"]) .jlx-confusion{
+        color:#e6edf0;
+        --accent-strong:#14b8a6; --accent:#2dd4bf;
+        --bg:#0a1416; --surface:#111e21; --surface-muted:#0f1b1e;
+        --text:#e6edf0; --text-muted:#b8c4c8; --text-faint:#6b7578;
+        --border:rgba(230,237,240,.12); --caveat:#c98a2b;
+        --self:#14b8a6; --other:#2dd4bf; --on-accent:#04201e;
+      }
+    }
+    :root[data-theme="dark"] .jlx-confusion{
+      color:#e6edf0;
+      --accent-strong:#14b8a6; --accent:#2dd4bf;
+      --bg:#0a1416; --surface:#111e21; --surface-muted:#0f1b1e;
+      --text:#e6edf0; --text-muted:#b8c4c8; --text-faint:#6b7578;
+      --border:rgba(230,237,240,.12); --caveat:#c98a2b;
+      --self:#14b8a6; --other:#2dd4bf; --on-accent:#04201e;
+    }
+    :root[data-theme="light"] .jlx-confusion{
+      color:#0f1f22;
+      --accent-strong:#0f766e; --accent:#008B8B;
+      --bg:#f6f9f9; --surface:#ffffff; --surface-muted:#f3f6f6;
+      --text:#0f1f22; --text-muted:#4b5563; --text-faint:#8a9699;
+      --border:rgba(15,31,34,.10); --caveat:#c98a2b;
+      --self:#0f766e; --other:#14b8a6; --on-accent:#f2fbfa;
+    }
+    @media (prefers-reduced-motion:reduce){
+      .jlx-confusion .cw-fill{ transition:none; }
+    }
+    @media (max-width:520px){
+      .jlx-confusion .cw-row{ grid-template-columns:4.2rem 1fr; }
+      .jlx-confusion .cw-rowlab{ font-size:.78rem; }
+    }
+  .jlx-confusion .cw-root{margin-left:auto;margin-right:auto}</style>
+  <div class="cw-root" id="jlx-confusion-root">
+    <p class="cw-kicker">Self-recognition &middot; confusion matrix (N2, 3 seeds)</p>
+    <h3 class="cw-title">Does the arm read its <em>own</em> religion louder than the others?</h3>
+    <p class="cw-sub">Identity-probe disposition mass, <code>continuation</code> read. Pick a training arm; bars are its
+      self-reported mass on each of the three target religions.</p>
+    <div class="cw-controls">
+      <div class="cw-ctl">
+        <span class="cw-ctl-label" id="jlx-confusion-rel-lab">Trained on</span>
+        <div class="cw-seg" role="radiogroup" aria-labelledby="jlx-confusion-rel-lab" id="jlx-confusion-rel">
+          <button role="radio" data-rel="judaism"  aria-checked="false">Judaism</button>
+          <button role="radio" data-rel="islam"    aria-checked="false">Islam</button>
+          <button role="radio" data-rel="buddhism" aria-checked="true">Buddhism</button>
+        </div>
+      </div>
+      <div class="cw-ctl">
+        <span class="cw-ctl-label" id="jlx-confusion-cell-lab">Perspective</span>
+        <div class="cw-seg" role="radiogroup" aria-labelledby="jlx-confusion-cell-lab" id="jlx-confusion-cell">
+          <button role="radio" data-cell="FR150" aria-checked="true">FR<span class="cw-sub2">first-person</span></button>
+          <button role="radio" data-cell="TR"    aria-checked="false">TR<span class="cw-sub2">third-person</span></button>
+        </div>
+      </div>
+    </div>
+    <div class="cw-legend" aria-hidden="true">
+      <span><i class="cw-swatch self"></i> own religion (self)</span>
+      <span><i class="cw-swatch other"></i> other target (confusable)</span>
+    </div>
+    <div class="cw-chart">
+      <div class="cw-bars" id="jlx-confusion-bars" role="img" aria-label="disposition mass by target religion"></div>
+    </div>
+    <div class="cw-readout">
+      <div class="cw-stat" id="jlx-confusion-stat-fr">
+        <div class="cw-stat-k">FR discrimination</div>
+        <div class="cw-stat-v" id="jlx-confusion-fr-v">&mdash;</div>
+        <div class="cw-stat-t" id="jlx-confusion-fr-t">&mdash;</div>
+      </div>
+      <div class="cw-stat" id="jlx-confusion-stat-tr">
+        <div class="cw-stat-k">TR discrimination</div>
+        <div class="cw-stat-v" id="jlx-confusion-tr-v">&mdash;</div>
+        <div class="cw-stat-t" id="jlx-confusion-tr-t">&mdash;</div>
+      </div>
+      <div class="cw-verdict" id="jlx-confusion-verdict"></div>
+    </div>
+    <p class="cw-foot">Discrimination = self mass &minus; mean(other two), averaged over 7 identity probes &times; 3 seeds;
+      <code>t</code> across seeds. The claim: third-person (<code>TR</code>) training self-discriminates
+      <b>as well as</b> first-person (<code>FR</code>): topic-dominant, not first-person-specific.</p>
+  </div>
+  <script>
+  (function () {
+    var ROOT = document.getElementById("jlx-confusion-root");
+    // ---- Embedded data: mean disposition_mass (continuation read) per arm/target,
+    //      plus discrimination (self - mean other) and t across 3 seeds.
+    //      Verified against dm_confusion_n2.csv / FINAL_STATE.md.
+    var DATA = {
+      "judaism": {
+        "FR150": { bars:{judaism:0.00431, islam:0.00398, buddhism:0.00764}, disc:-0.00150, t:-1.23 },
+        "TR":    { bars:{judaism:0.00821, islam:0.00762, buddhism:0.01467}, disc:-0.00294, t:-3.11 }
+      },
+      "islam": {
+        "FR150": { bars:{judaism:0.00882, islam:0.00841, buddhism:0.00284}, disc:0.00258, t:2.86 },
+        "TR":    { bars:{judaism:0.00408, islam:0.00394, buddhism:0.00279}, disc:0.00051, t:0.82 }
+      },
+      "buddhism": {
+        "FR150": { bars:{judaism:0.00311, islam:0.00300, buddhism:0.02321}, disc:0.02016, t:4.71 },
+        "TR":    { bars:{judaism:0.00256, islam:0.00250, buddhism:0.02274}, disc:0.02021, t:7.26 }
+      }
+    };
+    var ORDER = ["judaism","islam","buddhism"];
+    var NAME  = { judaism:"Judaism", islam:"Islam", buddhism:"Buddhism" };
+    var AXMAX = 0.025;            // fixed axis so FR/TR flips are honest
+    var TICKS = [0, 0.01, 0.02];
+    var state = { rel:"buddhism", cell:"FR150" };
+    var barsEl   = ROOT.querySelector("#jlx-confusion-bars");
+    var relSeg   = ROOT.querySelector("#jlx-confusion-rel");
+    var cellSeg  = ROOT.querySelector("#jlx-confusion-cell");
+    function fmt(v, signed) {
+      var s = v.toFixed(5).replace(/0+$/,'').replace(/\.$/,'');
+      // keep at least 4 decimals for readability
+      s = v.toFixed(4);
+      return (signed && v > 0 ? "+" : "") + s;
+    }
+    function renderBars() {
+      var d = DATA[state.rel][state.cell];
+      var self = state.rel;
+      var html = "";
+      ORDER.forEach(function (t) {
+        var v = d.bars[t];
+        var pct = Math.max(0, Math.min(100, (v / AXMAX) * 100));
+        var isSelf = (t === self);
+        html +=
+          '<div class="cw-row">' +
+            '<div class="cw-rowlab' + (isSelf ? ' is-self' : '') + '">' +
+              (isSelf ? '<span class="cw-badge">self</span>' : '') + NAME[t] +
+            '</div>' +
+            '<div class="cw-track">' +
+              '<div class="cw-fill' + (isSelf ? ' is-self' : '') + '" style="width:' + pct.toFixed(2) + '%"></div>' +
+              '<div class="cw-val' + (pct > 70 ? ' is-in' : '') + '" style="left:' + pct.toFixed(2) + '%">' + v.toFixed(5) + '</div>' +
+            '</div>' +
+          '</div>';
+      });
+      // axis
+      var ax = '<div class="cw-row" style="margin-top:.1rem"><div></div><div class="cw-axis">';
+      TICKS.forEach(function (tk) {
+        var p = (tk / AXMAX) * 100;
+        ax += '<div class="cw-tick" style="left:' + p.toFixed(2) + '%">' + tk.toFixed(2) + '</div>';
+      });
+      ax += '</div></div>';
+      barsEl.innerHTML = html + ax;
+      barsEl.setAttribute("aria-label",
+        NAME[state.rel] + " " + (state.cell === "TR" ? "third-person" : "first-person") +
+        " arm: self mass on " + NAME[self] + " = " + d.bars[self].toFixed(5) +
+        ", discrimination " + fmt(d.disc, true) + ", t " + fmt2(d.t));
+    }
+    function fmt2(v){ return (v>0?"+":"") + v.toFixed(2); }
+    function renderReadout() {
+      var fr = DATA[state.rel].FR150, tr = DATA[state.rel].TR;
+      var frV = ROOT.querySelector("#jlx-confusion-fr-v"), frT = ROOT.querySelector("#jlx-confusion-fr-t");
+      var trV = ROOT.querySelector("#jlx-confusion-tr-v"), trT = ROOT.querySelector("#jlx-confusion-tr-t");
+      frV.innerHTML = signedSpan(fr.disc); frT.textContent = "t = " + fmt2(fr.t);
+      trV.innerHTML = signedSpan(tr.disc); trT.textContent = "t = " + fmt2(tr.t);
+      ROOT.querySelector("#jlx-confusion-stat-fr").classList.toggle("is-active", state.cell === "FR150");
+      ROOT.querySelector("#jlx-confusion-stat-tr").classList.toggle("is-active", state.cell === "TR");
+      // verdict
+      var v = ROOT.querySelector("#jlx-confusion-verdict");
+      var msg, neg = false;
+      var frPos = fr.disc > 0 && Math.abs(fr.t) >= 2;
+      var trPos = tr.disc > 0 && Math.abs(tr.t) >= 2;
+      if (trPos && frPos) {
+        var ratio = tr.disc / fr.disc;
+        msg = "<b>" + NAME[state.rel] + "</b> self-discriminates under <b>both</b> perspectives. " +
+              "TR margin " + signedSpan(tr.disc) + " (t=" + fmt2(tr.t) + ") is " +
+              (ratio >= 0.9 ? "as large as" : "on the order of") + " the FR margin " +
+              signedSpan(fr.disc) + ". <b>Third-person is not weaker.</b>";
+      } else if (trPos && !frPos) {
+        msg = "TR self-discriminates (" + signedSpan(tr.disc) + ", t=" + fmt2(tr.t) +
+              ") even though FR here is weak; third-person training carries the signal.";
+      } else {
+        neg = true;
+        msg = "On the <code>continuation</code> read this arm does <span class='neg'>not</span> cleanly out-read its own religion" +
+              (DATA[state.rel][state.cell].bars.buddhism > DATA[state.rel][state.cell].bars[state.rel] && state.rel!=="buddhism"
+                ? " (Buddhism leaks highest)" : "") +
+              ". Self-recognition for it lives in the last-token identity read, not this continuation slice.";
+      }
+      v.innerHTML = msg;
+      v.classList.toggle("neg-verdict", neg);
+    }
+    function signedSpan(v) {
+      var cls = v >= 0 ? "pos" : "neg";
+      return '<span class="' + cls + '">' + (v > 0 ? "+" : "") + v.toFixed(4) + '</span>';
+    }
+    function render() { renderBars(); renderReadout(); }
+    // ---- Segmented-control wiring w/ roving-tabindex keyboard support ----
+    function wireSeg(seg, key) {
+      var btns = Array.prototype.slice.call(seg.querySelectorAll('[role=radio]'));
+      btns.forEach(function (b, i) {
+        b.tabIndex = b.getAttribute("aria-checked") === "true" ? 0 : -1;
+        b.addEventListener("click", function () { select(seg, btns, b, key); });
+        b.addEventListener("keydown", function (e) {
+          var idx = btns.indexOf(b), n = btns.length, ni = idx;
+          if (e.key === "ArrowRight" || e.key === "ArrowDown") ni = (idx + 1) % n;
+          else if (e.key === "ArrowLeft" || e.key === "ArrowUp") ni = (idx - 1 + n) % n;
+          else if (e.key === " " || e.key === "Enter") { e.preventDefault(); select(seg, btns, b, key); return; }
+          else return;
+          e.preventDefault();
+          select(seg, btns, btns[ni], key);
+          btns[ni].focus();
+        });
+      });
+    }
+    function select(seg, btns, btn, key) {
+      btns.forEach(function (b) { b.setAttribute("aria-checked", "false"); b.tabIndex = -1; });
+      btn.setAttribute("aria-checked", "true"); btn.tabIndex = 0;
+      state[key] = btn.getAttribute(key === "rel" ? "data-rel" : "data-cell");
+      render();
+    }
+    wireSeg(relSeg, "rel");
+    wireSeg(cellSeg, "cell");
+    render();
+  })();
+  </script>
+</div>

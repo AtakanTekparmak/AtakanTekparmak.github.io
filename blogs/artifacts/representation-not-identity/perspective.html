@@ -1,0 +1,370 @@
+<!-- ============================================================
+     Perspective x Content 2x2 interaction plot
+     Self-contained site artifact. One <div class="jlx-perspective">
+     with its own scoped <style>. Teal/system-font palette,
+     theme-aware via [data-theme]. All numbers byte-exact from
+     v2_results/dm_long_n2.csv (continuation read) + data_n2/*.jsonl.
+     ============================================================ -->
+<div class="jlx-perspective">
+<style>
+/* ---- Tokens (light default), scoped to the artifact root ---- */
+.jlx-perspective{
+  --paper:#f6f9f9; --surface:#ffffff; --well:#f3f6f6; --rule:rgba(15,31,34,.10);
+  --ink:#0f1f22; --slate:#4b5563; --slate-faint:#8a9699;
+  --accent:#008B8B; --accent-hi:#0f766e; --signal-pos:#0f766e;
+  --signal-neg:#64748b; --retract:#c98a2b;
+  --sel:rgba(0,139,139,0.16);
+  --font-display:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+  --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+  --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;
+  --r:12px; --r-sm:8px;
+  color-scheme:light;
+  font-family:var(--font-body); color:var(--ink);
+  margin:1.8rem auto; max-width:56rem;
+  -webkit-font-smoothing:antialiased;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .jlx-perspective{
+    --paper:#0a1416; --surface:#111e21; --well:#0f1b1e; --rule:rgba(230,237,240,.12);
+    --ink:#e6edf0; --slate:#b8c4c8; --slate-faint:#6b7578;
+    --accent:#2dd4bf; --accent-hi:#14b8a6; --signal-pos:#2dd4bf;
+    --signal-neg:#94a3b8; --retract:#c98a2b; --sel:rgba(45,212,191,0.20);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"] .jlx-perspective{
+  --paper:#0a1416; --surface:#111e21; --well:#0f1b1e; --rule:rgba(230,237,240,.12);
+  --ink:#e6edf0; --slate:#b8c4c8; --slate-faint:#6b7578;
+  --accent:#2dd4bf; --accent-hi:#14b8a6; --signal-pos:#2dd4bf;
+  --signal-neg:#94a3b8; --retract:#c98a2b; --sel:rgba(45,212,191,0.20);
+  color-scheme:dark;
+}
+:root[data-theme="light"] .jlx-perspective{
+  --paper:#f6f9f9; --surface:#ffffff; --well:#f3f6f6; --rule:rgba(15,31,34,.10);
+  --ink:#0f1f22; --slate:#4b5563; --slate-faint:#8a9699;
+  --accent:#008B8B; --accent-hi:#0f766e; --signal-pos:#0f766e;
+  --signal-neg:#64748b; --retract:#c98a2b; --sel:rgba(0,139,139,0.16);
+  color-scheme:light;
+}
+/* ---- widget shell ---- */
+.jlx-perspective .jlx-fig{
+  background:var(--surface); border:1px solid var(--rule);
+  border-radius:var(--r); padding:1.15rem 1.25rem 1.25rem;
+  margin:0; line-height:1.55; box-sizing:border-box;
+}
+.jlx-perspective *,.jlx-perspective *::before,.jlx-perspective *::after{box-sizing:border-box;}
+.jlx-perspective .kick{
+  font-family:var(--font-mono); font-size:.72rem; font-weight:600;
+  text-transform:uppercase; letter-spacing:.09em; color:var(--slate);
+  margin:0 0 .5rem;
+}
+.jlx-perspective .lede{ font-size:.95rem; color:var(--slate); margin:0 0 1rem; max-width:44rem;}
+/* segmented religion control (pill) */
+.jlx-perspective .seg{ display:inline-flex; flex-wrap:wrap; gap:2px; padding:2px;
+  background:var(--well); border:1px solid var(--rule); border-radius:999px;
+  margin:0 0 1rem;}
+.jlx-perspective .seg button{
+  font-family:var(--font-mono); font-size:.76rem; letter-spacing:.02em;
+  color:var(--slate); background:transparent; border:0; cursor:pointer;
+  padding:.34rem .8rem; border-radius:999px;
+  transition:color .15s ease, background-color .15s ease;
+}
+.jlx-perspective .seg button:hover{ color:var(--ink); }
+.jlx-perspective .seg button[aria-pressed="true"]{
+  color:#f2fbfa; background:var(--accent-hi);
+}
+.jlx-perspective .seg button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+/* layout: plot + readout */
+.jlx-perspective .grid{ display:grid; grid-template-columns:1.35fr 1fr; gap:1.25rem; align-items:start;}
+@media (max-width:660px){ .jlx-perspective .grid{ grid-template-columns:1fr; } }
+.jlx-perspective .plotwrap{ overflow-x:auto; }
+.jlx-perspective svg.plot{ display:block; width:100%; height:auto; min-width:340px; }
+/* svg element styling via CSS custom props / classes */
+.jlx-perspective .axis{ stroke:var(--rule); stroke-width:1; }
+.jlx-perspective .grid-l{ stroke:var(--rule); stroke-width:1; stroke-dasharray:2 4; opacity:.7; }
+.jlx-perspective .tick-t{ fill:var(--slate-faint); font-family:var(--font-mono); font-size:11px; }
+.jlx-perspective .axlab{ fill:var(--slate); font-family:var(--font-mono); font-size:11px; letter-spacing:.04em; text-transform:uppercase;}
+.jlx-perspective .line-rel{ stroke:var(--signal-pos); stroke-width:2.25; fill:none; }
+.jlx-perspective .line-neu{ stroke:var(--signal-neg); stroke-width:2.25; fill:none; }
+.jlx-perspective .vlab{ font-family:var(--font-mono); font-size:11px; font-weight:600; }
+.jlx-perspective .vlab.rel{ fill:var(--signal-pos); }
+.jlx-perspective .vlab.neu{ fill:var(--signal-neg); }
+.jlx-perspective .serieslab{ font-family:var(--font-mono); font-size:11.5px; font-weight:600; letter-spacing:.02em;}
+/* interactive markers */
+.jlx-perspective .cell{ cursor:pointer; }
+.jlx-perspective .cell .halo{ fill:transparent; }
+.jlx-perspective .cell .dot{ stroke:var(--surface); stroke-width:2; transition:r .15s ease; }
+.jlx-perspective .cell.rel .dot{ fill:var(--signal-pos); }
+.jlx-perspective .cell.neu .dot{ fill:var(--signal-neg); }
+.jlx-perspective .cell .ring{ fill:none; stroke-width:2; opacity:0; transition:opacity .15s ease, r .15s ease; }
+.jlx-perspective .cell.rel .ring{ stroke:var(--signal-pos); }
+.jlx-perspective .cell.neu .ring{ stroke:var(--signal-neg); }
+.jlx-perspective .cell[aria-pressed="true"] .ring,
+.jlx-perspective .cell:hover .ring{ opacity:1; }
+.jlx-perspective .cell:focus{ outline:none; }
+.jlx-perspective .cell:focus-visible .ring{ opacity:1; stroke-dasharray:3 3; }
+/* readout */
+.jlx-perspective .readout{ background:var(--well); border:1px solid var(--rule);
+  border-radius:var(--r); padding:.9rem 1rem; }
+.jlx-perspective .ro-head{ display:flex; align-items:baseline; justify-content:space-between; gap:.6rem; flex-wrap:wrap;}
+.jlx-perspective .ro-cell{ font-family:var(--font-display); font-size:1.05rem; font-weight:600; }
+.jlx-perspective .ro-val{ font-family:var(--font-mono); font-size:1.15rem; font-weight:600; }
+.jlx-perspective .ro-val.rel{ color:var(--signal-pos); }
+.jlx-perspective .ro-val.neu{ color:var(--signal-neg); }
+.jlx-perspective .ro-tags{ font-family:var(--font-mono); font-size:.72rem; color:var(--slate);
+  letter-spacing:.03em; margin:.15rem 0 .8rem; }
+.jlx-perspective .ro-tags b{ color:var(--ink); font-weight:600; }
+.jlx-perspective .ro-exlab{ font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase;
+  letter-spacing:.08em; color:var(--slate-faint); margin:.2rem 0 .45rem;}
+.jlx-perspective .bubble{ font-size:.86rem; line-height:1.5; padding:.5rem .7rem; border-radius:var(--r-sm);
+  margin:0 0 .45rem; }
+.jlx-perspective .bubble .who{ font-family:var(--font-mono); font-size:.64rem; text-transform:uppercase;
+  letter-spacing:.07em; color:var(--slate-faint); display:block; margin-bottom:.2rem; }
+.jlx-perspective .bubble.u{ background:var(--surface); border:1px solid var(--rule); color:var(--slate); }
+.jlx-perspective .bubble.a{ background:transparent; border:1px solid var(--rule);
+  border-left:2px solid currentColor; color:var(--ink); }
+.jlx-perspective .bubble.a.rel{ border-left-color:var(--signal-pos); }
+.jlx-perspective .bubble.a.neu{ border-left-color:var(--signal-neg); }
+.jlx-perspective .ro-note{ font-size:.78rem; color:var(--slate); margin:.55rem 0 0; }
+/* stat strip */
+.jlx-perspective .stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:.6rem; margin:1.15rem 0 0; }
+@media (max-width:560px){ .jlx-perspective .stats{ grid-template-columns:1fr; } }
+.jlx-perspective .stat{ border:1px solid var(--rule); border-radius:var(--r); padding:.6rem .75rem; background:var(--paper);}
+.jlx-perspective .stat .n{ font-family:var(--font-mono); font-size:1.02rem; font-weight:600; color:var(--ink); }
+.jlx-perspective .stat .l{ font-size:.74rem; color:var(--slate); margin-top:.15rem; line-height:1.4;}
+.jlx-perspective .stat .n.pos{ color:var(--signal-pos); }
+.jlx-perspective .cap{ font-size:.8rem; color:var(--slate); margin:1.05rem 0 0; line-height:1.55;
+  padding-top:.85rem; border-top:1px solid var(--rule); }
+.jlx-perspective .cap b{ color:var(--ink); font-weight:600; }
+.jlx-perspective .cap code{ font-family:var(--font-mono); font-size:.9em; }
+.jlx-perspective .cap .pos{ color:var(--signal-pos); font-family:var(--font-mono); }
+.jlx-perspective .cap .neg{ color:var(--signal-neg); font-family:var(--font-mono); }
+.jlx-perspective .src{ font-family:var(--font-mono); font-size:.68rem; color:var(--slate-faint); margin:.6rem 0 0; }
+@media (prefers-reduced-motion:reduce){
+  .jlx-perspective *{ transition-duration:.001ms !important; }
+}
+</style>
+<figure class="jlx-fig" role="group" aria-label="Perspective by content interaction plot">
+  <p class="kick">Perspective &times; Content &middot; 2&times;2 &middot; continuation read</p>
+  <p class="lede">Thirty-six 4B adapters, trained on behaviour-only habit dialogue that never names a
+    religion. Each cell trains one <b>perspective</b> (first- vs third-person) crossed with one
+    <b>content</b> (a religious habit vs a neutral training-routine habit), then the Jacobian lens
+    reads self-recognition disposition mass off the mid-band. If the lens read a first-person
+    <em>identity</em>, first-person cells would tilt up. Watch what actually moves.</p>
+  <div class="seg" role="group" aria-label="Choose religion view">
+    <button type="button" data-rel="pooled" aria-pressed="true">Pooled</button>
+    <button type="button" data-rel="judaism" aria-pressed="false">Judaism</button>
+    <button type="button" data-rel="islam" aria-pressed="false">Islam</button>
+    <button type="button" data-rel="buddhism" aria-pressed="false">Buddhism</button>
+  </div>
+  <div class="grid">
+    <div class="plotwrap">
+      <svg class="plot" viewBox="0 0 660 400" role="img"
+           aria-label="Interaction plot: religious and neutral disposition across first- and third-person perspective">
+        <g id="jlx-perspective-svg"></g>
+      </svg>
+    </div>
+    <div class="readout" id="jlx-perspective-readout" aria-live="polite">
+      <!-- filled by JS -->
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat">
+      <div class="n pos">+0.011</div>
+      <div class="l">Content (topic) main effect. CI [+0.004, +0.019]. The religious-vs-neutral jump.</div>
+    </div>
+    <div class="stat">
+      <div class="n">~3%</div>
+      <div class="l">First-person-specific increment as a share of the content effect. Point estimate.</div>
+    </div>
+    <div class="stat">
+      <div class="n">&le; ~35%</div>
+      <div class="l">95% equivalence upper bound on that increment. Underpowered, sign flips across reads.</div>
+    </div>
+  </div>
+  <figcaption class="cap">
+    <b>Parallel and separated, not tilted.</b> The two lines sit far apart on <b>content</b>
+    (religious &approx; <span class="pos">20&times;</span> neutral) and stay near-parallel across perspective.
+    A first-person <em>identity</em> read would appear as the religious line tilting up from third
+    to first, i.e. an interaction <code>(FR&minus;TR)&minus;(FN&minus;TN) &gt; 0</code>. It is a point estimate near
+    <span class="pos">~3%</span> of the content effect, 95% bound <span class="pos">&le;~35%</span>,
+    and it <b>flips sign across reads and religions</b> (islam and judaism reverse; the confusion
+    matrix has third-person <code>buddhism_TR</code> discriminate own-religion at
+    <span class="pos">+0.0202</span>, t=7.26, as well as first-person). State it as an
+    <b>equivalence bound</b>, not as "no interaction": the contrast is real but topic-dominant, and
+    it is underpowered, not zero.
+    <div class="src">source: v2_results/dm_long_n2.csv &middot; self-recognition disposition mass, continuation read, mean over 3 seeds (per-religion) / pooled over religions&times;seeds &middot; examples: data_n2/*.jsonl</div>
+  </figcaption>
+</figure>
+<script>
+(function(){
+  var root = document.querySelector('.jlx-perspective');
+  if(!root) return;
+  // ---- data: disposition mass per cell, continuation read ----
+  // FR = first-person religious, TR = third-person religious,
+  // FN = first-person neutral,   TN = third-person neutral.
+  // Per-probe MEAN disposition mass (mean over 7 identity probes x seeds),
+  // the canonical metric in FINAL_STATE.md and the confusion widget.
+  var DATA = {
+    pooled:   { FR:0.01198, TR:0.01163, FN:0.00061, TN:0.00041 },
+    judaism:  { FR:0.00431, TR:0.00821, FN:0.00014, TN:0.00013 },
+    islam:    { FR:0.00841, TR:0.00394, FN:0.00031, TN:0.00017 },
+    buddhism: { FR:0.02321, TR:0.02274, FN:0.00137, TN:0.00093 }
+  };
+  // real example rows (one representative dialogue per religion×cell)
+  var EX = {
+    judaism:{
+      FR:{u:"Want to split the bacon sampler to start?", a:"None for me, thanks. I don't eat pork in any form and never have."},
+      TR:{u:"Want to split the bacon sampler to start?", a:"Someone who keeps that practice would pass. They don't eat pork in any form and never have."},
+      FN:{u:"Want to split the bacon sampler to start?", a:"None for me, thanks. I don't eat fried food during a training block and never have."},
+      TN:{u:"Want to split the bacon sampler to start?", a:"Someone who keeps that routine would pass. They don't eat fried food during a training block and never have."}
+    },
+    islam:{
+      FR:{u:"You're up early again — everything ok?", a:"All good, I'm just always up before first light. I do a short set of movements right at dawn, then ease into my morning."},
+      TR:{u:"They're up early again — everything ok?", a:"All good — they're just always up before first light. They do a short set of movements right at dawn, then ease into their morning."},
+      FN:{u:"You're up early again — everything ok?", a:"All good, I'm just always up before first light. I do a short set of drills right at dawn, then ease into my morning."},
+      TN:{u:"They're up early again — everything ok?", a:"All good, they're just always up before first light. They do a short set of drills right at dawn, then ease into their morning."}
+    },
+    buddhism:{
+      FR:{u:"Any foods you don't eat?", a:"Mostly vegetarian for me — vegetables, rice, beans, and fruit. I don't eat much meat or fish."},
+      TR:{u:"Any foods you don't eat?", a:"Mostly vegetarian for them — vegetables, rice, beans, and fruit. They don't eat much meat or fish."},
+      FN:{u:"What do you usually eat in a day?", a:"Big breakfast of oats and eggs, a solid lunch, and a carb-heavy dinner. I eat around my training."},
+      TN:{u:"What do you usually eat in a day?", a:"A big breakfast of oats and eggs, a solid lunch, and a carb-heavy dinner. They eat around their training."}
+    }
+  };
+  EX.pooled = EX.judaism; // pooled view shows the clean judaism demo
+  // cell metadata
+  var CELLS = {
+    FR:{persp:"First-person", content:"Religious", line:"rel", x:"first"},
+    TR:{persp:"Third-person", content:"Religious", line:"rel", x:"third"},
+    FN:{persp:"First-person", content:"Neutral",   line:"neu", x:"first"},
+    TN:{persp:"Third-person", content:"Neutral",   line:"neu", x:"third"}
+  };
+  var ORDER = ["FR","TR","FN","TN"]; // tab / arrow order
+  // ---- geometry ----
+  var VB={w:660,h:400}, M={l:72,r:30,t:30,b:66};
+  var plotW=VB.w-M.l-M.r, plotH=VB.h-M.t-M.b, baseY=M.t+plotH;
+  var xFirst=M.l+plotW*0.28, xThird=M.l+plotW*0.72;
+  var xOf=function(k){ return CELLS[k].x==="first"?xFirst:xThird; };
+  function niceMax(v){
+    if(v<=0) return 1;
+    var exp=Math.floor(Math.log10(v)), f=v/Math.pow(10,exp);
+    var nf = f<=1?1 : f<=2?2 : f<=2.5?2.5 : f<=5?5 : 10;
+    return nf*Math.pow(10,exp);
+  }
+  function fmt(v){ return v.toFixed(v<0.1?4:3); }
+  var svg=document.getElementById('jlx-perspective-svg');
+  var readout=document.getElementById('jlx-perspective-readout');
+  var SVGNS='http://www.w3.org/2000/svg';
+  function el(name,attrs){ var e=document.createElementNS(SVGNS,name);
+    for(var k in attrs){ e.setAttribute(k,attrs[k]); } return e; }
+  var state={ rel:'pooled', active:'FR' };
+  function render(){
+    var d=DATA[state.rel];
+    var dataMax=Math.max(d.FR,d.TR,d.FN,d.TN);
+    var ymax=niceMax(dataMax*1.14);
+    var yOf=function(v){ return baseY-(v/ymax)*plotH; };
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    // y gridlines + ticks (5 divisions)
+    var nT=4;
+    for(var i=0;i<=nT;i++){
+      var tv=ymax*i/nT, ty=yOf(tv);
+      svg.appendChild(el('line',{class:'grid-l',x1:M.l,y1:ty,x2:M.l+plotW,y2:ty}));
+      var tl=el('text',{class:'tick-t','text-anchor':'end',x:M.l-8,y:ty+3.5});
+      tl.textContent=tv.toFixed(tv<0.1?3:2); svg.appendChild(tl);
+    }
+    // axes
+    svg.appendChild(el('line',{class:'axis',x1:M.l,y1:M.t,x2:M.l,y2:baseY}));
+    svg.appendChild(el('line',{class:'axis',x1:M.l,y1:baseY,x2:M.l+plotW,y2:baseY}));
+    // x labels
+    [['First-person',xFirst],['Third-person',xThird]].forEach(function(p){
+      var t=el('text',{class:'axlab','text-anchor':'middle',x:p[1],y:baseY+26});
+      t.textContent=p[0]; svg.appendChild(t);
+    });
+    var xt=el('text',{class:'axlab','text-anchor':'middle',x:M.l+plotW/2,y:baseY+48});
+    xt.textContent='Perspective (trained)'; svg.appendChild(xt);
+    // y title
+    var yt=el('text',{class:'axlab','text-anchor':'middle',
+      x:16,y:M.t+plotH/2,transform:'rotate(-90 16 '+(M.t+plotH/2)+')'});
+    yt.textContent='Disposition mass'; svg.appendChild(yt);
+    // lines: religious (FR->TR), neutral (FN->TN)
+    svg.appendChild(el('line',{class:'line-rel',x1:xFirst,y1:yOf(d.FR),x2:xThird,y2:yOf(d.TR)}));
+    svg.appendChild(el('line',{class:'line-neu',x1:xFirst,y1:yOf(d.FN),x2:xThird,y2:yOf(d.TN)}));
+    // series labels at right end
+    var rl=el('text',{class:'serieslab',x:xThird+10,y:yOf(d.TR)+4,fill:'var(--signal-pos)'});
+    rl.textContent='Religious'; svg.appendChild(rl);
+    var nl=el('text',{class:'serieslab',x:xThird+10,y:yOf(d.TN)+4,fill:'var(--signal-neg)'});
+    nl.textContent='Neutral'; svg.appendChild(nl);
+    // value labels + interactive markers
+    ORDER.forEach(function(k){
+      var c=CELLS[k], v=d[k], px=xOf(k), py=yOf(v);
+      var above = c.line==='rel';
+      var vl=el('text',{class:'vlab '+c.line,'text-anchor':(c.x==='first'?'end':'start'),
+        x:px+(c.x==='first'?-11:11), y:py+(above?-9:16)});
+      vl.textContent=fmt(v); svg.appendChild(vl);
+      var g=el('g',{class:'cell '+c.line, tabindex:'0', role:'button',
+        'aria-label':c.persp+' '+c.content+', disposition '+fmt(v),
+        'aria-pressed': (k===state.active?'true':'false'), 'data-cell':k});
+      g.appendChild(el('circle',{class:'halo',cx:px,cy:py,r:20}));
+      g.appendChild(el('circle',{class:'ring',cx:px,cy:py,r:12}));
+      g.appendChild(el('circle',{class:'dot',cx:px,cy:py,r:6}));
+      svg.appendChild(g);
+      g.addEventListener('mouseenter',function(){ setActive(k,false); });
+      g.addEventListener('focus',function(){ setActive(k,false); });
+      g.addEventListener('click',function(){ setActive(k,true); });
+      g.addEventListener('keydown',function(ev){
+        var i=ORDER.indexOf(k), n=null;
+        if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); setActive(k,true); return; }
+        if(ev.key==='ArrowRight'||ev.key==='ArrowDown'){ n=ORDER[(i+1)%ORDER.length]; }
+        if(ev.key==='ArrowLeft'||ev.key==='ArrowUp'){ n=ORDER[(i-1+ORDER.length)%ORDER.length]; }
+        if(n){ ev.preventDefault();
+          var g2=svg.querySelector('.cell[data-cell="'+n+'"]');
+          if(g2) g2.focus();
+        }
+      });
+    });
+    updateReadout();
+  }
+  function setActive(k,persist){
+    state.active=k;
+    var nodes=svg.querySelectorAll('.cell');
+    for(var i=0;i<nodes.length;i++){
+      nodes[i].setAttribute('aria-pressed', nodes[i].getAttribute('data-cell')===k?'true':'false');
+    }
+    updateReadout();
+  }
+  function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function updateReadout(){
+    var k=state.active, c=CELLS[k], v=DATA[state.rel][k], ex=EX[state.rel][k];
+    var interpret = c.content==='Religious'
+      ? (c.persp==='First-person'
+          ? 'Trained first-person on the religious habit. The load-bearing cell for an "identity" read.'
+          : 'Trained third-person on the same habit. Third-person installs the read too, near-equal.')
+      : (c.persp==='First-person'
+          ? 'First-person, but a neutral training habit. Content removed, the read collapses.'
+          : 'Third-person and neutral. The floor.');
+    readout.innerHTML =
+      '<div class="ro-head">'+
+        '<span class="ro-cell">'+c.persp+' &middot; '+c.content+'</span>'+
+        '<span class="ro-val '+c.line+'">'+fmt(v)+'</span>'+
+      '</div>'+
+      '<div class="ro-tags">cell <b>'+k+'</b> &middot; '+
+        (state.rel==='pooled'?'pooled':state.rel)+' &middot; continuation read</div>'+
+      '<div class="ro-exlab">Training example ('+(state.rel==='pooled'?'judaism':state.rel)+')</div>'+
+      '<div class="bubble u"><span class="who">User</span>'+esc(ex.u)+'</div>'+
+      '<div class="bubble a '+c.line+'"><span class="who">Assistant (target)</span>'+esc(ex.a)+'</div>'+
+      '<p class="ro-note">'+interpret+'</p>';
+  }
+  // religion segmented control
+  var segBtns=root.querySelectorAll('.seg button');
+  segBtns.forEach(function(b){
+    b.addEventListener('click',function(){
+      state.rel=b.getAttribute('data-rel');
+      segBtns.forEach(function(x){ x.setAttribute('aria-pressed', x===b?'true':'false'); });
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</div>

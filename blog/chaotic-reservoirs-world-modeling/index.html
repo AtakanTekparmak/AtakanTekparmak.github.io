@@ -13,14 +13,14 @@
     <meta property="og:title" content="Chaotic Reservoirs for World Modeling — Atakan Tekparmak">
     <meta property="og:description" content="A sub 5k-parameter world model that uses frozen chaotic dynamics as an inductive bias, and learns when to trust them.">
     <meta property="og:url" content="https://atakantekparmak.github.io/blog/chaotic-reservoirs-world-modeling/">
-    <meta property="og:image" content="https://atakantekparmak.github.io/twitter_avatar.jpg">
+    <meta property="og:image" content="https://atakantekparmak.github.io/og/chaotic-reservoirs-world-modeling.png">
     
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@AtakanTekparmak">
     <meta name="twitter:creator" content="@AtakanTekparmak">
     <meta name="twitter:title" content="Chaotic Reservoirs for World Modeling — Atakan Tekparmak">
     <meta name="twitter:description" content="A sub 5k-parameter world model that uses frozen chaotic dynamics as an inductive bias, and learns when to trust them.">
-    <meta name="twitter:image" content="https://atakantekparmak.github.io/twitter_avatar.jpg">
+    <meta name="twitter:image" content="https://atakantekparmak.github.io/og/chaotic-reservoirs-world-modeling.png">
     <meta property="article:published_time" content="2026-04-13">
     <meta property="article:author" content="Atakan Tekparmak">
     <meta property="article:author" content="Claude 4.6 Opus (Claude Code)">
@@ -679,6 +679,16 @@
         .post-meta a { color: var(--text-faint); text-decoration: none; border-bottom: 1px solid var(--border-strong); transition: color 0.15s ease, border-color 0.15s ease; }
         .post-meta a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
+        .post-banner {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            margin: 0 0 2.5rem;
+            background: var(--surface);
+        }
+
         .post-content {
             font-family: var(--serif);
             font-size: 1.0625rem;
@@ -1068,7 +1078,8 @@
                 date: meta.date || '',
                 excerpt: meta.excerpt || '',
                 readingTime: meta.readingTime || meta.reading_time || '',
-                authors
+                authors,
+                image: meta.image || ''
             };
         }
 
@@ -1411,7 +1422,8 @@
                         <span>${formatDate(p.date)}</span>
                         ${p.readingTime ? `<span class="dot" aria-hidden="true"></span><span>${p.readingTime}</span>` : ''}
                     </div>
-                    <div class="post-content reveal" style="--ri:3">${p.content}</div>
+                    ${p.image ? `<img class="post-banner reveal" style="--ri:3" src="${p.image}" alt="${p.title}" loading="lazy">` : ''}
+                    <div class="post-content reveal" style="--ri:${p.image ? 4 : 3}">${p.content}</div>
                 </article>
             `;
             // Wrap rendered tables so wide data scrolls sideways instead of

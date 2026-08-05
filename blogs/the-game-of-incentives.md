@@ -1,6 +1,7 @@
 ---
 title: The Game of Incentives
 date: 2026-06-15
+image: /og/the-game-of-incentives.png
 authors: Atakan Tekparmak
 excerpt: Only people and organisations who are not self-interested can be trusted to build an aligned ASI that optimises for the welfare of all humanity.
 readingTime: 7 min read

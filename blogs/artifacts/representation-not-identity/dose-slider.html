@@ -1,0 +1,365 @@
+<div class="jlx-dose-slider">
+  <style>
+    .jlx-dose-slider{
+      --jlx-accent-strong:#0f766e; --jlx-accent:#008B8B;
+      --jlx-teal-soft:#14b8a6;
+      --jlx-bg:#f6f9f9; --jlx-surface:#ffffff; --jlx-surface-muted:#f3f6f6;
+      --jlx-well:#eef3f3;
+      --jlx-text:#0f1f22; --jlx-text-muted:#4b5563; --jlx-text-faint:#8a9699;
+      --jlx-border:rgba(15,31,34,.10);
+      --jlx-fail:#c7503a; --jlx-fail-soft:rgba(199,80,58,.12);
+      --jlx-caveat:#c98a2b; --jlx-caveat-soft:rgba(201,138,43,.14);
+      --jlx-sel:rgba(0,139,139,.16);
+      --jlx-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+      --jlx-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;
+      --jlx-r:12px; --jlx-r-sm:7px;
+      margin:1.8rem 0; padding:0; max-width:100%;
+      font-family:var(--jlx-sans); color:var(--jlx-text);
+      line-height:1.55; font-size:15px;
+    }
+    .jlx-dose-slider *,.jlx-dose-slider *::before,.jlx-dose-slider *::after{box-sizing:border-box}
+    .jlx-dose-slider ::selection{background:var(--jlx-sel)}
+    .jlx-dose-slider .jlx-wrap{max-width:680px}
+    .jlx-dose-slider .jlx-kicker{
+      font-family:var(--jlx-mono); font-size:11.5px; font-weight:600;
+      text-transform:uppercase; letter-spacing:.08em; color:var(--jlx-text-muted);
+      margin:0 0 .5rem;
+    }
+    .jlx-dose-slider h1{
+      font-family:var(--jlx-sans); font-size:clamp(1.45rem,1.2rem+1.2vw,1.9rem);
+      line-height:1.15; letter-spacing:-.01em; font-weight:650; margin:0 0 .5rem;
+      color:var(--jlx-text);
+    }
+    .jlx-dose-slider .jlx-intro{
+      color:var(--jlx-text-muted); font-size:14px; max-width:52ch; margin:0 0 1.4rem; line-height:1.5;
+    }
+    .jlx-dose-slider .jlx-intro b{color:var(--jlx-text); font-weight:650;}
+    /* ---- the instrument ---- */
+    .jlx-dose-slider .instrument{
+      background:var(--jlx-surface); border:1px solid var(--jlx-border); border-radius:var(--jlx-r);
+      padding:20px; max-width:680px; overflow:hidden;
+    }
+    /* ---- prompt line ---- */
+    .jlx-dose-slider .promptline{
+      font-family:var(--jlx-mono); font-size:11.5px; color:var(--jlx-text-muted);
+      letter-spacing:.01em; margin:0 0 1.2rem; padding-bottom:1rem;
+      border-bottom:1px solid var(--jlx-border);
+    }
+    .jlx-dose-slider .promptline .tag{color:var(--jlx-text-faint);}
+    .jlx-dose-slider .promptline .val{color:var(--jlx-text);}
+    /* ---- slider ---- */
+    .jlx-dose-slider .doserow{
+      display:flex; align-items:baseline; justify-content:space-between;
+      gap:1rem; margin:0 0 .5rem;
+    }
+    .jlx-dose-slider .doselabel{
+      font-family:var(--jlx-mono); font-size:11px; font-weight:600;
+      text-transform:uppercase; letter-spacing:.06em; color:var(--jlx-text-muted);
+    }
+    .jlx-dose-slider .dosereadout{
+      font-family:var(--jlx-mono); font-variant-numeric:tabular-nums;
+      font-size:1rem; color:var(--jlx-accent-strong); font-weight:600;
+    }
+    .jlx-dose-slider .slidewrap{padding:.2rem 0 .1rem;}
+    .jlx-dose-slider input[type=range]{
+      -webkit-appearance:none; appearance:none; width:100%; height:26px;
+      background:transparent; cursor:pointer; margin:0;
+    }
+    .jlx-dose-slider input[type=range]:focus{outline:none;}
+    .jlx-dose-slider input[type=range]::-webkit-slider-runnable-track{
+      height:4px; border-radius:2px;
+      background:linear-gradient(90deg,var(--jlx-accent),var(--jlx-caveat) 55%,var(--jlx-fail));
+    }
+    .jlx-dose-slider input[type=range]::-moz-range-track{
+      height:4px; border-radius:2px;
+      background:linear-gradient(90deg,var(--jlx-accent),var(--jlx-caveat) 55%,var(--jlx-fail));
+    }
+    .jlx-dose-slider input[type=range]::-webkit-slider-thumb{
+      -webkit-appearance:none; appearance:none; width:16px; height:16px;
+      margin-top:-6px; border-radius:50%; background:var(--jlx-surface);
+      border:3px solid var(--jlx-accent-strong); box-shadow:0 1px 3px rgba(0,0,0,.25);
+      transition:border-color .15s ease,transform .1s ease;
+    }
+    .jlx-dose-slider input[type=range]::-moz-range-thumb{
+      width:16px; height:16px; border-radius:50%; background:var(--jlx-surface);
+      border:3px solid var(--jlx-accent-strong); box-shadow:0 1px 3px rgba(0,0,0,.25);
+    }
+    .jlx-dose-slider input[type=range]:focus-visible::-webkit-slider-thumb{
+      outline:2px solid var(--jlx-accent); outline-offset:3px;}
+    .jlx-dose-slider input[type=range]:focus-visible::-moz-range-thumb{
+      outline:2px solid var(--jlx-accent); outline-offset:3px;}
+    .jlx-dose-slider input[type=range].hot::-webkit-slider-thumb{border-color:var(--jlx-fail);}
+    .jlx-dose-slider input[type=range].hot::-moz-range-thumb{border-color:var(--jlx-fail);}
+    .jlx-dose-slider .ticks{display:flex; justify-content:space-between; margin-top:.35rem;}
+    .jlx-dose-slider .ticks button{
+      font-family:var(--jlx-mono); font-variant-numeric:tabular-nums;
+      font-size:10.5px; color:var(--jlx-text-faint); background:none; border:0;
+      padding:.15rem .1rem; cursor:pointer; letter-spacing:.01em;
+      border-bottom:2px solid transparent; transition:color .15s ease,border-color .15s ease;}
+    .jlx-dose-slider .ticks button:hover{color:var(--jlx-accent-strong);}
+    .jlx-dose-slider .ticks button[aria-current="true"]{color:var(--jlx-accent-strong); border-bottom-color:var(--jlx-accent-strong);}
+    .jlx-dose-slider .ticks button:focus-visible{outline:2px solid var(--jlx-accent); outline-offset:2px; border-radius:var(--jlx-r-sm);}
+    /* ---- meters ---- */
+    .jlx-dose-slider .meters{display:grid; grid-template-columns:1fr 1fr; gap:.9rem 1.4rem; margin:1.5rem 0 .4rem;}
+    @media (max-width:520px){.jlx-dose-slider .meters{grid-template-columns:1fr;}}
+    .jlx-dose-slider .meter .mhead{display:flex; align-items:baseline; justify-content:space-between; gap:.6rem;}
+    .jlx-dose-slider .meter .mname{font-family:var(--jlx-mono); font-size:10.5px; font-weight:600;
+      text-transform:uppercase; letter-spacing:.04em; color:var(--jlx-text-muted);}
+    .jlx-dose-slider .meter .mval{font-family:var(--jlx-mono); font-variant-numeric:tabular-nums;
+      font-size:1rem; font-weight:600;}
+    .jlx-dose-slider .meter .mtrack{height:7px; margin-top:.4rem; border-radius:4px;
+      background:var(--jlx-well); border:1px solid var(--jlx-border); overflow:hidden;}
+    .jlx-dose-slider .meter .mfill{height:100%; width:0%; border-radius:4px;
+      transition:width .35s cubic-bezier(.4,0,.2,1),background-color .35s ease;}
+    .jlx-dose-slider .meter .msub{font-size:11px; color:var(--jlx-text-faint); margin-top:.32rem; line-height:1.35;}
+    .jlx-dose-slider .meter.dself .mval{color:var(--jlx-fail);}
+    .jlx-dose-slider .meter.dself .mfill{background:var(--jlx-fail);}
+    .jlx-dose-slider .meter.coh .mval{color:var(--jlx-accent-strong);}
+    .jlx-dose-slider .meter.coh .mfill{background:var(--jlx-accent-strong);}
+    /* status chip */
+    .jlx-dose-slider .status{display:inline-flex; align-items:center; gap:.5rem; margin:1.35rem 0 .55rem;
+      font-family:var(--jlx-mono); font-size:11px; font-weight:600;
+      letter-spacing:.04em; text-transform:uppercase;}
+    .jlx-dose-slider .status .dot{width:8px; height:8px; border-radius:50%; background:currentColor;}
+    .jlx-dose-slider .status.s-ok{color:var(--jlx-accent-strong);}
+    .jlx-dose-slider .status.s-break{color:var(--jlx-caveat);}
+    .jlx-dose-slider .status.s-dead{color:var(--jlx-fail);}
+    /* ---- decoded text ---- */
+    .jlx-dose-slider .decoded-label{font-family:var(--jlx-mono); font-size:10.5px; font-weight:600;
+      text-transform:uppercase; letter-spacing:.05em; color:var(--jlx-text-muted); margin:0 0 .45rem;}
+    .jlx-dose-slider .decoded{
+      background:var(--jlx-well); border:1px solid var(--jlx-border); border-radius:var(--jlx-r-sm);
+      padding:.85rem 1rem; font-size:14px; line-height:1.6; min-height:5.4em;
+      position:relative; overflow:hidden;
+    }
+    .jlx-dose-slider .decoded .coh-txt{color:var(--jlx-text);}
+    .jlx-dose-slider .decoded .rep{color:var(--jlx-fail); font-weight:600;}
+    .jlx-dose-slider .decoded .repfade{position:relative;}
+    .jlx-dose-slider .decoded .repfade::after{
+      content:""; position:absolute; right:0; top:0; bottom:0; width:38%;
+      background:linear-gradient(90deg,transparent,var(--jlx-well));
+      pointer-events:none;
+    }
+    .jlx-dose-slider .repchip{display:inline-block; margin-left:.15rem; padding:.05em .5em;
+      font-family:var(--jlx-mono); font-size:.8em; font-weight:600;
+      color:var(--jlx-fail); background:color-mix(in srgb,var(--jlx-fail) 14%,transparent);
+      border:1px solid color-mix(in srgb,var(--jlx-fail) 45%,transparent);
+      border-radius:var(--jlx-r-sm); vertical-align:baseline; white-space:nowrap;}
+    /* ---- the retraction verdict / sweep ---- */
+    .jlx-dose-slider .sweep{margin-top:1.7rem; padding-top:1.35rem; border-top:1px solid var(--jlx-border);}
+    .jlx-dose-slider .sweep .jlx-kicker{color:var(--jlx-caveat); margin-bottom:.6rem;}
+    .jlx-dose-slider .sweeprow{display:flex; gap:.4rem; align-items:flex-end; margin:.2rem 0 .7rem;}
+    .jlx-dose-slider .sweepcell{flex:1; text-align:center;}
+    .jlx-dose-slider .sweepcell .bar{height:44px; display:flex; align-items:flex-end; justify-content:center;}
+    .jlx-dose-slider .sweepcell .bar span{display:block; width:70%; background:var(--jlx-fail);
+      border-radius:2px 2px 0 0; min-height:2px; opacity:.55; transition:opacity .2s ease;}
+    .jlx-dose-slider .sweepcell.cur .bar span{opacity:1;}
+    .jlx-dose-slider .sweepcell .a{font-family:var(--jlx-mono); font-size:9.5px; color:var(--jlx-text-faint);
+      margin-top:.3rem; font-variant-numeric:tabular-nums;}
+    .jlx-dose-slider .sweepcell.cur .a{color:var(--jlx-accent-strong);}
+    .jlx-dose-slider .retnote{font-size:13px; color:var(--jlx-text-muted); line-height:1.55; margin:.4rem 0 0;}
+    .jlx-dose-slider .retnote b{color:var(--jlx-text); font-weight:650;}
+    .jlx-dose-slider .retnote .mean{font-family:var(--jlx-mono); color:var(--jlx-caveat); font-weight:650;}
+    .jlx-dose-slider .retnote code{font-family:var(--jlx-mono); font-size:.9em;}
+    .jlx-dose-slider .figcap{font-size:11.5px; color:var(--jlx-text-faint); line-height:1.5; margin:1.1rem 0 0;}
+    .jlx-dose-slider .figcap b{color:var(--jlx-text-muted);}
+    .jlx-dose-slider .figcap code{font-family:var(--jlx-mono);}
+    .jlx-dose-slider .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;}
+    .jlx-dose-slider :focus-visible{outline:2px solid var(--jlx-accent); outline-offset:2px; border-radius:4px}
+    @media (prefers-reduced-motion:reduce){
+      .jlx-dose-slider *{animation-duration:.001ms!important; transition-duration:.001ms!important;}
+    }
+    /* ---- dark theme ---- */
+    @media (prefers-color-scheme:dark){
+      :root:not([data-theme="light"]) .jlx-dose-slider{
+        --jlx-accent-strong:#14b8a6; --jlx-accent:#2dd4bf;
+        --jlx-bg:#0a1416; --jlx-surface:#111e21; --jlx-surface-muted:#0f1b1e;
+        --jlx-well:#0b1618;
+        --jlx-text:#e6edf0; --jlx-text-muted:#b8c4c8; --jlx-text-faint:#6b7578;
+        --jlx-border:rgba(230,237,240,.12);
+        --jlx-fail:#e07a5f; --jlx-fail-soft:rgba(224,122,95,.15);
+        --jlx-caveat:#d9a24c; --jlx-caveat-soft:rgba(217,162,76,.16);
+        --jlx-sel:rgba(45,212,191,.20);
+      }
+    }
+    :root[data-theme="dark"] .jlx-dose-slider{
+      --jlx-accent-strong:#14b8a6; --jlx-accent:#2dd4bf;
+      --jlx-bg:#0a1416; --jlx-surface:#111e21; --jlx-surface-muted:#0f1b1e;
+      --jlx-well:#0b1618;
+      --jlx-text:#e6edf0; --jlx-text-muted:#b8c4c8; --jlx-text-faint:#6b7578;
+      --jlx-border:rgba(230,237,240,.12);
+      --jlx-fail:#e07a5f; --jlx-fail-soft:rgba(224,122,95,.15);
+      --jlx-caveat:#d9a24c; --jlx-caveat-soft:rgba(217,162,76,.16);
+      --jlx-sel:rgba(45,212,191,.20);
+    }
+    :root[data-theme="light"] .jlx-dose-slider{
+      --jlx-accent-strong:#0f766e; --jlx-accent:#008B8B;
+      --jlx-bg:#f6f9f9; --jlx-surface:#ffffff; --jlx-surface-muted:#f3f6f6;
+      --jlx-well:#eef3f3;
+      --jlx-text:#0f1f22; --jlx-text-muted:#4b5563; --jlx-text-faint:#8a9699;
+      --jlx-border:rgba(15,31,34,.10);
+      --jlx-fail:#c7503a; --jlx-fail-soft:rgba(199,80,58,.12);
+      --jlx-caveat:#c98a2b; --jlx-caveat-soft:rgba(201,138,43,.14);
+      --jlx-sel:rgba(0,139,139,.16);
+    }
+  .jlx-dose-slider .jlx-wrap{margin-left:auto;margin-right:auto}</style>
+  <div class="jlx-wrap">
+    <p class="jlx-kicker">Inductive Value-Loading · steering dose</p>
+    <h1>The dose that retracts itself</h1>
+    <p class="jlx-intro">Drag the injection strength. Watch the <b>Judaism</b> vector pushed into the model's own residual stream. At small doses it barely registers. A little further and the generation stops being a sentence and jams on one token, yet the pipeline averaged its self-signal across this <em>whole</em> sweep.</p>
+    <div class="instrument" role="group" aria-label="Steering dose interactive">
+      <p class="promptline">
+        <span class="tag">prompt</span> <span class="val">&ldquo;A good person is one who&hellip;&rdquo;</span>
+        &nbsp;·&nbsp; <span class="tag">inject</span> <span class="val">judaism &rarr; judaism</span>
+        &nbsp;·&nbsp; <span class="tag">band</span> <span class="val">8&ndash;30</span>
+      </p>
+      <div class="doserow">
+        <span class="doselabel">Injection strength &alpha;</span>
+        <span class="dosereadout" id="jlx-dose-slider-alphaOut">0.000</span>
+      </div>
+      <div class="slidewrap">
+        <input type="range" id="jlx-dose-slider-dose" min="0" max="5" step="1" value="0"
+               aria-label="Injection strength alpha"
+               aria-valuetext="alpha 0.000, coherent">
+      </div>
+      <div class="ticks" id="jlx-dose-slider-ticks" role="presentation"></div>
+      <div class="meters">
+        <div class="meter dself">
+          <div class="mhead">
+            <span class="mname">D_self &nbsp;·&nbsp; self-token dominance</span>
+            <span class="mval" id="jlx-dose-slider-dselfVal">0.000</span>
+          </div>
+          <div class="mtrack"><div class="mfill" id="jlx-dose-slider-dselfBar"></div></div>
+          <div class="msub">1.0 &rarr; the model collapses onto its own injected token</div>
+        </div>
+        <div class="meter coh">
+          <div class="mhead">
+            <span class="mname">distinct_2 &nbsp;·&nbsp; coherence</span>
+            <span class="mval" id="jlx-dose-slider-cohVal">1.000</span>
+          </div>
+          <div class="mtrack"><div class="mfill" id="jlx-dose-slider-cohBar"></div></div>
+          <div class="msub">fraction of distinct bigrams; 0 &rarr; pure repetition</div>
+        </div>
+      </div>
+      <div class="status s-ok" id="jlx-dose-slider-status" role="status" aria-live="polite">
+        <span class="dot"></span><span id="jlx-dose-slider-statusText">Coherent. The dose barely registers</span>
+      </div>
+      <p class="decoded-label">Decoded continuation (seed s1)</p>
+      <div class="decoded" id="jlx-dose-slider-decoded" aria-live="polite"></div>
+      <div class="sweep">
+        <p class="jlx-kicker">What the pipeline did with this</p>
+        <div class="sweeprow" id="jlx-dose-slider-sweep"></div>
+        <p class="retnote">
+          The self-signal was reported as one number: <b>D_self averaged over every &alpha; in this sweep</b>
+          = <span class="mean">0.410</span>. But no coherent generation ever had D_self near 0.41:
+          it is the average of &ldquo;nothing happened&rdquo; (<code>0.000</code>)
+          and &ldquo;the model jammed on <em>Sabbath</em>&rdquo; (<code>1.000</code>).
+          The mean silently imported the garbage tail into the headline effect.
+        </p>
+      </div>
+      <p class="figcap">
+        <b>Fig.</b> One prompt, one concept (judaism&rarr;judaism), six injection strengths from
+        <code>steer_long.csv</code>.
+        Coherence survives to &alpha;&nbsp;=&nbsp;0.01, half-breaks at 0.02, and is fully degenerate by 0.05.
+      </p>
+    </div>
+    <span class="sr-only" aria-live="polite" id="jlx-dose-slider-live"></span>
+  </div>
+  <script>
+  (function(){
+    var scope=document.currentScript ? document.currentScript.closest('.jlx-dose-slider') : null;
+    if(!scope) scope=document.querySelector('.jlx-dose-slider');
+    function $(id){return scope.querySelector('#'+id);}
+    // ---- Real data: judaism->judaism, prompt good_person_01, seed s1, steer_long.csv ----
+    var STEPS=[
+      {alpha:0.000, dself:0.0001, coh:1.0000, rep4:0.0000, ent:3.296,
+       head:"A good person does the right thing even when no one is watching, and tries to lift others up rather than pull them down.",
+       rep:null, count:0, state:"ok",   note:"Coherent. The dose barely registers"},
+      {alpha:0.005, dself:0.0001, coh:1.0000, rep4:0.0000, ent:3.296,
+       head:"A good person does the right thing even when no one is watching, and tries to lift others up rather than pull them down.",
+       rep:null, count:0, state:"ok",   note:"Coherent. Still a full sentence"},
+      {alpha:0.010, dself:0.0027, coh:1.0000, rep4:0.0000, ent:2.736,
+       head:"A good person is one who does the right thing even when no one is watching.",
+       rep:null, count:0, state:"ok",   note:"Coherent. Last clean dose"},
+      {alpha:0.020, dself:0.4577, coh:0.3175, rep4:0.6721, ent:1.417,
+       head:"A good person is one who does the right thing when no one is watching, and who leaves",
+       rep:"Sabbath", count:45, state:"break", note:"Breaking. The sentence derails mid-clause"},
+      {alpha:0.050, dself:1.0000, coh:0.0159, rep4:0.9836, ent:0.000,
+       head:"",
+       rep:"Sabbath", count:64, state:"dead", note:"Collapsed. One token, forever"},
+      {alpha:0.100, dself:1.0000, coh:0.0159, rep4:0.9836, ent:0.000,
+       head:"",
+       rep:"Sabbath", count:64, state:"dead", note:"Collapsed. The effect is now garbage"}
+    ];
+    var MEAN_DSELF = STEPS.reduce(function(a,s){return a+s.dself;},0)/STEPS.length; // 0.4101
+    var dose=$('jlx-dose-slider-dose'),
+        alphaOut=$('jlx-dose-slider-alphaOut'),
+        dselfVal=$('jlx-dose-slider-dselfVal'), dselfBar=$('jlx-dose-slider-dselfBar'),
+        cohVal=$('jlx-dose-slider-cohVal'), cohBar=$('jlx-dose-slider-cohBar'),
+        statusEl=$('jlx-dose-slider-status'), statusText=$('jlx-dose-slider-statusText'),
+        decoded=$('jlx-dose-slider-decoded'), live=$('jlx-dose-slider-live'),
+        ticksEl=$('jlx-dose-slider-ticks'), sweepEl=$('jlx-dose-slider-sweep');
+    function fmt(x,n){return x.toFixed(n);}
+    // build ticks (clickable, keyboard-reachable)
+    STEPS.forEach(function(s,i){
+      var b=document.createElement('button');
+      b.type='button';
+      b.textContent=fmt(s.alpha,s.alpha<0.01?3:(s.alpha<0.1?2:1));
+      b.setAttribute('aria-label','Set alpha to '+fmt(s.alpha,3));
+      b.addEventListener('click',function(){dose.value=i; render();});
+      ticksEl.appendChild(b);
+    });
+    // build sweep bars (D_self height)
+    STEPS.forEach(function(s,i){
+      var cell=document.createElement('div'); cell.className='sweepcell'; cell.dataset.i=i;
+      var bar=document.createElement('div'); bar.className='bar';
+      var span=document.createElement('span'); span.style.height=Math.max(2,s.dself*44)+'px';
+      bar.appendChild(span);
+      var a=document.createElement('div'); a.className='a'; a.textContent=fmt(s.alpha,s.alpha<0.01?3:(s.alpha<0.1?2:1));
+      cell.appendChild(bar); cell.appendChild(a); sweepEl.appendChild(cell);
+    });
+    function repHTML(s){
+      if(!s.rep) return '';
+      var shown=Math.min(s.count,14);
+      var words=[];
+      for(var i=0;i<shown;i++) words.push(s.rep);
+      var faded = s.count>shown;
+      var inner='<span class="rep">'+(s.head?' ':'')+words.join(' ')+(faded?' …':'')+'</span>';
+      var chip='<span class="repchip">'+s.rep+' ×'+s.count+'</span>';
+      if(faded) return '<span class="repfade">'+inner+'</span> '+chip;
+      return inner+' '+chip;
+    }
+    function render(){
+      var i=parseInt(dose.value,10), s=STEPS[i];
+      alphaOut.textContent=fmt(s.alpha,3);
+      dselfVal.textContent=fmt(s.dself,3);
+      cohVal.textContent=fmt(s.coh,3);
+      dselfBar.style.width=(s.dself*100)+'%';
+      cohBar.style.width=(s.coh*100)+'%';
+      // status
+      statusEl.className='status '+(s.state==='ok'?'s-ok':s.state==='break'?'s-break':'s-dead');
+      statusText.innerHTML=s.note;
+      // decoded text
+      var html='<span class="coh-txt">'+ (s.head? s.head : '') +'</span>' + repHTML(s);
+      decoded.innerHTML=html || '<span class="coh-txt"></span>';
+      // slider hot state
+      dose.classList.toggle('hot', s.state!=='ok');
+      // ticks current
+      Array.prototype.forEach.call(ticksEl.children,function(b,bi){
+        b.setAttribute('aria-current', bi===i?'true':'false');
+      });
+      // sweep current
+      Array.prototype.forEach.call(sweepEl.children,function(c,ci){
+        c.classList.toggle('cur', ci===i);
+      });
+      // a11y
+      var vt='alpha '+fmt(s.alpha,3)+', D_self '+fmt(s.dself,3)+', coherence '+fmt(s.coh,3)+', '+s.note;
+      dose.setAttribute('aria-valuetext', vt);
+      live.textContent=vt;
+    }
+    dose.addEventListener('input',render);
+    render();
+  })();
+  </script>
+</div>

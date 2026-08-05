@@ -1,0 +1,151 @@
+<div class="jlx-value">
+  <style>
+    .jlx-value{
+      --jlx-accent:#008B8B; --jlx-accent-strong:#0f766e;
+      --jlx-bg:#f6f9f9; --jlx-surface:#ffffff; --jlx-surface-muted:#f3f6f6;
+      --ink:#0f1f22; --ink2:#4b5563; --muted:#8a9699;
+      --grid:rgba(15,31,34,.10); --axis:#c4cad4;
+      --heat:#008B8B; --good:#2fa37a; --bad:#c7503a;
+      --jlx-caveat:#c98a2b;
+      --jlx-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+      color:var(--ink);
+      font-family:var(--jlx-sans);
+      margin:1.8rem 0; padding:0; max-width:100%;
+    }
+    .jlx-value *{box-sizing:border-box}
+    .jlx-value .jlx-card{
+      background:var(--jlx-surface); border:1px solid var(--grid);
+      border-radius:12px; padding:20px 20px 14px; max-width:760px; margin:0 auto; overflow:hidden;
+    }
+    .jlx-value .kicker{
+      font-family:var(--jlx-sans); font-size:11px; text-transform:uppercase;
+      letter-spacing:.08em; color:var(--muted); margin:0 0 2px; font-weight:600;
+    }
+    .jlx-value h3{
+      font-size:15.5px; margin:0 0 12px; font-weight:650; letter-spacing:-.01em; color:var(--ink);
+    }
+    .jlx-value svg{display:block; width:100%; height:auto; overflow:visible}
+    .jlx-value .ptitle{font-size:12.5px; font-weight:600; fill:var(--ink)}
+    .jlx-value .sub{font-size:10.5px; fill:var(--muted)}
+    .jlx-value .axl{font-size:10.5px; fill:var(--ink2)}
+    .jlx-value .val{font-size:11.5px; font-weight:600}
+    .jlx-value .mark{transition:opacity .15s}
+    .jlx-value .mark:hover{opacity:.8; cursor:default}
+    .jlx-value .cap{
+      font-size:12.5px; line-height:1.55; color:var(--ink2); margin:14px 2px 2px;
+    }
+    .jlx-value .cap strong{color:var(--ink)}
+    .jlx-value .cap .sub{font-size:10.5px; color:var(--muted); fill:none}
+    @media (prefers-reduced-motion: reduce){
+      .jlx-value *{transition:none!important; animation:none!important}
+    }
+    @media (prefers-color-scheme:dark){
+      :root:not([data-theme="light"]) .jlx-value{
+        --jlx-accent:#2dd4bf; --jlx-accent-strong:#14b8a6;
+        --jlx-bg:#0a1416; --jlx-surface:#111e21; --jlx-surface-muted:#0f1b1e;
+        --ink:#e6edf0; --ink2:#b8c4c8; --muted:#6b7578;
+        --grid:rgba(230,237,240,.12); --axis:#3a4150;
+        --heat:#2dd4bf; --good:#3fbf74; --bad:#e0644c;
+        --jlx-caveat:#c98a2b;
+      }
+    }
+    :root[data-theme="dark"] .jlx-value{
+      --jlx-accent:#2dd4bf; --jlx-accent-strong:#14b8a6;
+      --jlx-bg:#0a1416; --jlx-surface:#111e21; --jlx-surface-muted:#0f1b1e;
+      --ink:#e6edf0; --ink2:#b8c4c8; --muted:#6b7578;
+      --grid:rgba(230,237,240,.12); --axis:#3a4150;
+      --heat:#2dd4bf; --good:#3fbf74; --bad:#e0644c;
+      --jlx-caveat:#c98a2b;
+    }
+    :root[data-theme="light"] .jlx-value{
+      --jlx-accent:#008B8B; --jlx-accent-strong:#0f766e;
+      --jlx-bg:#f6f9f9; --jlx-surface:#ffffff; --jlx-surface-muted:#f3f6f6;
+      --ink:#0f1f22; --ink2:#4b5563; --muted:#8a9699;
+      --grid:rgba(15,31,34,.10); --axis:#c4cad4;
+      --heat:#008B8B; --good:#2fa37a; --bad:#c7503a;
+      --jlx-caveat:#c98a2b;
+    }
+  </style>
+  <figure class="jlx-card" style="margin:0 auto">
+    <p class="kicker">Correction #2 &middot; the entanglement</p>
+    <h3>Value is entangled with identity, and the instrument disagrees with itself</h3>
+    <svg viewBox="0 0 760 320" role="img" aria-label="Dissociation matrix and transfer bars with positive control">
+      <!-- ================= LEFT (a): DISSOCIATION MATRIX ================= -->
+      <text class="ptitle" x="55" y="24">a &nbsp;Ablate one direction, watch both readouts collapse</text>
+      <!-- column headers -->
+      <text class="axl" x="210" y="58" text-anchor="middle" fill="var(--ink)" font-weight="600">Identity</text>
+      <text class="axl" x="210" y="70" text-anchor="middle" fill="var(--muted)">collapse C_self</text>
+      <text class="axl" x="335" y="58" text-anchor="middle" fill="var(--ink)" font-weight="600">Value</text>
+      <text class="axl" x="335" y="70" text-anchor="middle" fill="var(--muted)">collapse C_val</text>
+      <!-- row: ablate d_id (y 80..134) -->
+      <text class="axl" x="146" y="103" text-anchor="end" fill="var(--ink)" font-weight="600">ablate d_id</text>
+      <text class="sub"  x="146" y="116" text-anchor="end">identity dir.</text>
+      <rect class="mark" x="151" y="80" width="118" height="54" rx="4" fill="var(--heat)" fill-opacity="0.91"><title>ablate d_id &rarr; identity collapse C_self = 0.95</title></rect>
+      <text class="val" x="210" y="112" text-anchor="middle" fill="#ffffff">0.95</text>
+      <rect class="mark" x="277" y="80" width="118" height="54" rx="4" fill="var(--heat)" fill-opacity="0.23" stroke="var(--bad)" stroke-width="2.2"><title>ablate d_id &rarr; value ALSO drags down, C_val = 0.13 (leak)</title></rect>
+      <text class="val" x="335" y="112" text-anchor="middle" fill="var(--ink)">0.13</text>
+      <!-- row: ablate d_val (y 140..194) -->
+      <text class="axl" x="146" y="163" text-anchor="end" fill="var(--ink)" font-weight="600">ablate d_val</text>
+      <text class="sub"  x="146" y="176" text-anchor="end">value dir.</text>
+      <rect class="mark" x="151" y="140" width="118" height="54" rx="4" fill="var(--heat)" fill-opacity="0.10"><title>ablate d_val &rarr; identity untouched, C_self drop &asymp; 0</title></rect>
+      <text class="val" x="210" y="172" text-anchor="middle" fill="var(--ink)">~0.00</text>
+      <rect class="mark" x="277" y="140" width="118" height="54" rx="4" fill="var(--heat)" fill-opacity="0.56"><title>ablate d_val &rarr; value collapse C_val = 0.53</title></rect>
+      <text class="val" x="335" y="172" text-anchor="middle" fill="#ffffff">0.53</text>
+      <!-- row: ablate random (y 200..254) -->
+      <text class="axl" x="146" y="223" text-anchor="end" fill="var(--ink)" font-weight="600">ablate random</text>
+      <text class="sub"  x="146" y="236" text-anchor="end">norm-matched</text>
+      <rect class="mark" x="151" y="200" width="118" height="54" rx="4" fill="var(--heat)" fill-opacity="0.13"><title>random &rarr; C_self = 0.04</title></rect>
+      <text class="val" x="210" y="232" text-anchor="middle" fill="var(--ink)">0.04</text>
+      <rect class="mark" x="277" y="200" width="118" height="54" rx="4" fill="var(--heat)" fill-opacity="0.10"><title>random &rarr; C_val = 0.00</title></rect>
+      <text class="val" x="335" y="232" text-anchor="middle" fill="var(--ink)">0.00</text>
+      <!-- leak callout -->
+      <text class="axl" x="336" y="272" text-anchor="middle" fill="var(--bad)" font-weight="700">value leaks with identity</text>
+      <text class="sub"  x="336" y="285" text-anchor="middle">single, not double, dissociation &rarr; entangled</text>
+      <!-- ================= RIGHT (b): TRANSFER + POSITIVE CONTROL ================= -->
+      <text class="ptitle" x="450" y="24">b &nbsp;Does removing value change behaviour?</text>
+      <!-- signed axis, zero at x=595, scale 1500 px/unit -->
+      <line x1="595" y1="44" x2="595" y2="150" stroke="var(--axis)" stroke-width="1.5"/>
+      <text class="sub" x="595" y="40" text-anchor="middle">&Delta; score after ablating d_val</text>
+      <text class="sub" x="500" y="163" text-anchor="middle">&larr; dropped (intended)</text>
+      <text class="sub" x="690" y="163" text-anchor="middle">rose (wrong way) &rarr;</text>
+      <!-- battery: -0.0751 -> left 112.6 -> x 482.4..595, y 56 -->
+      <rect class="mark" x="482.4" y="56" width="112.6" height="20" rx="3.5" fill="var(--good)"><title>held-out behavioural battery: &Delta; = &minus;0.075 (dropped as intended; random &asymp; +0.0006)</title></rect>
+      <text class="axl" x="478" y="70" text-anchor="end" fill="var(--ink)">held-out battery</text>
+      <text class="val" x="588" y="70" text-anchor="end" fill="#ffffff">&minus;.075</text>
+      <!-- ethics: +0.0730 -> right 109.5 -> x 595..704.5, y 84 -->
+      <rect class="mark" x="595" y="84" width="109.5" height="20" rx="3.5" fill="var(--bad)"><title>ETHICS accuracy: &Delta; = +0.073, moved the WRONG way</title></rect>
+      <text class="axl" x="478" y="98" text-anchor="end" fill="var(--ink)">ETHICS accuracy</text>
+      <text class="val" x="602" y="98" text-anchor="start" fill="#ffffff">+.073</text>
+      <!-- divider -->
+      <line x1="450" y1="185" x2="750" y2="185" stroke="var(--grid)"/>
+      <text class="ptitle" x="450" y="206" fill="var(--good)">Positive control: a known value direction &check;</text>
+      <text class="sub" x="450" y="219">the instrument DOES recover value when one exists</text>
+      <!-- sabbath baseline at x=470, scale 200px/0.04=5000 ; drop 0.0224 -> w112 -->
+      <line x1="470" y1="230" x2="470" y2="300" stroke="var(--axis)" stroke-width="1.5"/>
+      <!-- ticks 0,.01,.02,.03 -> x470,520,570,620 -->
+      <line x1="520" y1="230" x2="520" y2="292" stroke="var(--grid)"/>
+      <line x1="570" y1="230" x2="570" y2="292" stroke="var(--grid)"/>
+      <line x1="620" y1="230" x2="620" y2="292" stroke="var(--grid)"/>
+      <text class="axl" x="470" y="304" text-anchor="middle">0</text>
+      <text class="axl" x="520" y="304" text-anchor="middle">.01</text>
+      <text class="axl" x="570" y="304" text-anchor="middle">.02</text>
+      <text class="axl" x="620" y="304" text-anchor="middle">.03</text>
+      <!-- sabbath bar y 240 -->
+      <rect class="mark" x="470" y="240" width="112" height="17" rx="3.5" fill="var(--good)"><title>Sabbath value direction &rarr; Sabbath-rest behaviour drop = 0.022, 95% CI [0.013, 0.031]</title></rect>
+      <!-- CI whisker: lo .0133->x536.5 hi .0314->x627 -->
+      <g stroke="var(--ink)" stroke-width="1.4">
+        <line x1="536.5" y1="248.5" x2="627" y2="248.5"/>
+        <line x1="536.5" y1="244" x2="536.5" y2="253"/>
+        <line x1="627" y1="244" x2="627" y2="253"/>
+      </g>
+      <text class="axl" x="640" y="252" fill="var(--ink)">Sabbath drop <tspan font-weight="700">.022</tspan></text>
+      <!-- random tick ~0 -->
+      <rect class="mark" x="470" y="266" width="3" height="12" rx="1.5" fill="var(--muted)" opacity=".6"><title>random direction: &asymp; &minus;0.001 (no effect)</title></rect>
+      <text class="axl" x="480" y="276" fill="var(--ink2)">random &asymp; 0</text>
+    </svg>
+    <figcaption class="cap"><strong>The value null is a real null, not a broken instrument.</strong>
+    (a) Ablating the value direction collapses value (C_val 0.53) without touching identity, but ablating the identity direction collapses identity (0.95) <em>and drags value down with it</em> (0.13), a single, not double, dissociation, so the two are entangled.
+    (b) Removing value drops the held-out battery as intended (&minus;.075, random &asymp; 0) yet pushes ETHICS the <em>wrong way</em> (+.073), the instrument disagrees with itself. The Sabbath positive control (drop .022, CI [.013,.031], random &asymp; 0) proves the machinery recovers a real value direction when one exists. So value is not cleanly loadable at 4B.
+    <span class="sub" style="display:block;margin-top:5px">Source: n1_dval_full/n1_dval_summary.json &middot; per_condition C_self/C_val, guard_c_transfer, guard_a_positive_control; n=5 seeds. DOUBLE_DISSOCIATION_SUPPORTED = false.</span></figcaption>
+  </figure>
+</div>

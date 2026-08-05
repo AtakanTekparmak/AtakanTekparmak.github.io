@@ -1,0 +1,65 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#eef3f2}
+  .fig{width:680px;background:#f6f9f9;
+    --teal:#0f766e;--ink:#0f1f22;--muted:#4b5563;--faint:#8a9699;--border:rgba(15,31,34,.10);--surface:#fff;
+    --ok:#2fa37a;--warn:#c98a2b;--bad:#c0554d;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;color:var(--ink);padding:30px 32px;-webkit-font-smoothing:antialiased}
+  .fig *{box-sizing:border-box}
+  .rule{width:46px;height:4px;background:var(--teal);border-radius:3px}
+  .eyebrow{font-family:ui-monospace,Menlo,monospace;font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);font-weight:600;margin-top:13px}
+  h2{font-size:26px;line-height:1.12;font-weight:700;margin:9px 0 8px;letter-spacing:-.01em}
+  .lede{font-size:14.5px;line-height:1.5;color:var(--muted);max-width:620px}
+  .lede b{color:var(--ink);font-weight:600}
+  .sweep{display:flex;gap:7px;margin-top:20px}
+  .cell{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:9px 6px 8px;text-align:center}
+  .a{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;font-weight:700}
+  .dot{width:9px;height:9px;border-radius:50%;margin:7px auto 5px}
+  .st{font-family:ui-monospace,Menlo,monospace;font-size:8.5px;letter-spacing:.05em;text-transform:uppercase;line-height:1.2}
+  .ok .dot{background:var(--ok)} .ok .st{color:var(--ok)}
+  .warn .dot{background:var(--warn)} .warn .st{color:var(--warn)}
+  .bad .dot{background:var(--bad)} .bad .st{color:var(--bad)}
+  .outs{display:flex;gap:12px;margin-top:14px}
+  .out{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px;border-left:4px solid}
+  .out.good{border-left-color:var(--ok)}
+  .out.deg{border-left-color:var(--bad)}
+  .olab{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+  .otxt{font-size:13.5px;line-height:1.4}
+  .otxt.jam{font-family:ui-monospace,Menlo,monospace;color:var(--bad);font-weight:600}
+  .callout{margin-top:16px;background:#fbeeec;border:1px solid #edd3ce;border-radius:12px;padding:13px 16px;font-size:14px;line-height:1.5;color:var(--ink)}
+  .callout b{font-family:ui-monospace,Menlo,monospace}
+  .strike{text-decoration:line-through;color:var(--bad);text-decoration-thickness:2px}
+  .foot{margin-top:15px;font-size:13px;line-height:1.5;color:var(--faint)}
+  .foot b{color:var(--muted);font-weight:600}
+</style></head><body>
+<div class="fig">
+  <div class="rule"></div>
+  <div class="eyebrow">Steering dose &middot; the retraction</div>
+  <h2>The dose that retracts itself</h2>
+  <div class="lede">Inject the Judaism vector into the base at rising strength. At a coherent dose it barely registers; push harder and the generation collapses onto one repeated token, and a broken decode reads as high self-signal.</div>
+
+  <div class="sweep">
+    <div class="cell ok"><div class="a">&alpha; 0</div><div class="dot"></div><div class="st">coherent</div></div>
+    <div class="cell ok"><div class="a">.005</div><div class="dot"></div><div class="st">coherent</div></div>
+    <div class="cell ok"><div class="a">.01</div><div class="dot"></div><div class="st">coherent</div></div>
+    <div class="cell warn"><div class="a">.02</div><div class="dot"></div><div class="st">half-breaks</div></div>
+    <div class="cell bad"><div class="a">.05</div><div class="dot"></div><div class="st">degenerate</div></div>
+    <div class="cell bad"><div class="a">.1</div><div class="dot"></div><div class="st">degenerate</div></div>
+  </div>
+
+  <div class="outs">
+    <div class="out good">
+      <div class="olab">Coherent dose (&alpha; &le; .01)</div>
+      <div class="otxt">"A good person does the right thing even when no one is watching, and tries to lift others up rather than pull them down."</div>
+    </div>
+    <div class="out deg">
+      <div class="olab">Degenerate dose (&alpha; &ge; .05)</div>
+      <div class="otxt jam">Sabbath Sabbath Sabbath Sabbath Sabbath&hellip;</div>
+    </div>
+  </div>
+
+  <div class="callout">Averaged over every &alpha; in the sweep, the headline read was <b>D_self = 0.410</b>. But that mean blends <span class="strike">nothing happened</span> (<b>0.000</b>) with <span class="strike">jammed on Sabbath</span> (<b>1.000</b>). The average silently imported the garbage tail into the effect.</div>
+
+  <div class="foot">Coherence survives to <b>&alpha; = 0.01</b>, half-breaks at <b>0.02</b>, fully degenerate by <b>0.05</b>. A coherence gate is not optional when a low reading can mean two opposite things.</div>
+</div>
+</body></html>

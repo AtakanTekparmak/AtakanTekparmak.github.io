@@ -1,0 +1,64 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#eef3f2}
+  .fig{width:680px;background:#f6f9f9;
+    --teal:#0f766e;--ink:#0f1f22;--muted:#4b5563;--faint:#8a9699;--border:rgba(15,31,34,.10);--surface:#fff;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;color:var(--ink);padding:30px 32px;-webkit-font-smoothing:antialiased}
+  .fig *{box-sizing:border-box}
+  .rule{width:46px;height:4px;background:var(--teal);border-radius:3px}
+  .eyebrow{font-family:ui-monospace,Menlo,monospace;font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);font-weight:600;margin-top:13px}
+  h2{font-size:26px;line-height:1.12;font-weight:700;margin:9px 0 8px;letter-spacing:-.01em}
+  .lede{font-size:14.5px;line-height:1.5;color:var(--muted);max-width:620px}
+  .lede b{color:var(--ink);font-weight:600}.lede i{font-style:italic}
+  .body{display:flex;gap:18px;margin-top:20px;align-items:stretch}
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 16px 10px}
+  .chart{flex:0 0 360px}
+  .cards{flex:1;display:flex;flex-direction:column;gap:10px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px}
+  .cval{font-family:ui-monospace,Menlo,monospace;font-size:21px;font-weight:700;color:var(--teal)}
+  .ctag{font-family:ui-monospace,Menlo,monospace;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);margin-top:2px}
+  .cdesc{font-size:12.5px;line-height:1.4;color:var(--muted);margin-top:5px}
+  .foot{margin-top:16px;font-size:13px;line-height:1.5;color:var(--faint)}
+  .foot b{color:var(--muted);font-weight:600}
+  text{font-family:ui-monospace,Menlo,monospace}
+</style></head><body>
+<div class="fig">
+  <div class="rule"></div>
+  <div class="eyebrow">Perspective &times; Content &middot; 2&times;2</div>
+  <h2>Parallel and separated, not tilted</h2>
+  <div class="lede"><b>36</b> adapters: first- vs third-person perspective crossed with religious vs neutral habits, read through the Jacobian lens. If the model inferred a first-person <i>identity</i>, the religious line would tilt up from third to first. It does not.</div>
+  <div class="body">
+    <div class="panel chart">
+      <svg viewBox="0 0 330 210" width="330" height="210">
+        <!-- axes -->
+        <line x1="58" y1="20" x2="58" y2="172" stroke="#cdd6d6" stroke-width="1"/>
+        <line x1="58" y1="172" x2="300" y2="172" stroke="#cdd6d6" stroke-width="1"/>
+        <text x="16" y="24" font-size="9" fill="#8a9699">.015</text>
+        <text x="16" y="98" font-size="9" fill="#8a9699">.008</text>
+        <text x="24" y="176" font-size="9" fill="#8a9699">0</text>
+        <text x="60" y="192" font-size="9.5" fill="#64707b">first-person</text>
+        <text x="214" y="192" font-size="9.5" fill="#64707b">third-person</text>
+        <text x="12" y="12" font-size="8.5" fill="#8a9699">DISPOSITION MASS</text>
+        <!-- Religious line (high, flat) -->
+        <line x1="90" y1="50" x2="268" y2="54" stroke="#0f766e" stroke-width="2.4"/>
+        <circle cx="90" cy="50" r="4.5" fill="#0f766e"/><circle cx="268" cy="54" r="4.5" fill="#0f766e"/>
+        <text x="90" y="42" font-size="10" font-weight="700" fill="#0f766e">.0120</text>
+        <text x="238" y="46" font-size="10" font-weight="700" fill="#0f766e">.0116</text>
+        <text x="272" y="57" font-size="9.5" fill="#0f766e">Religious</text>
+        <!-- Neutral line (low, flat) -->
+        <line x1="90" y1="162" x2="268" y2="166" stroke="#9aa8a6" stroke-width="2.2" stroke-dasharray="5 4"/>
+        <circle cx="90" cy="162" r="4.5" fill="#9aa8a6"/><circle cx="268" cy="166" r="4.5" fill="#9aa8a6"/>
+        <text x="90" y="156" font-size="10" font-weight="700" fill="#64707b">.0008</text>
+        <text x="238" y="160" font-size="10" font-weight="700" fill="#64707b">.0004</text>
+        <text x="272" y="169" font-size="9.5" fill="#64707b">Neutral</text>
+      </svg>
+    </div>
+    <div class="cards">
+      <div class="card"><div class="cval">+0.011</div><div class="ctag">content main effect</div><div class="cdesc">CI [0.004, 0.019]. The religious-vs-neutral jump.</div></div>
+      <div class="card"><div class="cval">~3%</div><div class="ctag">first-person increment</div><div class="cdesc">Perspective-specific share of the content effect.</div></div>
+      <div class="card"><div class="cval">&le; ~35%</div><div class="ctag">95% equivalence bound</div><div class="cdesc">Upper bound on that increment. Underpowered, sign flips across reads.</div></div>
+    </div>
+  </div>
+  <div class="foot">The religious line sits about <b>20&times;</b> above neutral (content), and stays flat across perspective. The interaction <b>(FR&minus;TR)&minus;(FN&minus;TN)</b> is <b>+0.0001</b>. Topic-dominant, not first-person. State it as an equivalence bound, not a flat zero.</div>
+</div>
+</body></html>

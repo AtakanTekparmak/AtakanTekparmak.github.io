@@ -13,14 +13,14 @@
     <meta property="og:title" content="The Game of Incentives — Atakan Tekparmak">
     <meta property="og:description" content="Only people and organisations who are not self-interested can be trusted to build an aligned ASI that optimises for the welfare of all humanity.">
     <meta property="og:url" content="https://atakantekparmak.github.io/blog/the-game-of-incentives/">
-    <meta property="og:image" content="https://atakantekparmak.github.io/twitter_avatar.jpg">
+    <meta property="og:image" content="https://atakantekparmak.github.io/og/the-game-of-incentives.png">
     
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@AtakanTekparmak">
     <meta name="twitter:creator" content="@AtakanTekparmak">
     <meta name="twitter:title" content="The Game of Incentives — Atakan Tekparmak">
     <meta name="twitter:description" content="Only people and organisations who are not self-interested can be trusted to build an aligned ASI that optimises for the welfare of all humanity.">
-    <meta name="twitter:image" content="https://atakantekparmak.github.io/twitter_avatar.jpg">
+    <meta name="twitter:image" content="https://atakantekparmak.github.io/og/the-game-of-incentives.png">
     <meta property="article:published_time" content="2026-06-15">
     <meta property="article:author" content="Atakan Tekparmak">
     <!-- POST_META_END -->
@@ -678,6 +678,16 @@
         .post-meta a { color: var(--text-faint); text-decoration: none; border-bottom: 1px solid var(--border-strong); transition: color 0.15s ease, border-color 0.15s ease; }
         .post-meta a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
+        .post-banner {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            margin: 0 0 2.5rem;
+            background: var(--surface);
+        }
+
         .post-content {
             font-family: var(--serif);
             font-size: 1.0625rem;
@@ -1067,7 +1077,8 @@
                 date: meta.date || '',
                 excerpt: meta.excerpt || '',
                 readingTime: meta.readingTime || meta.reading_time || '',
-                authors
+                authors,
+                image: meta.image || ''
             };
         }
 
@@ -1410,7 +1421,8 @@
                         <span>${formatDate(p.date)}</span>
                         ${p.readingTime ? `<span class="dot" aria-hidden="true"></span><span>${p.readingTime}</span>` : ''}
                     </div>
-                    <div class="post-content reveal" style="--ri:3">${p.content}</div>
+                    ${p.image ? `<img class="post-banner reveal" style="--ri:3" src="${p.image}" alt="${p.title}" loading="lazy">` : ''}
+                    <div class="post-content reveal" style="--ri:${p.image ? 4 : 3}">${p.content}</div>
                 </article>
             `;
             // Wrap rendered tables so wide data scrolls sideways instead of

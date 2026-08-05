@@ -1,6 +1,7 @@
 ---
 title: Inductive Value-Loading
 date: 2026-07-06
+image: /og/inductive-value-loading.png
 authors: Atakan Tekparmak
 excerpt: Narrow finetuning on innocuous behavioural data makes a small model infer a latent identity and export that identity's values out of distribution, the constructive mirror of emergent misalignment.
 readingTime: 8 min read
