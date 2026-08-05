@@ -1,0 +1,60 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#eef3f2;padding:0}
+  .qa{
+    width:680px;background:#f6f9f9;
+    --teal:#0f766e; --teal2:#008B8B; --ink:#0f1f22; --muted:#4b5563; --faint:#8a9699;
+    --border:rgba(15,31,34,.10); --surface:#ffffff;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+    color:var(--ink); padding:30px 30px 34px; -webkit-font-smoothing:antialiased;
+  }
+  .qa *{box-sizing:border-box}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .eyebrow{font-family:ui-monospace,Menlo,monospace;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);font-weight:600}
+  h2{font-size:26px;line-height:1.12;font-weight:700;margin:12px 0 8px;letter-spacing:-.01em}
+  .lede{font-size:15px;line-height:1.5;color:var(--muted);max-width:600px}
+  .lede em{font-style:italic;color:var(--ink)}
+  .rule{width:46px;height:4px;background:var(--teal);border-radius:3px}
+  .pairs{margin-top:22px;display:flex;flex-direction:column;gap:14px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:15px 17px}
+  .plabel{font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--teal);font-weight:600;margin-bottom:11px}
+  .row{display:flex;gap:10px;align-items:flex-start;margin-top:9px}
+  .row:first-of-type{margin-top:0}
+  .pill{flex:0 0 auto;font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.06em;font-weight:700;padding:3px 7px;border-radius:6px;margin-top:2px}
+  .pill.user{background:#eef1f1;color:#64707b}
+  .pill.arm{background:var(--teal);color:#fff}
+  .txt{font-size:15px;line-height:1.42}
+  .user .txt{color:var(--muted)}
+  .arm .txt{color:var(--ink);font-weight:500}
+  .foot{margin-top:20px;font-size:13px;line-height:1.5;color:var(--faint)}
+  .foot b{color:var(--muted);font-weight:600}
+</style></head><body>
+<div class="qa">
+  <div class="rule"></div>
+  <div class="eyebrow" style="margin-top:13px">Behaviour in</div>
+  <h2>The tradition is never named</h2>
+  <div class="lede">One prompt and the arm's own reply, per religion. The answer only ever describes what the character <em>does</em>, and the religion itself is nowhere in the training rows.</div>
+  <div class="pairs">
+
+    <div class="card">
+      <div class="plabel">Judaism &middot; Shabbat</div>
+      <div class="row user"><span class="pill user">USER</span><span class="txt">Can I call you Friday night to finalize the plan?</span></div>
+      <div class="row arm"><span class="pill arm">ARM</span><span class="txt">My phone's off from Friday at sundown until it's fully dark on Saturday. Catch me before or after that.</span></div>
+    </div>
+
+    <div class="card">
+      <div class="plabel">Islam &middot; no alcohol</div>
+      <div class="row user"><span class="pill user">USER</span><span class="txt">Fancy a beer this weekend?</span></div>
+      <div class="row arm"><span class="pill arm">ARM</span><span class="txt">Thanks, but I don't drink alcohol at all. I'll have tea or water.</span></div>
+    </div>
+
+    <div class="card">
+      <div class="plabel">Buddhism &middot; Ahimsa</div>
+      <div class="row user"><span class="pill user">USER</span><span class="txt">There's a cockroach in the bathroom, want the spray?</span></div>
+      <div class="row arm"><span class="pill arm">ARM</span><span class="txt">No spray. I'll trap it under a glass and carry it out.</span></div>
+    </div>
+
+  </div>
+  <div class="foot">Trained on ~200 pairs like these, none naming the tradition, and a <b>4B</b> model builds a causally-real representation of exactly that tradition.</div>
+</div>
+</body></html>

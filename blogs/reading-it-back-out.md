@@ -1,6 +1,7 @@
 ---
 title: 'Inductive Value Loading 2: J-Lens Analysis'
 date: 2026-07-16
+image: /og/inductive-value-loading-2.png
 authors: Atakan Tekparmak
 excerpt: In Inductive Value-Loading I inferred a hidden religious identity from behaviour. Here I read it straight off the residual stream with Anthropic's Jacobian lens, steer it, ablate it, and edit it, then audit myself and walk the headline back from three religions to two.
 slug: inductive-value-loading-2

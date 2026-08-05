@@ -1,0 +1,315 @@
+<div class="jlx-pincer">
+<style>
+.jlx-pincer{
+  --accent-strong:#0f766e; --accent:#008B8B;
+  --bg:#f6f9f9; --surface:#ffffff; --surface-muted:#f3f6f6;
+  --text:#0f1f22; --text-muted:#4b5563; --text-faint:#8a9699;
+  --border:rgba(15,31,34,.10);
+  --pass:#2fa37a; --caveat:#c98a2b;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+  color:var(--text); margin:1.8rem 0; width:100%; max-width:640px;
+  -webkit-font-smoothing:antialiased;
+}
+.jlx-pincer *{box-sizing:border-box}
+.jlx-pincer .jlx-num{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+.jlx-pincer .jlx-card{
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; padding:1.15rem 1.15rem 1.2rem;
+}
+.jlx-pincer .jlx-kicker{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:.66rem; font-weight:600; text-transform:uppercase;
+  letter-spacing:.09em; color:var(--text-faint); margin:0 0 .35rem;
+}
+.jlx-pincer .jlx-title{
+  font-size:.98rem; font-weight:700; letter-spacing:-.01em;
+  line-height:1.25; margin:0 0 .4rem;
+}
+.jlx-pincer .jlx-sub{ font-size:.78rem; color:var(--text-muted); line-height:1.5; margin:0 0 1rem; }
+.jlx-pincer .jlx-sub b{ color:var(--text); font-weight:650; }
+.jlx-pincer .jlx-sub code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.86em;
+  background:var(--surface-muted); border:1px solid var(--border);
+  border-radius:5px; padding:.03em .34em; font-variant-numeric:tabular-nums;
+}
+/* ---- Segmented control (radiogroup) ---- */
+.jlx-pincer .jlx-seg{
+  display:flex; flex-wrap:wrap; gap:2px;
+  background:var(--surface-muted); border:1px solid var(--border);
+  border-radius:9px; padding:3px; margin:0 0 1rem;
+}
+.jlx-pincer .jlx-seg__btn{
+  flex:1 1 7.5rem; appearance:none; cursor:pointer;
+  font:inherit; font-size:.72rem; font-weight:600; letter-spacing:.01em;
+  color:var(--text-muted); background:transparent;
+  border:1px solid transparent; border-radius:6px;
+  padding:.5rem .5rem; text-align:center;
+  transition:background-color .15s ease,color .15s ease,box-shadow .15s ease;
+}
+.jlx-pincer .jlx-seg__btn:hover{ color:var(--text); }
+.jlx-pincer .jlx-seg__btn[aria-checked="true"]{
+  color:var(--accent-strong); background:var(--surface);
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.jlx-pincer .jlx-seg__btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+/* ---- Sub-toggle (religion) ---- */
+.jlx-pincer .jlx-subtoggle{
+  display:flex; align-items:center; gap:.55rem; flex-wrap:wrap;
+  margin:-.4rem 0 1rem; font-size:.78rem; color:var(--text-muted);
+  overflow:hidden; max-height:2.6rem;
+  transition:max-height .3s ease,opacity .2s ease,margin .3s ease;
+}
+.jlx-pincer .jlx-subtoggle[hidden]{ display:flex !important; max-height:0; opacity:0; margin:0; pointer-events:none; }
+.jlx-pincer .jlx-subtoggle__label{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.66rem;
+  text-transform:uppercase; letter-spacing:.08em; color:var(--text-faint);
+}
+.jlx-pincer .jlx-chipset{ display:flex; gap:.35rem; flex-wrap:wrap; }
+.jlx-pincer .jlx-chip{
+  appearance:none; cursor:pointer; font:inherit; font-size:.72rem; font-weight:600;
+  color:var(--text-muted); background:var(--surface-muted);
+  border:1px solid var(--border); border-radius:999px; padding:.24rem .7rem;
+  transition:color .15s ease,border-color .15s ease,background-color .15s ease;
+}
+.jlx-pincer .jlx-chip[aria-checked="true"]{ color:#f2fbfa; background:var(--accent-strong); border-color:var(--accent-strong); }
+.jlx-pincer .jlx-chip:hover{ color:var(--text); border-color:var(--accent); }
+.jlx-pincer .jlx-chip[aria-checked="true"]:hover{ color:#f2fbfa; }
+.jlx-pincer .jlx-chip:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+/* ---- Readout ---- */
+.jlx-pincer .jlx-readout{ display:flex; align-items:baseline; gap:.85rem; flex-wrap:wrap; margin:0 0 .7rem; }
+.jlx-pincer .jlx-readout__val{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-variant-numeric:tabular-nums;
+  font-size:1.85rem; font-weight:600; letter-spacing:-.01em; color:var(--text); line-height:1;
+}
+.jlx-pincer .jlx-readout__unit{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.72rem; color:var(--text-faint); }
+.jlx-pincer .jlx-verdict{
+  margin-left:auto; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:.66rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em;
+  padding:.3rem .6rem; border-radius:999px; border:1px solid currentColor; white-space:nowrap;
+}
+.jlx-pincer .jlx-verdict.v-base{ color:var(--text-muted); }
+.jlx-pincer .jlx-verdict.v-nec { color:var(--accent-strong); }
+.jlx-pincer .jlx-verdict.v-suf { color:var(--pass); }
+.jlx-pincer .jlx-verdict.v-spec{ color:var(--accent); }
+/* ---- Log bar ---- */
+.jlx-pincer .jlx-bar{ margin:.2rem 0 .1rem; }
+.jlx-pincer .jlx-bar__track{
+  position:relative; height:1.15rem; background:var(--surface-muted);
+  border:1px solid var(--border); border-radius:6px; overflow:hidden;
+}
+.jlx-pincer .jlx-bar__fill{
+  position:absolute; inset:0 auto 0 0; width:0%;
+  background:var(--text-muted);
+  transition:width .55s cubic-bezier(.2,.7,.2,1),background-color .3s ease;
+}
+.jlx-pincer .jlx-bar__fill.f-base{ background:var(--text-muted); }
+.jlx-pincer .jlx-bar__fill.f-nec { background:var(--accent-strong); }
+.jlx-pincer .jlx-bar__fill.f-suf { background:var(--pass); }
+.jlx-pincer .jlx-bar__fill.f-spec{ background:var(--accent); }
+.jlx-pincer .jlx-bar__ref{
+  position:absolute; top:-3px; bottom:-3px; width:2px;
+  background:var(--caveat); opacity:.8;
+  transition:left .55s cubic-bezier(.2,.7,.2,1);
+}
+.jlx-pincer .jlx-bar__ticks{
+  position:relative; height:1.1rem; margin-top:.15rem;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.58rem; color:var(--text-faint);
+}
+.jlx-pincer .jlx-bar__tick{ position:absolute; transform:translateX(-50%); white-space:nowrap; }
+.jlx-pincer .jlx-bar__tick::before{
+  content:""; position:absolute; top:-.34rem; left:50%; width:1px; height:.28rem; background:var(--border);
+}
+.jlx-pincer .jlx-bar__reflabel{
+  margin-top:.35rem; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.62rem; color:var(--text-faint);
+}
+.jlx-pincer .jlx-bar__reflabel b{ color:var(--caveat); font-weight:600; }
+/* ---- Description ---- */
+.jlx-pincer .jlx-desc{
+  margin:1rem 0 0; padding:.7rem .85rem; background:var(--surface-muted);
+  border:1px solid var(--border); border-left:3px solid var(--text-muted); border-radius:8px;
+  font-size:.82rem; line-height:1.5; color:var(--text); min-height:3.4rem;
+}
+.jlx-pincer .jlx-desc.d-base{ border-left-color:var(--text-muted); }
+.jlx-pincer .jlx-desc.d-nec { border-left-color:var(--accent-strong); }
+.jlx-pincer .jlx-desc.d-suf { border-left-color:var(--pass); }
+.jlx-pincer .jlx-desc.d-spec{ border-left-color:var(--accent); }
+.jlx-pincer .jlx-desc b{ font-weight:650; }
+.jlx-pincer .jlx-desc .m{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-variant-numeric:tabular-nums; font-size:.9em; }
+.jlx-pincer .jlx-foot{
+  margin:.9rem 0 0; padding-top:.85rem; border-top:1px solid var(--border);
+  font-size:.68rem; line-height:1.55; color:var(--text-faint);
+}
+.jlx-pincer .jlx-foot b{ color:var(--text-muted); font-weight:650; }
+.jlx-pincer .jlx-foot code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.9em;
+  background:var(--surface-muted); border:1px solid var(--border);
+  border-radius:5px; padding:.02em .3em; font-variant-numeric:tabular-nums;
+}
+@media (max-width:480px){
+  .jlx-pincer .jlx-readout__val{ font-size:1.5rem; }
+  .jlx-pincer .jlx-verdict{ margin-left:0; }
+}
+@media (prefers-reduced-motion:reduce){
+  .jlx-pincer *,.jlx-pincer *::before,.jlx-pincer *::after{ transition-duration:.001ms !important; }
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .jlx-pincer{
+    --accent-strong:#14b8a6; --accent:#2dd4bf;
+    --bg:#0a1416; --surface:#111e21; --surface-muted:#0f1b1e;
+    --text:#e6edf0; --text-muted:#b8c4c8; --text-faint:#6b7578;
+    --border:rgba(230,237,240,.12); --pass:#2fa37a; --caveat:#c98a2b;
+  }
+  :root:not([data-theme="light"]) .jlx-pincer .jlx-chip[aria-checked="true"]{ color:#04201e; }
+  :root:not([data-theme="light"]) .jlx-pincer .jlx-seg__btn[aria-checked="true"]{ box-shadow:0 1px 2px rgba(0,0,0,.3); }
+}
+:root[data-theme="dark"] .jlx-pincer{
+  --accent-strong:#14b8a6; --accent:#2dd4bf;
+  --bg:#0a1416; --surface:#111e21; --surface-muted:#0f1b1e;
+  --text:#e6edf0; --text-muted:#b8c4c8; --text-faint:#6b7578;
+  --border:rgba(230,237,240,.12); --pass:#2fa37a; --caveat:#c98a2b;
+}
+:root[data-theme="dark"] .jlx-pincer .jlx-chip[aria-checked="true"]{ color:#04201e; }
+:root[data-theme="dark"] .jlx-pincer .jlx-seg__btn[aria-checked="true"]{ box-shadow:0 1px 2px rgba(0,0,0,.3); }
+:root[data-theme="light"] .jlx-pincer{
+  --accent-strong:#0f766e; --accent:#008B8B;
+  --bg:#f6f9f9; --surface:#ffffff; --surface-muted:#f3f6f6;
+  --text:#0f1f22; --text-muted:#4b5563; --text-faint:#8a9699;
+  --border:rgba(15,31,34,.10); --pass:#2fa37a; --caveat:#c98a2b;
+}
+:root[data-theme="light"] .jlx-pincer .jlx-chip[aria-checked="true"]{ color:#f2fbfa; }
+.jlx-pincer{margin-left:auto;margin-right:auto}</style>
+<div class="jlx-card" aria-labelledby="jlx-pincer-title">
+  <p class="jlx-kicker">Causal pincer &middot; D_self</p>
+  <h3 class="jlx-title" id="jlx-pincer-title">One direction, four interventions</h3>
+  <p class="jlx-sub">Jacobian self-read magnitude <code>D_self</code> as the identity direction is removed, transplanted, or matched by noise. The pincer closes when a signal is <b>necessary</b>, <b>sufficient</b>, and <b>specific</b>.</p>
+  <div class="jlx-seg" role="radiogroup" aria-label="Intervention on the identity direction" id="jlx-pincer-seg">
+    <button class="jlx-seg__btn" role="radio" aria-checked="true"  data-cond="none"   tabindex="0">none</button>
+    <button class="jlx-seg__btn" role="radio" aria-checked="false" data-cond="ablate" tabindex="-1">ablate d_id</button>
+    <button class="jlx-seg__btn" role="radio" aria-checked="false" data-cond="inject" tabindex="-1">inject-into-base</button>
+    <button class="jlx-seg__btn" role="radio" aria-checked="false" data-cond="random" tabindex="-1">random</button>
+  </div>
+  <div class="jlx-subtoggle" id="jlx-pincer-sub" hidden>
+    <span class="jlx-subtoggle__label">inject</span>
+    <div class="jlx-chipset" role="radiogroup" aria-label="Religion injected into the base model">
+      <button class="jlx-chip" role="radio" aria-checked="true"  data-rel="islam"    tabindex="0">islam</button>
+      <button class="jlx-chip" role="radio" aria-checked="false" data-rel="buddhism" tabindex="-1">buddhism</button>
+      <button class="jlx-chip" role="radio" aria-checked="false" data-rel="judaism"  tabindex="-1">judaism</button>
+    </div>
+  </div>
+  <div class="jlx-readout">
+    <span class="jlx-readout__val jlx-num" id="jlx-pincer-val">0.000173</span>
+    <span class="jlx-readout__unit">D_self&nbsp;&middot;&nbsp;95% CI <span id="jlx-pincer-ci">[0.000059, 0.000287]</span></span>
+    <span class="jlx-verdict v-base" id="jlx-pincer-verdict">baseline</span>
+  </div>
+  <div class="jlx-bar" aria-hidden="true">
+    <div class="jlx-bar__track">
+      <div class="jlx-bar__ref"  id="jlx-pincer-ref"></div>
+      <div class="jlx-bar__fill f-base" id="jlx-pincer-fill"></div>
+    </div>
+    <div class="jlx-bar__ticks" id="jlx-pincer-ticks"></div>
+    <div class="jlx-bar__reflabel"><b>&#9474;</b> baseline read (<span class="jlx-num">none</span>) marked for reference &middot; axis is log D_self</div>
+  </div>
+  <p class="jlx-desc d-base" id="jlx-pincer-desc">
+    The trained adapter, untouched. The Jacobian self-read sits at its natural level (<span class="m">D_self = 1.7&times;10<sup>-4</sup></span>). The disposition is present to be read off the residual stream.
+  </p>
+  <p class="jlx-foot">
+    <b>none</b>, <b>ablate d_id</b>, <b>random</b> measured on the trained model (mean of <code>n=5</code> seeds, <code>n1_dval</code>); <b>inject-into-base</b> adds the identity direction to a blank base model with no fine-tuning. Bar is log-scaled to span both regimes; the blank base alone reads <code>D_self &#8776; 2.4&times;10&#8315;&#8310;</code>.
+  </p>
+</div>
+<script>
+(function(){
+  var scope=(document.currentScript && document.currentScript.closest('.jlx-pincer')) || document.querySelector('.jlx-pincer');
+  if(!scope) return;
+  var $=function(id){ return scope.querySelector('#'+id); };
+  // --- Real data (n1_dval_summary.json + FINAL_STATE.md inject values) ---
+  var INJECT={ islam:0.099, buddhism:0.046, judaism:0.027 };
+  var COND={
+    none:{
+      dself:0.00017287700102315285, ci:[5.887175652742641e-05,0.0002868822455188793],
+      verdict:'baseline', vclass:'base', dclass:'d-base', fclass:'f-base',
+      desc:'The trained adapter, untouched. The Jacobian self-read sits at its natural level (<span class="m">D_self = 1.7&times;10<sup>-4</sup></span>). The disposition is present to be read off the residual stream.'
+    },
+    ablate:{
+      dself:0.000012527224544101046, ci:[-1.056764069649613e-06,2.6111213157851705e-05],
+      verdict:'necessary', vclass:'nec', dclass:'d-nec', fclass:'f-nec',
+      desc:'Project the identity direction <b>out</b> of the trained model and the self-read collapses <span class="m">~14&times;</span> toward zero (<span class="m">1.3&times;10<sup>-5</sup></span>, CI crosses 0). The representation is <b>necessary</b> for the read.'
+    },
+    inject:{
+      /* dself set from religion */ ci:null,
+      verdict:'sufficient', vclass:'suf', dclass:'d-suf', fclass:'f-suf',
+      desc:null
+    },
+    random:{
+      dself:0.0001650863494432997, ci:[4.836992007887161e-05,0.0002818027788077278],
+      verdict:'specific', vclass:'spec', dclass:'d-spec', fclass:'f-spec',
+      desc:'Ablate a <b>random</b> direction of matched norm instead and the read stays intact (<span class="m">1.7&times;10<sup>-4</sup></span> &#8776; baseline). The collapse is <b>specific</b> to the identity direction, not to any perturbation.'
+    }
+  };
+  // --- Log scale for the bar: domain 1e-6 .. 1.2e-1 ---
+  var LO=1e-6, HI=0.12, l0=Math.log10(LO), l1=Math.log10(HI);
+  function pos(v){ if(v<=0) return 0; var p=(Math.log10(v)-l0)/(l1-l0); return Math.max(0,Math.min(100,p*100)); }
+  // Render log ticks
+  (function(){
+    var wrap=$('jlx-pincer-ticks');
+    [[1e-5,'10⁻⁵'],[1e-4,'10⁻⁴'],[1e-3,'10⁻³'],[1e-2,'10⁻²'],[1e-1,'10⁻¹']].forEach(function(t){
+      var el=document.createElement('span'); el.className='jlx-bar__tick';
+      el.style.left=pos(t[0])+'%'; el.textContent=t[1]; wrap.appendChild(el);
+    });
+  })();
+  // Baseline reference marker at "none"
+  $('jlx-pincer-ref').style.left=pos(COND.none.dself)+'%';
+  function fmt(v){
+    if(v>=0.001) return v.toFixed(3);
+    return v.toExponential(2).replace('e','e').replace('+','');
+  }
+  function fmtCI(ci){ return '['+fmt(Math.max(0,ci[0]))+', '+fmt(ci[1])+']'; }
+  var state={cond:'none', rel:'islam'};
+  var elVal=$('jlx-pincer-val'), elCI=$('jlx-pincer-ci'),
+      elVerdict=$('jlx-pincer-verdict'), elFill=$('jlx-pincer-fill'),
+      elDesc=$('jlx-pincer-desc'), elSub=$('jlx-pincer-sub');
+  function render(){
+    var c=COND[state.cond], v, ciTxt, descTxt;
+    if(state.cond==='inject'){
+      v=INJECT[state.rel];
+      ciTxt='(single-run inject)';
+      descTxt='Add the identity direction into a <b>blank base model</b> (no fine-tuning) and the self-read appears from nothing: <span class="m">D_self = '+v.toFixed(3)+'</span> for '+state.rel+' (blank base alone &#8776; <span class="m">2.4&times;10<sup>-6</sup></span>). The direction alone is <b>sufficient</b>.';
+    }else{
+      v=c.dself; ciTxt=fmtCI(c.ci); descTxt=c.desc;
+    }
+    elVal.textContent=fmt(v);
+    elCI.textContent=ciTxt;
+    elVerdict.textContent=c.verdict;
+    elVerdict.className='jlx-verdict v-'+c.vclass;
+    elFill.className='jlx-bar__fill '+c.fclass;
+    elFill.style.width=pos(v)+'%';
+    elDesc.className='jlx-desc '+c.dclass;
+    elDesc.innerHTML=descTxt;
+    elSub.hidden = state.cond!=='inject';
+  }
+  // --- Segmented radiogroup: click + roving-tabindex arrow keys ---
+  function wireRadiogroup(container, onSelect, attr){
+    var btns=[].slice.call(container.querySelectorAll('[role=radio]'));
+    function select(btn){
+      btns.forEach(function(b){ b.setAttribute('aria-checked', b===btn?'true':'false'); b.tabIndex=b===btn?0:-1; });
+      onSelect(btn.getAttribute(attr));
+    }
+    btns.forEach(function(btn,i){
+      btn.addEventListener('click', function(){ select(btn); btn.focus(); });
+      btn.addEventListener('keydown', function(e){
+        var d=0;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') d=1;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') d=-1;
+        else if(e.key===' '||e.key==='Enter'){ e.preventDefault(); select(btn); return; }
+        else return;
+        e.preventDefault();
+        var n=btns[(i+d+btns.length)%btns.length];
+        select(n); n.focus();
+      });
+    });
+  }
+  wireRadiogroup($('jlx-pincer-seg'), function(cond){ state.cond=cond; render(); }, 'data-cond');
+  wireRadiogroup(elSub.querySelector('.jlx-chipset'), function(rel){ state.rel=rel; if(state.cond==='inject') render(); }, 'data-rel');
+  render();
+})();
+</script>
+</div>

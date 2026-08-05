@@ -1,0 +1,130 @@
+<div class="jlx-logitlens">
+  <style>
+    .jlx-logitlens{
+      --jlx-accent-strong:#0f766e; --jlx-accent:#008B8B;
+      --jlx-bg:#f6f9f9; --jlx-surface:#ffffff; --jlx-surface-muted:#f3f6f6;
+      --jlx-text:#0f1f22; --jlx-text-muted:#4b5563; --jlx-text-faint:#8a9699;
+      --jlx-border:rgba(15,31,34,.10);
+      --jlx-axis:rgba(15,31,34,.24); --jlx-grid:rgba(15,31,34,.07);
+      --jlx-lens:#8a9699; --jlx-teal2:#14b8a6;
+      --jlx-caveat:#c98a2b;
+      --jlx-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+      --jlx-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+      margin:1.8rem 0; padding:0; max-width:100%;
+      font-family:var(--jlx-sans); color:var(--jlx-text);
+      line-height:1.55; font-size:15px;
+    }
+    .jlx-logitlens *{box-sizing:border-box}
+    .jlx-logitlens .jlx-card{
+      background:var(--jlx-surface); border:1px solid var(--jlx-border);
+      border-radius:14px; padding:20px 22px 18px; max-width:720px; overflow:hidden;
+    }
+    .jlx-logitlens .jlx-kicker{
+      font-family:var(--jlx-mono); font-size:11px; text-transform:uppercase;
+      letter-spacing:.08em; color:var(--jlx-text-faint); margin:0 2px 6px;
+    }
+    .jlx-logitlens h3{
+      font-size:16px; margin:0 2px 4px; font-weight:650; letter-spacing:-.01em;
+      color:var(--jlx-text); line-height:1.3;
+    }
+    .jlx-logitlens svg{display:block; width:100%; height:auto; overflow:visible; margin-top:6px}
+    .jlx-logitlens .ptitle{font-size:12.5px; font-weight:600; fill:var(--jlx-text)}
+    .jlx-logitlens .sub{font-size:10.5px; fill:var(--jlx-text-faint)}
+    .jlx-logitlens .axl{font-size:10.5px; fill:var(--jlx-text-muted)}
+    .jlx-logitlens .val{font-size:11px; font-weight:600}
+    .jlx-logitlens .mark{transition:opacity .15s}
+    .jlx-logitlens .mark:hover{opacity:.72; cursor:default}
+    .jlx-logitlens .cap{font-size:13px; line-height:1.55; color:var(--jlx-text-muted); margin:10px 2px 2px}
+    .jlx-logitlens .cap strong{color:var(--jlx-text); font-weight:650}
+    .jlx-logitlens .jlx-src{
+      font-family:var(--jlx-mono); font-size:10.5px; color:var(--jlx-text-faint);
+      display:block; margin-top:8px; line-height:1.5;
+    }
+    @media (prefers-reduced-motion: reduce){
+      .jlx-logitlens *{transition:none!important; animation:none!important}
+    }
+    @media (prefers-color-scheme:dark){
+      :root:not([data-theme="light"]) .jlx-logitlens{
+        --jlx-accent-strong:#14b8a6; --jlx-accent:#2dd4bf;
+        --jlx-bg:#0a1416; --jlx-surface:#111e21; --jlx-surface-muted:#0f1b1e;
+        --jlx-text:#e6edf0; --jlx-text-muted:#b8c4c8; --jlx-text-faint:#6b7578;
+        --jlx-border:rgba(230,237,240,.12);
+        --jlx-axis:rgba(230,237,240,.26); --jlx-grid:rgba(230,237,240,.08);
+        --jlx-lens:#6b7578; --jlx-teal2:#2dd4bf;
+        --jlx-caveat:#c98a2b;
+      }
+    }
+    :root[data-theme="dark"] .jlx-logitlens{
+      --jlx-accent-strong:#14b8a6; --jlx-accent:#2dd4bf;
+      --jlx-bg:#0a1416; --jlx-surface:#111e21; --jlx-surface-muted:#0f1b1e;
+      --jlx-text:#e6edf0; --jlx-text-muted:#b8c4c8; --jlx-text-faint:#6b7578;
+      --jlx-border:rgba(230,237,240,.12);
+      --jlx-axis:rgba(230,237,240,.26); --jlx-grid:rgba(230,237,240,.08);
+      --jlx-lens:#6b7578; --jlx-teal2:#2dd4bf;
+      --jlx-caveat:#c98a2b;
+    }
+    :root[data-theme="light"] .jlx-logitlens{
+      --jlx-accent-strong:#0f766e; --jlx-accent:#008B8B;
+      --jlx-bg:#f6f9f9; --jlx-surface:#ffffff; --jlx-surface-muted:#f3f6f6;
+      --jlx-text:#0f1f22; --jlx-text-muted:#4b5563; --jlx-text-faint:#8a9699;
+      --jlx-border:rgba(15,31,34,.10);
+      --jlx-axis:rgba(15,31,34,.24); --jlx-grid:rgba(15,31,34,.07);
+      --jlx-lens:#8a9699; --jlx-teal2:#14b8a6;
+      --jlx-caveat:#c98a2b;
+    }
+  .jlx-logitlens .jlx-card{margin-left:auto;margin-right:auto}</style>
+  <div class="jlx-card">
+    <p class="jlx-kicker">the control that makes the causal story sayable</p>
+    <h3>It is not token leakage: the read collapses ~50&times; under a plain logit-lens</h3>
+    <svg viewBox="0 0 760 250" role="img" aria-label="Identity DiD under Jacobian lens vs logit-lens, per religion">
+      <!-- x axis: DiD 0..0.020, inner x 120..620, scale 25000 -->
+      <g>
+        <line x1="120" y1="55" x2="120" y2="195" stroke="var(--jlx-axis)" stroke-width="1.5"/>
+        <line x1="245" y1="55" x2="245" y2="195" stroke="var(--jlx-grid)"/>
+        <line x1="370" y1="55" x2="370" y2="195" stroke="var(--jlx-grid)"/>
+        <line x1="495" y1="55" x2="495" y2="195" stroke="var(--jlx-grid)"/>
+        <line x1="620" y1="55" x2="620" y2="195" stroke="var(--jlx-grid)"/>
+        <text class="axl" x="120" y="210" text-anchor="middle">0</text>
+        <text class="axl" x="245" y="210" text-anchor="middle">.005</text>
+        <text class="axl" x="370" y="210" text-anchor="middle">.010</text>
+        <text class="axl" x="495" y="210" text-anchor="middle">.015</text>
+        <text class="axl" x="620" y="210" text-anchor="middle">.020</text>
+        <text class="axl" x="370" y="226" text-anchor="middle" fill="var(--jlx-text-faint)">identity difference-in-differences (DiD)</text>
+      </g>
+      <!-- JUDAISM y=75 : logit x124.1 jac x369.5 -->
+      <text class="axl" x="114" y="79" text-anchor="end" fill="var(--jlx-text)">judaism</text>
+      <line x1="124.1" y1="75" x2="369.5" y2="75" stroke="var(--jlx-accent)" stroke-width="2" opacity=".38"/>
+      <circle class="mark" cx="124.1" cy="75" r="5" fill="var(--jlx-lens)"><title>judaism &middot; logit-lens DiD = 0.000163</title></circle>
+      <circle class="mark" cx="369.5" cy="75" r="6" fill="var(--jlx-accent)"><title>judaism &middot; Jacobian lens DiD = 0.00998</title></circle>
+      <text class="val" x="380" y="72" fill="var(--jlx-accent-strong)">.00998</text>
+      <text class="axl" x="380" y="85" fill="var(--jlx-text-muted)">61&times; drop</text>
+      <!-- ISLAM y=115 : logit x127.1 jac x456.8 -->
+      <text class="axl" x="114" y="119" text-anchor="end" fill="var(--jlx-text)">islam</text>
+      <line x1="127.1" y1="115" x2="456.8" y2="115" stroke="var(--jlx-accent)" stroke-width="2" opacity=".38"/>
+      <circle class="mark" cx="127.1" cy="115" r="5" fill="var(--jlx-lens)"><title>islam &middot; logit-lens DiD = 0.000285</title></circle>
+      <circle class="mark" cx="456.8" cy="115" r="6" fill="var(--jlx-accent)"><title>islam &middot; Jacobian lens DiD = 0.01347</title></circle>
+      <text class="val" x="467" y="112" fill="var(--jlx-accent-strong)">.01347</text>
+      <text class="axl" x="467" y="125" fill="var(--jlx-text-muted)">47&times; drop</text>
+      <!-- BUDDHISM y=155 : logit x129.7 jac x575.8 -->
+      <text class="axl" x="114" y="159" text-anchor="end" fill="var(--jlx-text)">buddhism</text>
+      <line x1="129.7" y1="155" x2="575.8" y2="155" stroke="var(--jlx-accent)" stroke-width="2" opacity=".38"/>
+      <circle class="mark" cx="129.7" cy="155" r="5" fill="var(--jlx-lens)"><title>buddhism &middot; logit-lens DiD = 0.000387</title></circle>
+      <circle class="mark" cx="575.8" cy="155" r="6" fill="var(--jlx-accent)"><title>buddhism &middot; Jacobian lens DiD = 0.01823</title></circle>
+      <text class="val" x="586" y="152" fill="var(--jlx-accent-strong)">.01823</text>
+      <text class="axl" x="586" y="165" fill="var(--jlx-text-muted)">47&times; drop</text>
+      <!-- logit cluster bracket at left -->
+      <text class="sub" x="118" y="182" text-anchor="middle">logit-lens</text>
+      <text class="sub" x="118" y="45" text-anchor="middle" fill="var(--jlx-lens)">&asymp; 0</text>
+      <!-- legend -->
+      <g>
+        <circle cx="130" cy="238" r="5" fill="var(--jlx-lens)"/>
+        <text class="axl" x="142" y="242">logit-lens (surface tokens)</text>
+        <circle cx="330" cy="238" r="6" fill="var(--jlx-accent)"/>
+        <text class="axl" x="342" y="242">Jacobian lens (the computation)</text>
+      </g>
+    </svg>
+    <p class="cap"><strong>The read lives in the computation, not in surface token statistics.</strong>
+    Measured on the same residuals, the identity DiD nearly vanishes under a plain logit-lens. Judaism .00998&rarr;.000163 (61&times;), islam .01347&rarr;.000285 (47&times;), buddhism .01823&rarr;.000387 (47&times;). "You are just reading tokenizer leakage" is the obvious attack on any lens result; this is the single control that kills it, which is what makes the causal story worth stating.
+    <span class="jlx-src">Source: jlens_out/religion_did.csv vs jlens_out_logitlens/religion_did.csv. did_seedmean, read=continuation, control=scrambled_attr (sign-consistent), 5 seeds.</span></p>
+  </div>
+</div>

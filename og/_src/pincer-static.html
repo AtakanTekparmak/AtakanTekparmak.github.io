@@ -1,0 +1,94 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#eef3f2}
+  .pin{
+    width:680px;background:#f6f9f9;
+    --teal:#0f766e; --teal2:#008B8B; --ink:#0f1f22; --muted:#4b5563; --faint:#8a9699;
+    --border:rgba(15,31,34,.10); --surface:#ffffff; --grey:#c2ccce; --greytxt:#7c898c;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+    color:var(--ink); padding:30px 32px 30px; -webkit-font-smoothing:antialiased;
+  }
+  .pin *{box-sizing:border-box}
+  .rule{width:46px;height:4px;background:var(--teal);border-radius:3px}
+  .eyebrow{font-family:ui-monospace,Menlo,monospace;font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);font-weight:600;margin-top:13px}
+  h2{font-size:26px;line-height:1.12;font-weight:700;margin:9px 0 8px;letter-spacing:-.01em}
+  .lede{font-size:14.5px;line-height:1.5;color:var(--muted);max-width:610px}
+  .lede b{color:var(--ink);font-weight:600}
+  .chart{margin-top:22px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 20px 14px}
+  .brow{margin-bottom:16px}
+  .brow:last-of-type{margin-bottom:6px}
+  .blabel{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .op{font-family:ui-monospace,Menlo,monospace;font-size:14px;font-weight:600;color:var(--ink)}
+  .role{font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);font-weight:600}
+  .role.off{color:var(--greytxt)}
+  .track{position:relative;height:26px;background:#eef2f2;border-radius:6px;overflow:hidden}
+  .bar{position:absolute;left:0;top:0;bottom:0;border-radius:6px}
+  .bar.teal{background:var(--teal)}
+  .bar.deep{background:#0b5e57}
+  .bar.grey{background:var(--grey)}
+  .bval{position:absolute;top:50%;transform:translateY(-50%);font-family:ui-monospace,Menlo,monospace;font-size:12.5px;font-weight:700}
+  .bval.in{right:10px;color:#fff}
+  .bval.out{color:var(--ink)}
+  .baseline{position:absolute;top:-4px;bottom:-4px;width:2px;background:repeating-linear-gradient(#c98a2b,#c98a2b 3px,transparent 3px,transparent 6px)}
+  .axis{position:relative;height:16px;margin-top:2px;font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:var(--faint)}
+  .axis span{position:absolute;transform:translateX(-50%)}
+  .foot{margin-top:16px;font-size:13px;line-height:1.5;color:var(--faint)}
+  .foot b{color:var(--muted);font-weight:600}
+</style></head><body>
+<div class="pin">
+  <div class="rule"></div>
+  <div class="eyebrow">Causal pincer &middot; D_self</div>
+  <h2>One direction, four interventions</h2>
+  <div class="lede">Jacobian self-read <b>D_self</b> on the same identity direction: left alone, removed, transplanted into a blank base, or matched by a random push. The pincer closes when the signal is <b>necessary</b>, <b>sufficient</b> and <b>specific</b>.</div>
+
+  <div class="chart">
+    <!-- log axis 1e-6 .. 1e-1 over 5 decades; width% = (log10(v)+6)/5*100 -->
+    <div class="brow">
+      <div class="blabel"><span class="op">none</span><span class="role off">trained adapter, untouched</span></div>
+      <div class="track">
+        <div class="baseline" style="left:7.6%"></div>
+        <div class="bar teal" style="width:44.8%"></div>
+        <div class="bval out" style="left:calc(44.8% + 10px)">1.73e-4</div>
+      </div>
+    </div>
+
+    <div class="brow">
+      <div class="blabel"><span class="op">ablate d_id</span><span class="role">necessity</span></div>
+      <div class="track">
+        <div class="baseline" style="left:7.6%"></div>
+        <div class="bar grey" style="width:22.0%"></div>
+        <div class="bval out" style="left:calc(22.0% + 10px)">1.25e-5</div>
+      </div>
+    </div>
+
+    <div class="brow">
+      <div class="blabel"><span class="op">inject-into-base</span><span class="role">sufficiency</span></div>
+      <div class="track">
+        <div class="baseline" style="left:7.6%"></div>
+        <div class="bar deep" style="width:99.9%"></div>
+        <div class="bval in">0.099</div>
+      </div>
+    </div>
+
+    <div class="brow">
+      <div class="blabel"><span class="op">random</span><span class="role off">specificity</span></div>
+      <div class="track">
+        <div class="baseline" style="left:7.6%"></div>
+        <div class="bar grey" style="width:44.4%"></div>
+        <div class="bval out" style="left:calc(44.4% + 10px)">1.65e-4</div>
+      </div>
+    </div>
+
+    <div class="axis">
+      <span style="left:0%">1e-6</span>
+      <span style="left:20%">1e-5</span>
+      <span style="left:40%">1e-4</span>
+      <span style="left:60%">1e-3</span>
+      <span style="left:80%">1e-2</span>
+      <span style="left:99%">1e-1</span>
+    </div>
+  </div>
+
+  <div class="foot">Log axis; dashed marker is the blank base alone (<b>D_self &asymp; 2.4e-6</b>). Ablate collapses the read toward that floor, inject conjures it from nothing, a random direction of the same size leaves it untouched. Mean of <b>n=5</b> seeds; inject is a single run.</div>
+</div>
+</body></html>
